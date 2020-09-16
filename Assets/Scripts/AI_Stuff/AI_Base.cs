@@ -25,7 +25,7 @@ public class AI_Base : MonoBehaviour
             if (hitColliders.Length > 0)
             {
                 currentTarget = hitColliders[0].gameObject;
-                Chochosan.ChochosanHelper.ChochosanDebug("TARGE ACQUIRED", "red");
+                Chochosan.ChochosanHelper.ChochosanDebug("TARGET ACQUIRED", "red");
             }
         }
     }

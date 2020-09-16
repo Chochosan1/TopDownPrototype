@@ -40,17 +40,19 @@ public class Turret : AI_Base, ISpawnedAtWorld
             if (isStillSpawning) //if the pool is still not full
             {
                 GameObject projectileCopy = Instantiate(projectilePrefab, transform.position + offsetVector, projectilePrefab.transform.rotation);
-                projectileCopy.GetComponent<Rigidbody>().AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);
+               // projectileCopy.GetComponent<Rigidbody>().AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);
+                projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget);
                 AddObjectToPool(projectileCopy);
             }
             else //when full start using items from the pool
             {
-                // Debug.Log("I COME FROM THE POOL");
-                Rigidbody tempRb = projectilePool[currentPoolItem].GetComponent<Rigidbody>();
-                tempRb.velocity = new Vector3(0, 0, 0);
+                //RB movement
+              //  Rigidbody tempRb = projectilePool[currentPoolItem].GetComponent<Rigidbody>();
+             //   tempRb.velocity = new Vector3(0, 0, 0);
                 projectilePool[currentPoolItem].transform.position = transform.position + offsetVector;
+                projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);
                 projectilePool[currentPoolItem].SetActive(true);
-                tempRb.AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);
+                //   tempRb.AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);     
                 currentPoolItem++;
 
                 if (currentPoolItem >= projectilePool.Count)

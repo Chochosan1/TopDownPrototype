@@ -6,19 +6,24 @@ using UnityEngine.AI;
 public enum AIState { Patrol, MovingToTarget, Attack}
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class AI_Attacker : AI_Base
+public class AI_Attacker : AI_Base, IDamageable
 {
     [Header("Additional AI options")]
     [SerializeField] private GameObject target;
+    [SerializeField] private AI_Stats stats;
     private AIState aiState;
     private NavMeshAgent agent;
+    private float currentHealth;
+
+  
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        SetAgentTarget(agent, target.transform.position);
+    //    SetAgentTarget(agent, target.transform.position);
         aiState = AIState.Patrol;
+        currentHealth = stats.maxHealth;
     }
 
     private void Update()
@@ -26,11 +31,11 @@ public class AI_Attacker : AI_Base
         if(aiState == AIState.MovingToTarget)
         {
             SetAgentTarget(agent, currentTarget.transform.position);
-            Chochosan.ChochosanHelper.ChochosanDebug("MOVING", "green");
+          //  Chochosan.ChochosanHelper.ChochosanDebug("MOVING", "green");
         }
         else if(aiState == AIState.Attack)
         {
-            Chochosan.ChochosanHelper.ChochosanDebug("Attack", "red");
+        //    Chochosan.ChochosanHelper.ChochosanDebug("Attack", "red");
         }
         ChooseNewTarget();
 
@@ -49,5 +54,15 @@ public class AI_Attacker : AI_Base
                 aiState = AIState.Attack;          
             }
         }    
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

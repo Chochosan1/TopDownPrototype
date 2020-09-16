@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5321141123668268517}
   - component: {fileID: 8648059380525940847}
   - component: {fileID: 7387263956946707237}
+  - component: {fileID: 82121092}
+  - component: {fileID: 82121093}
   m_Layer: 10
   m_Name: Enemy_Helix
   m_TagString: Untagged
@@ -70,8 +72,38 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 2048
-  pureEnemySenseRange: 10
+  pureEnemySenseRange: 25
   target: {fileID: 0}
+  stats: {fileID: 11400000, guid: 2bf87f2a53d90b54d80cfbe13200eea6, type: 2}
+--- !u!54 &82121092
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573794583837302816}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &82121093
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573794583837302816}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99962616, y: 2.1, z: 0.99980116}
+  m_Center: {x: -0.00018692017, y: 0.84, z: 0.000046744943}
 --- !u!1 &3862986445703375889
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +115,6 @@ GameObject:
   - component: {fileID: 3857343564328889163}
   - component: {fileID: 3882352405053606651}
   - component: {fileID: 3876751062703963429}
-  - component: {fileID: 3854025449075104385}
   - component: {fileID: 3862986445703375894}
   m_Layer: 10
   m_Name: Root_Enemy_Helix
@@ -153,20 +184,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &3854025449075104385
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3862986445703375889}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: b77737c16de0c7e489f25a56a30b93bd, type: 3}
 --- !u!95 &3862986445703375894
 Animator:
   serializedVersion: 3
@@ -180,7 +197,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 6c024f0265869d2478867ba74634acc6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1

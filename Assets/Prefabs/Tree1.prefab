@@ -113,7 +113,7 @@ MonoBehaviour:
   castCooldown: 0.5
   projectilePrefab: {fileID: 5194193526441880220, guid: 49d017d876859a142acc81e94d64cc35,
     type: 3}
-  shootForce: 10
+  shootForce: 3
   enableTurretAfterSeconds: 2
   offsetVector: {x: 0, y: 4, z: 0}
   projectilePoolSize: 10
