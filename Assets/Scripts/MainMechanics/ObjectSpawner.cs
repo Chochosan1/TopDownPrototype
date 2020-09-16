@@ -73,7 +73,6 @@ public class ObjectSpawner : MonoBehaviour
                 currentObject = Instantiate(objectToSpawn, hit.point, transform.rotation);
                 Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(true);
                 colCheckers = currentObject.GetComponentsInChildren<CollisionChecker>();
-                Debug.Log(colCheckers);
             }
         }
     }
@@ -116,7 +115,10 @@ public class ObjectSpawner : MonoBehaviour
                 }
             }
 
-            Instantiate(realObjects[currentObjectIndex], currentObject.transform.position, currentObject.transform.rotation);
+            GameObject tempObject = Instantiate(realObjects[currentObjectIndex], currentObject.transform.position, currentObject.transform.rotation);
+            ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
+            if(tempInterface != null)
+                tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
             Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(false);
             Destroy(currentObject);
             currentObject = null;

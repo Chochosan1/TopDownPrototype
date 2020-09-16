@@ -33,7 +33,6 @@ namespace Chochosan
         public void PlayHoverAnimation(Animator anim)
         {
             anim.SetBool("OnHoverTrigger", true);
-            //Testgit
         }
     }
 }

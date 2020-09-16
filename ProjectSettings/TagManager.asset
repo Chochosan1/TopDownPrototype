@@ -15,8 +15,8 @@ TagManager:
   - 
   - Terrain
   - AllowedPreviewCollisions
-  - 
-  - 
+  - Enemies
+  - Allies
   - 
   - 
   - 
