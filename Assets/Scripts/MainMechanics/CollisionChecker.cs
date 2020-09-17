@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CollisionChecker : MonoBehaviour
 {
-    [SerializeField] private LayerMask layersToExclude;
     private bool isSpawningAllowed;
     private MeshRenderer meshRend;
     private Material[] materials;

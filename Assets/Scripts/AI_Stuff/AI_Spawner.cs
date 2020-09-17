@@ -21,6 +21,5 @@ public class AI_Spawner : MonoBehaviour
             Instantiate(aiToSpawnPrefab, transform.position, aiToSpawnPrefab.transform.rotation);
             spawnTimestamp = Time.time + spawnCooldown;
         }
-
     }
 }

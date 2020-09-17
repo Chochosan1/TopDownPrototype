@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 
 namespace Chochosan
 {
@@ -9,6 +11,7 @@ namespace Chochosan
         public static UI_Manager Instance;
 
         [SerializeField] private GameObject objectManipulationInfoPanel;
+        [SerializeField] private TextMeshProUGUI woodText;
 
         private void Awake()
         {
@@ -16,6 +19,16 @@ namespace Chochosan
             {
                 Instance = this;
             }
+        }
+
+        private void OnEnable()
+        {
+            PlayerInventory.Instance.OnInventoryValueChanged += UpdateTextValue;
+        }
+
+        private void OnDisable()
+        {
+            PlayerInventory.Instance.OnInventoryValueChanged -= UpdateTextValue;
         }
 
         //automatically toggles on/off depending on the current state
@@ -33,6 +46,17 @@ namespace Chochosan
         public void PlayHoverAnimation(Animator anim)
         {
             anim.SetBool("OnHoverTrigger", true);
+        }
+
+        public void UpdateTextValue(string valueName, float value)
+        {
+            switch (valueName)
+            {
+                case "wood":
+                    woodText.text = value.ToString();
+                    break;
+            }
+            
         }
     }
 }

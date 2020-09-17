@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Helix
   maxHealth: 50
-  currentHealth: 50

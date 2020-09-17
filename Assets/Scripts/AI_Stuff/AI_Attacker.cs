@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public enum AIState { Patrol, MovingToTarget, Attack}
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class AI_Attacker : AI_Base, IDamageable
 {
     [Header("Additional AI options")]
@@ -37,7 +36,7 @@ public class AI_Attacker : AI_Base, IDamageable
         {
         //    Chochosan.ChochosanHelper.ChochosanDebug("Attack", "red");
         }
-        ChooseNewTarget();
+        ChooseNewTarget(true);
 
         float distance = 10000;
         if (currentTarget != null)

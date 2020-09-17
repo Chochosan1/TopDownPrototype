@@ -7,5 +7,4 @@ public class AI_Stats : ScriptableObject
 {
     public string enemyName;
     public float maxHealth;
-    public float currentHealth;
 }

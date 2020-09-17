@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// Auto-aiming weapon that uses object pooling for its bullets.
+/// </summary>
 public class Turret : AI_Base, ISpawnedAtWorld
 {
     [SerializeField] private float castCooldown;
@@ -23,7 +25,7 @@ public class Turret : AI_Base, ISpawnedAtWorld
 
     void Update()
     {
-        ChooseNewTarget();
+        ChooseNewTarget(false);
 
         if (currentTarget != null)
         {
