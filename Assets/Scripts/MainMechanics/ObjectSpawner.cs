@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Controls world spawning of buildings using the mouse.
+/// </summary>
 public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] previewObjects;
@@ -12,10 +14,11 @@ public class ObjectSpawner : MonoBehaviour
     private GameObject currentObject;
     private int currentObjectIndex;
     private CollisionChecker[] colCheckers;
+    private int layerMask;
 
-   private int layerMask;
-    
-
+    //event subscribed to for example in PlayerInventory in order to spend resources 
+    public delegate void OnObjectSpawnedAtWorldDelegate(RequirementsToBuild requirements);
+    public event OnObjectSpawnedAtWorldDelegate OnObjectSpawnedAtWorld;
 
     private void Start()
     {
@@ -25,7 +28,7 @@ public class ObjectSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.BackQuote))
+        if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             CancelObject();
         }
@@ -50,7 +53,7 @@ public class ObjectSpawner : MonoBehaviour
 
         MoveCurrentObjectWithMouse();
 
-        if(Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             RotateCurrentObject();
         }
@@ -59,7 +62,15 @@ public class ObjectSpawner : MonoBehaviour
     public void SpawnObject(int index)
     {
         currentObjectIndex = index;
-        InstantiateObjectAtMousePos(previewObjects[currentObjectIndex]);
+
+        if(PlayerInventory.Instance.IsHaveEnoughResources(previewObjects[currentObjectIndex].GetComponent<RequirementsToBuild>()))
+        {
+            InstantiateObjectAtMousePos(previewObjects[currentObjectIndex]);
+        }
+        else
+        {
+            Chochosan.UI_Manager.Instance.DisplayWarningMessage();
+        }    
     }
 
     private void InstantiateObjectAtMousePos(GameObject objectToSpawn)
@@ -117,8 +128,9 @@ public class ObjectSpawner : MonoBehaviour
 
             GameObject tempObject = Instantiate(realObjects[currentObjectIndex], currentObject.transform.position, currentObject.transform.rotation);
             ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
-            if(tempInterface != null)
+            if (tempInterface != null)
                 tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
+            OnObjectSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>());
             Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(false);
             Destroy(currentObject);
             currentObject = null;
@@ -128,7 +140,7 @@ public class ObjectSpawner : MonoBehaviour
 
     private void RotateCurrentObject()
     {
-        if(currentObject != null)
+        if (currentObject != null)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
@@ -143,7 +155,7 @@ public class ObjectSpawner : MonoBehaviour
 
     private void CancelObject()
     {
-        if(currentObject != null)
+        if (currentObject != null)
         {
             Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(false);
             Destroy(currentObject);

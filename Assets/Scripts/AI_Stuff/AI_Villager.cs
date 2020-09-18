@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+/// <summary>
+/// Villager type AI unit that can harvest materials.
+/// </summary>
 public enum AIState_Villager { Idle, Moving, Harvesting}
 public class AI_Villager : AI_Base
 {
@@ -13,7 +16,6 @@ public class AI_Villager : AI_Base
     private float harvestAnimTimestamp;
     private Harvestable_Controller currentHarvestable;
     
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -21,7 +23,6 @@ public class AI_Villager : AI_Base
         aiState = AIState_Villager.Idle;
     }
 
-    // Update is called once per frame
     void Update()
     {
         ChooseNewTarget(true);
@@ -55,8 +56,16 @@ public class AI_Villager : AI_Base
             anim.SetBool("HarvestWood", true);
             if(Time.time >= harvestAnimTimestamp)
             {
-                currentHarvestable.Harvest();
-                harvestAnimTimestamp = Time.time + harvestInterval;
+                if(currentHarvestable != null)
+                {
+                    currentHarvestable.Harvest();
+                    harvestAnimTimestamp = Time.time + harvestInterval;
+                }
+                else
+                {
+                    aiState = AIState_Villager.Idle;
+                    Chochosan.ChochosanHelper.ChochosanDebug("NULL CAUGHT", "red");
+                }             
             }
         }
 
@@ -77,16 +86,17 @@ public class AI_Villager : AI_Base
                     aiState = AIState_Villager.Harvesting;
                     harvestAnimTimestamp = Time.time + harvestInterval;
                     currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
+                    LookAtTarget();
                 }
             }
             else
             {
-                aiState = AIState_Villager.Idle;
+                GoIntoIdleState();         
             }
         }
         else
         {
-            aiState = AIState_Villager.Idle;
+            GoIntoIdleState();
         }
 
         if(debugState)
@@ -94,5 +104,16 @@ public class AI_Villager : AI_Base
             Chochosan.ChochosanHelper.ChochosanDebug("Target", currentTarget, "red");
             Chochosan.ChochosanHelper.ChochosanDebug("State", aiState, "green");
         }     
+    }
+
+    private void GoIntoIdleState()
+    {
+        if (aiState != AIState_Villager.Idle)
+        {
+            aiState = AIState_Villager.Idle;
+            currentTarget = null;
+            currentHarvestable = null;
+            SetAgentTarget(agent, agent.transform.position);
+        }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Attach to a harvestable object.
+/// </summary>
+public enum HarvestableType { Wood, Gold, Iron }
 public class Harvestable_Controller : MonoBehaviour, IHarvestable
 {
     [SerializeField] private SO_ResourceStats stats;
+    [SerializeField] private HarvestableType harvestableType;
     private float currentResourcesToHarvest;
 
     void Start()
@@ -14,14 +18,28 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
 
     public void Harvest()
     {
-        currentResourcesToHarvest -= stats.resourcePerSingleHarvest;
-        PlayerInventory.Instance.CurrentWood += stats.resourcePerSingleHarvest;
+        switch (harvestableType)
+        {
+            case HarvestableType.Wood:
+                currentResourcesToHarvest -= stats.resourcePerSingleHarvest;
+                PlayerInventory.Instance.CurrentWood += stats.resourcePerSingleHarvest;           
+                break;
+            case HarvestableType.Gold:
+                currentResourcesToHarvest -= stats.resourcePerSingleHarvest;
+                PlayerInventory.Instance.CurrentGold += stats.resourcePerSingleHarvest;
+                break;
+            case HarvestableType.Iron:
+                currentResourcesToHarvest -= stats.resourcePerSingleHarvest;
+                PlayerInventory.Instance.CurrentIron += stats.resourcePerSingleHarvest;
+                break;
+        }
         CheckHarvestableState();
     }
 
+    //removes the harvestable if depleted
     private void CheckHarvestableState()
     {
-        if(currentResourcesToHarvest <= 0)
+        if (currentResourcesToHarvest <= 0)
         {
             Destroy(gameObject);
         }

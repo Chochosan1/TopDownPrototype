@@ -94,9 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec762318db7d57f489597a4c5d84d517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layersToExclude:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &8337115820213703144
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -220,9 +217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec762318db7d57f489597a4c5d84d517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layersToExclude:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &976269692306178929
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -346,9 +340,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec762318db7d57f489597a4c5d84d517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layersToExclude:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &4924558539553858415
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -390,6 +381,7 @@ GameObject:
   - component: {fileID: 7715078058253898318}
   - component: {fileID: 7726796130164255558}
   - component: {fileID: 490919758045545090}
+  - component: {fileID: -2274093087611337883}
   m_Layer: 9
   m_Name: PreviewTree1
   m_TagString: Untagged
@@ -475,6 +467,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.8157837, y: 3.219553, z: 1.5363542}
   m_Center: {x: -0.2884589, y: 1.4788172, z: 0.00000035762787}
+--- !u!114 &-2274093087611337883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7741647946929721664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be67966e52829ce47a031718fca3fe5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  woodRequired: 10
+  goldRequired: 1
+  ironRequired: 0
 --- !u!1 &8544235281208678818
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,9 +576,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec762318db7d57f489597a4c5d84d517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layersToExclude:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &4144113011276563768
 BoxCollider:
   m_ObjectHideFlags: 0

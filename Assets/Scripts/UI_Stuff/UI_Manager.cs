@@ -12,6 +12,8 @@ namespace Chochosan
 
         [SerializeField] private GameObject objectManipulationInfoPanel;
         [SerializeField] private TextMeshProUGUI woodText;
+        [SerializeField] private TextMeshProUGUI goldText;
+        [SerializeField] private TextMeshProUGUI ironText;
 
         private void Awake()
         {
@@ -55,8 +57,18 @@ namespace Chochosan
                 case "wood":
                     woodText.text = value.ToString();
                     break;
-            }
-            
+                case "gold":
+                    goldText.text = value.ToString();
+                    break;
+                case "iron":
+                    ironText.text = value.ToString();
+                    break;
+            }        
+        }
+
+        public void DisplayWarningMessage()
+        {
+            Chochosan.ChochosanHelper.ChochosanDebug("NOT ENOUGH RESOURCES", "red");
         }
     }
 }
