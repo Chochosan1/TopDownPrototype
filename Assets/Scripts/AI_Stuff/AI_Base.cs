@@ -10,6 +10,7 @@ public class AI_Base : MonoBehaviour
 {
     protected GameObject currentTarget;
     [Header("Base AI")]
+    [SerializeField] protected string unitName;
     [Tooltip("The layer which can be detected by the AI unit. All other layers will be ignored.")]
     [SerializeField] protected LayerMask enemyLayer;
     [Tooltip("How far away can the AI unit detect its target without taking into consideration walls and such. Will be used before looking for target within the greater range. ")]

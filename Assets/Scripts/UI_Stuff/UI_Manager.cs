@@ -10,6 +10,8 @@ namespace Chochosan
         public static UI_Manager Instance;
 
         [SerializeField] private GameObject objectManipulationInfoPanel;
+        [SerializeField] private GameObject selectedUnitInfoPanel;
+        [SerializeField] private TextMeshProUGUI selectedUnitText;
         [SerializeField] private TextMeshProUGUI woodText;
         [SerializeField] private TextMeshProUGUI goldText;
         [SerializeField] private TextMeshProUGUI ironText;
@@ -25,11 +27,15 @@ namespace Chochosan
         private void OnEnable()
         {
             PlayerInventory.Instance.OnInventoryValueChanged += UpdateTextValue;
+            Unit_Controller.Instance.OnUnitSelected += ActivateUnitSelectionUI;
+            Unit_Controller.Instance.OnUnitDeselected += DeactivateUnitSelectionUI;
         }
 
         private void OnDisable()
         {
             PlayerInventory.Instance.OnInventoryValueChanged -= UpdateTextValue;
+            Unit_Controller.Instance.OnUnitSelected -= ActivateUnitSelectionUI;
+            Unit_Controller.Instance.OnUnitDeselected -= DeactivateUnitSelectionUI;
         }
 
         //automatically toggles on/off depending on the current state
@@ -42,6 +48,25 @@ namespace Chochosan
         public void ToggleObjectManipulationInfo(bool state)
         {
             objectManipulationInfoPanel.SetActive(state);
+        }
+
+        //force a state upon the panel
+        public void ToggleSelectedUnitInfo(bool state, string name)
+        {
+            selectedUnitInfoPanel.SetActive(state);
+            selectedUnitText.text = name;
+        }
+
+        private void ActivateUnitSelectionUI(ISelectable unitSelectable)
+        {
+            selectedUnitInfoPanel.SetActive(true);
+            selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
+        }
+
+        private void DeactivateUnitSelectionUI()
+        {
+            selectedUnitInfoPanel.SetActive(false);
+            selectedUnitText.text = "";
         }
 
         public void PlayHoverAnimation(Animator anim)

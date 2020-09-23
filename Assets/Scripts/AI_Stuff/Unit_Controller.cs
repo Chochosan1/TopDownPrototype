@@ -6,11 +6,27 @@ using UnityEngine;
 /// </summary>
 public class Unit_Controller : MonoBehaviour
 {
+    public static Unit_Controller Instance;
     [SerializeField] private LayerMask selectableUnitLayer;
     [SerializeField] private LayerMask movableAreaLayer;
     private ObjectSpawner objectSpawner;
     private Camera mainCamera;
     private GameObject currentlySelectedUnit;
+    private ISelectable tempSelectable;
+
+    public delegate void OnUnitSelectedDelegate(ISelectable unitSelectable);
+    public event OnUnitSelectedDelegate OnUnitSelected;
+
+    public delegate void OnUnitDeselectedDelegate();
+    public event OnUnitDeselectedDelegate OnUnitDeselected;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -31,14 +47,8 @@ public class Unit_Controller : MonoBehaviour
         {
             if(!objectSpawner.IsCurrentlySpawningBuilding())
             {
-                if (currentlySelectedUnit == null)
-                {
-                    SelectUnit();
-                }
-                else
-                {
-                    CommandSelectedUnit();
-                }
+                 SelectUnit();
+                 CommandSelectedUnit();
             }
         }
     }
@@ -50,9 +60,12 @@ public class Unit_Controller : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                   
             if (Physics.Raycast(ray, out hit, 100, selectableUnitLayer))
             {
                 currentlySelectedUnit = hit.collider.gameObject;
+                tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
+                OnUnitSelected?.Invoke(tempSelectable);
                 Debug.Log(hit.collider.gameObject);
             }
         }
@@ -68,7 +81,6 @@ public class Unit_Controller : MonoBehaviour
             {
                 if(movableAreaLayer == (movableAreaLayer | (1 << hit.collider.gameObject.layer))) //check if the object is in the specific layer
                 {
-                    ISelectable tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
                     tempSelectable?.ForceSetAgentArea(hit.point);
                     Debug.Log("COMMAND");
                 }      
@@ -79,6 +91,8 @@ public class Unit_Controller : MonoBehaviour
     private void ClearCurrentlySelectedUnit()
     {
         currentlySelectedUnit = null;
+        tempSelectable = null;
+        OnUnitDeselected?.Invoke();
         Debug.Log("DESELECT");
     }
     #endregion

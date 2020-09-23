@@ -5,4 +5,5 @@ using UnityEngine;
 public interface ISelectable
 {
     void ForceSetAgentArea(Vector3 destination);
+    string GetSelectedUnitInfo();
 }

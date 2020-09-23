@@ -136,4 +136,9 @@ public class AI_Villager : AI_Base, ISelectable
         currentHarvestable = null;
         agent.destination = destination;
     }
+
+    public string GetSelectedUnitInfo()
+    {
+        return unitName;
+    }
 }

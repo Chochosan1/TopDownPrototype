@@ -647,13 +647,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f246db222001d4cae4c647ab15fa55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: WoodCutter
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8192
   firstPureEnemySenseRange: 5
   secondPureEnemySenseRange: 30
-  isSelectable: 0
-  isSelected: 0
   debugState: 0
   harvestInterval: 1.6
 --- !u!195 &2547033674450600918
