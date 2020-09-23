@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 8109935396993732680}
   - component: {fileID: -4408780133076232730}
   - component: {fileID: 8165875248773102535}
+  - component: {fileID: -6498419353189895774}
   m_Layer: 0
   m_Name: IronMine
   m_TagString: Untagged
@@ -476,6 +477,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.59, z: 0}
   m_TimeToStationary: 0.5
+--- !u!65 &-6498419353189895774
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5223809245427869560}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.4706707, y: 0.9962704, z: 2.5817122}
+  m_Center: {x: 0, y: 0.51103723, z: 0}
 --- !u!1 &5885453153576033635
 GameObject:
   m_ObjectHideFlags: 0

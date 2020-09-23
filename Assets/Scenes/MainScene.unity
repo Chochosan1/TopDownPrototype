@@ -3613,6 +3613,7 @@ GameObject:
   - component: {fileID: 1578267249}
   - component: {fileID: 1578267248}
   - component: {fileID: 1578267250}
+  - component: {fileID: 1578267251}
   m_Layer: 0
   m_Name: ScriptHolder
   m_TagString: Untagged
@@ -3646,6 +3647,9 @@ MonoBehaviour:
   - {fileID: 5223809245427869560, guid: 7fde1a9b332b8be4b8bb6105a108e9d5, type: 3}
   rotationSpeed: 1000
   is_ObjectSlopeRotationMatch: 0
+  selectableUnitLayer:
+    serializedVersion: 2
+    m_Bits: 65536
 --- !u!4 &1578267249
 Transform:
   m_ObjectHideFlags: 0
@@ -3672,6 +3676,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 598664e77d5b72847ab65da92b32dc8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1578267251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578267247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97f7d0107d6ef448b1a074be33abd7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectableUnitLayer:
+    serializedVersion: 2
+    m_Bits: 65536
+  movableAreaLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1001 &1624992673
 PrefabInstance:
   m_ObjectHideFlags: 0

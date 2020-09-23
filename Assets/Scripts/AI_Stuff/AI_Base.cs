@@ -12,8 +12,10 @@ public class AI_Base : MonoBehaviour
     [Header("Base AI")]
     [Tooltip("The layer which can be detected by the AI unit. All other layers will be ignored.")]
     [SerializeField] protected LayerMask enemyLayer;
-    [Tooltip("How far away can the AI unit detect its target without taking into consideration walls and such. ")]
-    [SerializeField] protected float pureEnemySenseRange;
+    [Tooltip("How far away can the AI unit detect its target without taking into consideration walls and such. Will be used before looking for target within the greater range. ")]
+    [SerializeField] protected float firstPureEnemySenseRange = 5f;
+    [Tooltip("How far away can the AI unit detect its target without taking into consideration walls and such. Will be used after first looking for targets within the smaller range. ")]
+    [SerializeField] protected float secondPureEnemySenseRange = 30f;
 
     protected virtual void SetAgentTarget(NavMeshAgent agent, Vector3 targetPosition)
     {
@@ -26,20 +28,37 @@ public class AI_Base : MonoBehaviour
     {
         if (currentTarget == null)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, pureEnemySenseRange, enemyLayer);
-            if (hitColliders.Length > 0)
+            Collider[] firstHitColliders = Physics.OverlapSphere(transform.position, firstPureEnemySenseRange, enemyLayer);
+            if (firstHitColliders.Length > 0)
             {
                 if (chooseRandom)
                 {
-                    int randomIndex = Random.Range(0, hitColliders.Length);
-                    currentTarget = hitColliders[randomIndex].gameObject;
+                    int randomIndex = Random.Range(0, firstHitColliders.Length);
+                    currentTarget = firstHitColliders[randomIndex].gameObject;
                 }
                 else
                 {
-                    currentTarget = hitColliders[0].gameObject;
+                    currentTarget = firstHitColliders[0].gameObject;
                 }
                 //  Chochosan.ChochosanHelper.ChochosanDebug("TARGET ACQUIRED", "red");
             }
+            else
+            {
+                Collider[] secondHitColliders = Physics.OverlapSphere(transform.position, secondPureEnemySenseRange, enemyLayer);
+                if (secondHitColliders.Length > 0)
+                {
+                    if (chooseRandom)
+                    {
+                        int randomIndex = Random.Range(0, secondHitColliders.Length);
+                        currentTarget = secondHitColliders[randomIndex].gameObject;
+                    }
+                    else
+                    {
+                        currentTarget = secondHitColliders[0].gameObject;
+                    }
+                    //  Chochosan.ChochosanHelper.ChochosanDebug("TARGET ACQUIRED", "red");
+                }
+            }                        
         }
     }
 

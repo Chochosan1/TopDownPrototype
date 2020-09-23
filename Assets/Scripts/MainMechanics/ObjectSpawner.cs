@@ -14,7 +14,10 @@ public class ObjectSpawner : MonoBehaviour
     private GameObject currentObject;
     private int currentObjectIndex;
     private CollisionChecker[] colCheckers;
-    private int layerMask;
+    private int buildableLayerMask;
+    [SerializeField] private LayerMask selectableUnitLayer;
+    private GameObject currentlySelectedUnit;
+    private Camera mainCamera;
 
     //event subscribed to for example in PlayerInventory in order to spend resources 
     public delegate void OnObjectSpawnedAtWorldDelegate(RequirementsToBuild requirements);
@@ -22,7 +25,8 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Start()
     {
-        layerMask = LayerMask.GetMask("Terrain");
+        buildableLayerMask = LayerMask.GetMask("Terrain");
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -31,16 +35,6 @@ public class ObjectSpawner : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             CancelObject();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentObjectIndex = 0;
-            InstantiateObjectAtMousePos(previewObjects[currentObjectIndex]);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            currentObjectIndex = 1;
-            InstantiateObjectAtMousePos(previewObjects[currentObjectIndex]);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -59,6 +53,7 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
+    //try to spawn a preview object
     public void SpawnObject(int index)
     {
         currentObjectIndex = index;
@@ -73,14 +68,15 @@ public class ObjectSpawner : MonoBehaviour
         }    
     }
 
+    //spawn a preview object at mouse position
     private void InstantiateObjectAtMousePos(GameObject objectToSpawn)
     {
         if (currentObject == null)
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 100, layerMask))
-            {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100, buildableLayerMask))
+            {              
                 currentObject = Instantiate(objectToSpawn, hit.point, transform.rotation);
                 Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(true);
                 colCheckers = currentObject.GetComponentsInChildren<CollisionChecker>();
@@ -93,8 +89,8 @@ public class ObjectSpawner : MonoBehaviour
         if (currentObject != null)
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 100, layerMask))
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100, buildableLayerMask))
             {
                 currentObject.transform.position = hit.point;
 
@@ -113,6 +109,7 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
+    //spawn the final object in the world
     private void SpawnObjectAtWorld()
     {
         if (currentObject != null)
@@ -153,6 +150,7 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
+    //remove the preview object
     private void CancelObject()
     {
         if (currentObject != null)
@@ -162,5 +160,10 @@ public class ObjectSpawner : MonoBehaviour
             currentObject = null;
             colCheckers = null;
         }
+    }
+
+    public bool IsCurrentlySpawningBuilding()
+    {
+        return currentObject != null;
     }
 }

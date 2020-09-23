@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// Attach to a harvestable object.
+/// Attach to a harvestable object. The HarvestableType determines what kind of a resource the harvestable object will yield to the PlayerInventory.
 /// </summary>
 public enum HarvestableType { Wood, Gold, Iron }
 public class Harvestable_Controller : MonoBehaviour, IHarvestable

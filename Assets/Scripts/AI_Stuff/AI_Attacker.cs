@@ -43,7 +43,7 @@ public class AI_Attacker : AI_Base, IDamageable
         {
             distance = Vector3.Distance(currentTarget.transform.position, transform.position);
 
-            if (distance <= pureEnemySenseRange && distance > agent.stoppingDistance && aiState != AIState.Attack) //if player is far but scented then go to him
+            if (distance <= secondPureEnemySenseRange && distance > agent.stoppingDistance && aiState != AIState.Attack) //if player is far but scented then go to him
             {
                 aiState = AIState.MovingToTarget;              
 
