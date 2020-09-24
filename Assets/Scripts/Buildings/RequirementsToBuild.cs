@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class RequirementsToBuild : MonoBehaviour
 {
-    [SerializeField] SO_CostRequirements costReq;
+    [SerializeField] private SO_CostRequirements costReq;
 
     public SO_CostRequirements GetRequirements()
     {
