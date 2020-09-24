@@ -21,14 +21,24 @@ public class PlayerInventory : MonoBehaviour
     private ObjectSpawner objectSpawner;
 
     private void Start()
-    {     
-        CurrentWood = 12;
-        CurrentGold = 0;
-        CurrentIron = 0;
-    }
-
-    private void OnEnable()
     {
+        if(Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            CurrentWood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentWood;
+            CurrentGold = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentGold;
+            CurrentIron = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentIron;
+            Debug.Log("SUCCESS LOADING");
+        }
+        else
+        {
+            CurrentWood = 12;
+            CurrentGold = 2;
+            CurrentIron = 2;
+            Debug.Log("NO LOADING");
+        }
+       
+
+        //Event subscription
         objectSpawner = GetComponent<ObjectSpawner>();
         objectSpawner.OnObjectSpawnedAtWorld += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded += SpendResources;
@@ -101,5 +111,14 @@ public class PlayerInventory : MonoBehaviour
         CurrentWood -= requirements.woodRequired;
         CurrentGold -= requirements.goldRequired;
         CurrentIron -= requirements.ironRequired;        
+    }
+
+    public InventorySaveData GetInventory()
+    {
+        InventorySaveData saveData = new InventorySaveData();
+        saveData.currentWood = CurrentWood;
+        saveData.currentGold = currentGold;
+        saveData.currentIron = currentIron;
+        return saveData;
     }
 }

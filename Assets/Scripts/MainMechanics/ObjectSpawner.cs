@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public class ObjectSpawner : MonoBehaviour
 {
+    public static ObjectSpawner Instance;
     [SerializeField] private GameObject[] previewObjects;
     [SerializeField] private GameObject[] realObjects;
     [SerializeField] private float rotationSpeed;
@@ -16,13 +17,55 @@ public class ObjectSpawner : MonoBehaviour
     private CollisionChecker[] colCheckers;
     private int buildableLayerMask;
     private Camera mainCamera;
+    private List<GameObject> allBuildingsSpawned; //holds all spawned buildings here until it is required to loop through them
+    private List<BuildingControllerSerializable> allBuildingSpawnedSerializable; //stores the current state of all spawned buildings
 
     //event subscribed to for example in PlayerInventory in order to spend resources 
     public delegate void OnObjectSpawnedAtWorldDelegate(SO_CostRequirements requirements);
     public event OnObjectSpawnedAtWorldDelegate OnObjectSpawnedAtWorld;
 
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        
+        if(Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            foreach(BuildingControllerSerializable bcs in Chochosan.SaveLoadManager.savedGameData.buildingList)
+            {
+                Vector3 tempPos;
+                tempPos.x = bcs.x;
+                tempPos.y = bcs.y;
+                tempPos.z = bcs.z;
+
+                Quaternion tempRot;
+                tempRot.x = bcs.rotX;
+                tempRot.y = bcs.rotY;
+                tempRot.z = bcs.rotZ;
+                tempRot.w = bcs.rotW;
+                GameObject tempObject = Instantiate(realObjects[bcs.buildingIndex], tempPos, tempRot);
+                BuildingController tempController = tempObject.GetComponent<BuildingController>();
+                tempController.SetBuildingLevel(bcs.currentBuildingLevel);
+
+                for(int i = 0; i < bcs.numberOfVillagersAssigned; i++)
+                {
+                    Vector3 tempVillagerPos;
+                    tempVillagerPos.x = bcs.villagerXpositions[i];
+                    tempVillagerPos.y = bcs.villagerYpositions[i];
+                    tempVillagerPos.z = bcs.villagerZpositions[i];
+                    tempController.SpawnSpecificVillager(tempVillagerPos);
+                    Debug.Log("SETTING POSITIONS");
+                }
+            }
+        }
+    }
+
     private void Start()
     {
+        allBuildingsSpawned = new List<GameObject>();
+        allBuildingSpawnedSerializable = new List<BuildingControllerSerializable>();
         buildableLayerMask = LayerMask.GetMask("Terrain");
         mainCamera = Camera.main;
     }
@@ -48,6 +91,11 @@ public class ObjectSpawner : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             RotateCurrentObject();
+        }
+
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            Chochosan.SaveLoadManager.SaveGameState();
         }
     }
 
@@ -121,7 +169,13 @@ public class ObjectSpawner : MonoBehaviour
             ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
             if (tempInterface != null)
                 tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
+               
+           // GameObject building = tempObject.GetComponent<BuildingController>().GetBuildingData(currentObjectIndex);
+            allBuildingsSpawned.Add(tempObject);
+
             OnObjectSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>().GetRequirements());
+           
+            
             Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(false);
             Destroy(currentObject);
             currentObject = null;
@@ -159,5 +213,16 @@ public class ObjectSpawner : MonoBehaviour
     public bool IsCurrentlySpawningBuilding()
     {
         return currentObject != null;
+    }
+
+    //saves the current state of all spawned buildings from the list
+    public List<BuildingControllerSerializable> GetBuildingsInfo()
+    {
+        foreach(GameObject building in allBuildingsSpawned)
+        {
+            BuildingControllerSerializable bcs = building.GetComponent<BuildingController>().GetBuildingData(currentObjectIndex);
+            allBuildingSpawnedSerializable.Add(bcs);
+        }
+        return allBuildingSpawnedSerializable;
     }
 }
