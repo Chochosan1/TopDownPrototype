@@ -503,7 +503,7 @@ GameObject:
   - component: {fileID: 9051717980583542441}
   - component: {fileID: -1238856404854734425}
   m_Layer: 9
-  m_Name: LumberYardPreview
+  m_Name: IronMinePreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -544,7 +544,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be67966e52829ce47a031718fca3fe5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  costReq: {fileID: 11400000, guid: ef24c5683e5832d408a750e20184b5d6, type: 2}
   woodRequired: 12
+  goldRequired: 0
+  ironRequired: 0
 --- !u!1 &9051717980856496171
 GameObject:
   m_ObjectHideFlags: 0

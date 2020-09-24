@@ -15,12 +15,10 @@ public class ObjectSpawner : MonoBehaviour
     private int currentObjectIndex;
     private CollisionChecker[] colCheckers;
     private int buildableLayerMask;
-    [SerializeField] private LayerMask selectableUnitLayer;
-    private GameObject currentlySelectedUnit;
     private Camera mainCamera;
 
     //event subscribed to for example in PlayerInventory in order to spend resources 
-    public delegate void OnObjectSpawnedAtWorldDelegate(RequirementsToBuild requirements);
+    public delegate void OnObjectSpawnedAtWorldDelegate(SO_CostRequirements requirements);
     public event OnObjectSpawnedAtWorldDelegate OnObjectSpawnedAtWorld;
 
     private void Start()
@@ -58,14 +56,10 @@ public class ObjectSpawner : MonoBehaviour
     {
         currentObjectIndex = index;
 
-        if(PlayerInventory.Instance.IsHaveEnoughResources(previewObjects[currentObjectIndex].GetComponent<RequirementsToBuild>()))
+        if(PlayerInventory.Instance.IsHaveEnoughResources(previewObjects[currentObjectIndex].GetComponent<RequirementsToBuild>().GetRequirements()))
         {
             InstantiateObjectAtMousePos(previewObjects[currentObjectIndex]);
-        }
-        else
-        {
-            Chochosan.UI_Manager.Instance.DisplayWarningMessage();
-        }    
+        } 
     }
 
     //spawn a preview object at mouse position
@@ -127,7 +121,7 @@ public class ObjectSpawner : MonoBehaviour
             ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
             if (tempInterface != null)
                 tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
-            OnObjectSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>());
+            OnObjectSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>().GetRequirements());
             Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(false);
             Destroy(currentObject);
             currentObject = null;

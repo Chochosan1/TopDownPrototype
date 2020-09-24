@@ -16,6 +16,7 @@ public class AI_Villager : AI_Base, ISelectable
     [SerializeField] private float harvestInterval = 1.5f;
     private float harvestAnimTimestamp;
     private Harvestable_Controller currentHarvestable;
+    private BuildingController buildingController;
     
     void Start()
     {
@@ -140,5 +141,20 @@ public class AI_Villager : AI_Base, ISelectable
     public string GetSelectedUnitInfo()
     {
         return unitName;
+    }
+
+    public void SetHomeBuilding(BuildingController buildingController)
+    {
+        this.buildingController = buildingController;
+    }
+
+    public bool IsOpenUpgradePanel()
+    {
+        return false;
+    }
+
+    public void UpgradeUnit()
+    {
+        Debug.Log("This unit cannot be upgraded");
     }
 }

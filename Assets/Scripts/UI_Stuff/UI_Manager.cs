@@ -11,6 +11,7 @@ namespace Chochosan
 
         [SerializeField] private GameObject objectManipulationInfoPanel;
         [SerializeField] private GameObject selectedUnitInfoPanel;
+        [SerializeField] private GameObject selectedBuildingUpgradePanel;
         [SerializeField] private TextMeshProUGUI selectedUnitText;
         [SerializeField] private TextMeshProUGUI woodText;
         [SerializeField] private TextMeshProUGUI goldText;
@@ -28,14 +29,14 @@ namespace Chochosan
         {
             PlayerInventory.Instance.OnInventoryValueChanged += UpdateTextValue;
             Unit_Controller.Instance.OnUnitSelected += ActivateUnitSelectionUI;
-            Unit_Controller.Instance.OnUnitDeselected += DeactivateUnitSelectionUI;
+            Unit_Controller.Instance.OnUnitDeselected += DeactivateAllSelectionUI;
         }
 
         private void OnDisable()
         {
             PlayerInventory.Instance.OnInventoryValueChanged -= UpdateTextValue;
             Unit_Controller.Instance.OnUnitSelected -= ActivateUnitSelectionUI;
-            Unit_Controller.Instance.OnUnitDeselected -= DeactivateUnitSelectionUI;
+            Unit_Controller.Instance.OnUnitDeselected -= DeactivateAllSelectionUI;
         }
 
         //automatically toggles on/off depending on the current state
@@ -57,16 +58,30 @@ namespace Chochosan
             selectedUnitText.text = name;
         }
 
+        //activate the selection UI
         private void ActivateUnitSelectionUI(ISelectable unitSelectable)
         {
             selectedUnitInfoPanel.SetActive(true);
             selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
+            if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
+            {
+                selectedBuildingUpgradePanel.SetActive(true);
+                selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners(); //very important to first clear all other listenes
+                selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(unitSelectable.UpgradeUnit);
+            }      
+            else
+            {
+                selectedBuildingUpgradePanel.SetActive(false);
+            }
         }
 
-        private void DeactivateUnitSelectionUI()
+        //clear all active UI
+        private void DeactivateAllSelectionUI()
         {
             selectedUnitInfoPanel.SetActive(false);
             selectedUnitText.text = "";
+            selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
+            selectedBuildingUpgradePanel.SetActive(false);         
         }
 
         public void PlayHoverAnimation(Animator anim)

@@ -479,9 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be67966e52829ce47a031718fca3fe5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  woodRequired: 10
-  goldRequired: 1
-  ironRequired: 0
+  costReq: {fileID: 11400000, guid: ef24c5683e5832d408a750e20184b5d6, type: 2}
 --- !u!1 &8544235281208678818
 GameObject:
   m_ObjectHideFlags: 0

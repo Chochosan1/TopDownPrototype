@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// Controls unit selection and commanding. Controllable units must be in a specific layer and inherit the necessary IMovable interface.
+/// Controls unit selection and commanding. Controllable units must be in a specific layer and inherit the necessary ISelectable interface.
 /// </summary>
 public class Unit_Controller : MonoBehaviour
 {
     public static Unit_Controller Instance;
     [SerializeField] private LayerMask selectableUnitLayer;
+    [SerializeField] private LayerMask selectableBuildingLayer;
     [SerializeField] private LayerMask movableAreaLayer;
     private ObjectSpawner objectSpawner;
     private Camera mainCamera;
@@ -53,7 +54,7 @@ public class Unit_Controller : MonoBehaviour
         }
     }
 
-    #region UnitControl
+    #region ObjectSelection
     private void SelectUnit()
     {
         if (!objectSpawner.IsCurrentlySpawningBuilding())
@@ -62,6 +63,13 @@ public class Unit_Controller : MonoBehaviour
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                    
             if (Physics.Raycast(ray, out hit, 100, selectableUnitLayer))
+            {
+                currentlySelectedUnit = hit.collider.gameObject;
+                tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
+                OnUnitSelected?.Invoke(tempSelectable);
+                Debug.Log(hit.collider.gameObject);
+            }
+            else if(Physics.Raycast(ray, out hit, 100, selectableBuildingLayer))
             {
                 currentlySelectedUnit = hit.collider.gameObject;
                 tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
@@ -82,7 +90,6 @@ public class Unit_Controller : MonoBehaviour
                 if(movableAreaLayer == (movableAreaLayer | (1 << hit.collider.gameObject.layer))) //check if the object is in the specific layer
                 {
                     tempSelectable?.ForceSetAgentArea(hit.point);
-                    Debug.Log("COMMAND");
                 }      
             }
         }
@@ -93,7 +100,6 @@ public class Unit_Controller : MonoBehaviour
         currentlySelectedUnit = null;
         tempSelectable = null;
         OnUnitDeselected?.Invoke();
-        Debug.Log("DESELECT");
     }
     #endregion
 }

@@ -31,11 +31,13 @@ public class PlayerInventory : MonoBehaviour
     {
         objectSpawner = GetComponent<ObjectSpawner>();
         objectSpawner.OnObjectSpawnedAtWorld += SpendResources;
+        Chochosan.EventManager.Instance.OnBuildingUpgraded += SpendResources;
     }
 
     private void OnDisable()
     {
         objectSpawner.OnObjectSpawnedAtWorld -= SpendResources;
+        Chochosan.EventManager.Instance.OnBuildingUpgraded -= SpendResources;
     }
 
     public float CurrentWood
@@ -80,7 +82,8 @@ public class PlayerInventory : MonoBehaviour
     }
     private float currentIron;
 
-    public bool IsHaveEnoughResources(RequirementsToBuild requirements)
+    //Called when building/upgrading. All cost requirements are stored in a ScriptableObject that is passed to here.
+    public bool IsHaveEnoughResources(SO_CostRequirements requirements)
     {
         if(currentWood >= requirements.woodRequired &&
            currentGold >= requirements.goldRequired &&
@@ -88,11 +91,12 @@ public class PlayerInventory : MonoBehaviour
            )
         {
             return true;
-        }         
+        }
+        Chochosan.UI_Manager.Instance.DisplayWarningMessage();
         return false;
     }
 
-    public void SpendResources(RequirementsToBuild requirements)
+    public void SpendResources(SO_CostRequirements requirements)
     {
         CurrentWood -= requirements.woodRequired;
         CurrentGold -= requirements.goldRequired;

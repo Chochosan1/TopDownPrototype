@@ -6,7 +6,10 @@ using UnityEngine;
 /// </summary>
 public class RequirementsToBuild : MonoBehaviour
 {
-    public float woodRequired;
-    public float goldRequired;
-    public float ironRequired;
+    [SerializeField] SO_CostRequirements costReq;
+
+    public SO_CostRequirements GetRequirements()
+    {
+        return costReq;
+    }
 }

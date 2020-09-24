@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1133837267813183349}
   - component: {fileID: 1124932115621235471}
   - component: {fileID: 1092700147599206153}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: SM_Buildings_Block_1x1_01P (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 3040298915314822372}
   - component: {fileID: 3032844974486471054}
   - component: {fileID: 3073460525841362134}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: SM_Buildings_Floor_1x1_01P
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 3351182253065745715}
   - component: {fileID: 3360098397653651785}
   - component: {fileID: 3321392091692793167}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: SM_Buildings_Block_1x1_01P
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 3776272826804012978}
   - component: {fileID: 3767464569645032392}
   - component: {fileID: 3818553454212501454}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: SM_Buildings_Block_1x1_01P (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +385,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297192523102903156}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: VillagerSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: -4408780133076232730}
   - component: {fileID: 8165875248773102535}
   - component: {fileID: -6498419353189895774}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: IronMine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,10 +457,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aead8f659ce734647b91efd2c0ba53c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUpgradable: 1
+  costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   villagerToSpawn: {fileID: 2547033673265592964, guid: 51bae5abf598bf242a45947dabac0589,
     type: 3}
   spawnPoint: {fileID: 3770130588655619510}
   spawnFirstVillageAfterSeconds: 2
+  maxBuildingLevel: 7
+  assignedVillagersList: []
 --- !u!208 &8165875248773102535
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -502,7 +506,7 @@ GameObject:
   - component: {fileID: 5899007685648408681}
   - component: {fileID: 5908090543720465427}
   - component: {fileID: 5857848575134738453}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: SM_Buildings_Block_1x1_01P (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
