@@ -84,7 +84,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
 
         //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
         assignedVillagersList.Add(tempVillager.GetComponent<AI_Villager>());
-        Debug.Log("VILLAGER SPAWNED");
+       // Debug.Log("VILLAGER SPAWNED");
     }
 
     #region DataSaving

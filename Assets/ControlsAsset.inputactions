@@ -1,0 +1,90 @@
+{
+    "name": "ControlsAsset",
+    "maps": [
+        {
+            "name": "MainControls",
+            "id": "dd2d841d-717e-4e8d-b3e8-af3909b3c846",
+            "actions": [
+                {
+                    "name": "SpawnBuilding",
+                    "type": "Button",
+                    "id": "02e28757-d28e-4538-8bea-b8d1ad38518b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "CancelBuilding",
+                    "type": "Button",
+                    "id": "410e3ac7-7899-43d9-916c-879faf3bae54",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "AllowBuildingRotation",
+                    "type": "Button",
+                    "id": "7093fcb6-1647-49a3-a729-67d2c631d4b2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RotateObject",
+                    "type": "Value",
+                    "id": "09365f5a-9636-4e75-b2b0-5c2e2c05130b",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "961ba7ad-aa26-45f1-8edd-53211fc54e6e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cbe6d488-f5e1-4417-9a47-dd65df1f02f6",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89cd19bf-4144-4001-bfbf-731b9f167ea0",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AllowBuildingRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72a357db-ab15-4cc9-8fb7-41cdcb3386f9",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// Controls world spawning of buildings using the mouse.
+/// Controls world spawning of buildings using the mouse. Also handles the saving/loading of all spawned buildings.
 /// </summary>
 public class ObjectSpawner : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     [Tooltip("If set to true, the object will match the surface rotation.")]
     [SerializeField] private bool is_ObjectSlopeRotationMatch;
+    private bool canRotateCurrentObject;
     private GameObject currentObject;
     private int currentObjectIndex;
     private CollisionChecker[] colCheckers;
@@ -74,7 +75,7 @@ public class ObjectSpawner : MonoBehaviour
 
                     //this adds the villagers to a local scope list in the controller as well
                     tempController.SpawnSpecificVillager(tempVillagerPos);
-                    Debug.Log("SETTING POSITIONS");
+                  //  Debug.Log("SETTING POSITIONS");
                 }
             }
         }      
@@ -85,25 +86,25 @@ public class ObjectSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.BackQuote))
-        {
-            CancelObject();
-        }
+        //if (Input.GetKeyDown(KeyCode.BackQuote))
+        //{
+        //    CancelObject();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (currentObject != null)
-            {
-                SpawnObjectAtWorld();
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
+        //    if (currentObject != null)
+        //    {
+        //        SpawnObjectAtWorld();
+        //    }
+        //}
 
         MoveCurrentObjectWithMouse();
 
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            RotateCurrentObject();
-        }
+        //if (Input.GetKey(KeyCode.LeftControl))
+        //{
+        //    RotateCurrentObject();
+        //}
 
         if(Input.GetKeyDown(KeyCode.I))
         {
@@ -164,7 +165,7 @@ public class ObjectSpawner : MonoBehaviour
     }
 
     //spawn the final object in the world
-    private void SpawnObjectAtWorld()
+    public void SpawnObjectAtWorld()
     {
         if (currentObject != null)
         {
@@ -199,15 +200,16 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
-    private void RotateCurrentObject()
+    public void RotateCurrentObject(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (currentObject != null)
+        if (currentObject != null && canRotateCurrentObject)
         {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            float rotationDirection = obj.ReadValue<float>();
+            if (rotationDirection > 0)
             {
                 currentObject.transform.Rotate(new Vector3(0, rotationSpeed, 0) * Time.deltaTime, Space.Self);
             }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            else if (rotationDirection < 0)
             {
                 currentObject.transform.Rotate(new Vector3(0, -rotationSpeed, 0) * Time.deltaTime, Space.Self);
             }
@@ -215,7 +217,7 @@ public class ObjectSpawner : MonoBehaviour
     }
 
     //remove the preview object
-    private void CancelObject()
+    public void CancelObject()
     {
         if (currentObject != null)
         {
@@ -224,6 +226,14 @@ public class ObjectSpawner : MonoBehaviour
             currentObject = null;
             colCheckers = null;
         }
+    }
+
+    public void ToggleObjectRotation()
+    {
+        if(currentObject != null)
+        {
+            canRotateCurrentObject = !canRotateCurrentObject;
+        }       
     }
 
     public bool IsCurrentlySpawningBuilding()

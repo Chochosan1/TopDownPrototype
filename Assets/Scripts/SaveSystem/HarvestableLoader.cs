@@ -76,7 +76,6 @@ public class HarvestableLoader : MonoBehaviour
         {
             HarvestableControllerSerializable hcs = harvestableController.GetHarvestableData();
             HarvestableLoader.AddSerializableHarvestableToList(hcs);
-            Debug.Log("SAVING HARVESTABLE");
         }
         return HarvestableLoader.allSpawnedHarvestablesSerializable;
     }

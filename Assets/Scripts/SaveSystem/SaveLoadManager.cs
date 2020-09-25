@@ -12,12 +12,11 @@ namespace Chochosan
         private void Awake()
         {
             savedGameData = LoadGameState();
-            Debug.Log(savedGameData);
         }
 
         public static void SaveGameState()
         {
-            SeriouslyDeleteAllSaveFiles();
+         //   SeriouslyDeleteAllSaveFiles();
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Create);
             SaveData saveData = new SaveData();
@@ -30,6 +29,7 @@ namespace Chochosan
         {
             if (File.Exists(Application.persistentDataPath + "/save.dat"))
             {
+                Chochosan.ChochosanHelper.ChochosanDebug("LOADING FROM SAVE...", "green");
                 BinaryFormatter bf = new BinaryFormatter();
                 FileStream file = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Open);
                 SaveData saveData = (SaveData)bf.Deserialize(file);
@@ -37,6 +37,7 @@ namespace Chochosan
                 file.Close();
                 return saveData;
             }
+            Chochosan.ChochosanHelper.ChochosanDebug("SAVE NOT FOUND. LOADING DEFAULT LEVEL...", "red");
             return null;
         }
 
@@ -52,10 +53,8 @@ namespace Chochosan
         {
             if(savedGameData != null)
             {
-             //   Debug.Log("GOT YA");
                 return true;
             }
-         //   Debug.Log("PROBLEM");
             return false;             
         }
 
