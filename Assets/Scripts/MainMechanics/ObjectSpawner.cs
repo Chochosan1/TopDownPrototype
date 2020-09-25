@@ -18,7 +18,7 @@ public class ObjectSpawner : MonoBehaviour
     private int buildableLayerMask;
     private Camera mainCamera;
     private List<GameObject> allBuildingsSpawned; //holds all spawned buildings here until it is required to loop through them
-    private List<BuildingControllerSerializable> allBuildingSpawnedSerializable; //stores the current state of all spawned buildings
+    private List<BuildingControllerSerializable> allBuildingsSpawnedSerializable; //stores the current state of all spawned buildings in a serializable list
 
     //event subscribed to for example in PlayerInventory in order to spend resources 
     public delegate void OnObjectSpawnedAtWorldDelegate(SO_CostRequirements requirements);
@@ -29,43 +29,55 @@ public class ObjectSpawner : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
-        }
-        
-        if(Chochosan.SaveLoadManager.IsSaveExists())
-        {
-            foreach(BuildingControllerSerializable bcs in Chochosan.SaveLoadManager.savedGameData.buildingList)
-            {
-                Vector3 tempPos;
-                tempPos.x = bcs.x;
-                tempPos.y = bcs.y;
-                tempPos.z = bcs.z;
-
-                Quaternion tempRot;
-                tempRot.x = bcs.rotX;
-                tempRot.y = bcs.rotY;
-                tempRot.z = bcs.rotZ;
-                tempRot.w = bcs.rotW;
-                GameObject tempObject = Instantiate(realObjects[bcs.buildingIndex], tempPos, tempRot);
-                BuildingController tempController = tempObject.GetComponent<BuildingController>();
-                tempController.SetBuildingLevel(bcs.currentBuildingLevel);
-
-                for(int i = 0; i < bcs.numberOfVillagersAssigned; i++)
-                {
-                    Vector3 tempVillagerPos;
-                    tempVillagerPos.x = bcs.villagerXpositions[i];
-                    tempVillagerPos.y = bcs.villagerYpositions[i];
-                    tempVillagerPos.z = bcs.villagerZpositions[i];
-                    tempController.SpawnSpecificVillager(tempVillagerPos);
-                    Debug.Log("SETTING POSITIONS");
-                }
-            }
-        }
+        }      
     }
 
     private void Start()
     {
         allBuildingsSpawned = new List<GameObject>();
-        allBuildingSpawnedSerializable = new List<BuildingControllerSerializable>();
+        allBuildingsSpawnedSerializable = new List<BuildingControllerSerializable>();
+        if (Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            foreach (BuildingControllerSerializable bcs in Chochosan.SaveLoadManager.savedGameData.buildingList)
+            {
+                //load the position of the saved object
+                Vector3 tempPos;
+                tempPos.x = bcs.x;
+                tempPos.y = bcs.y;
+                tempPos.z = bcs.z;
+
+                //load the rotation of the saved object
+                Quaternion tempRot;
+                tempRot.x = bcs.rotX;
+                tempRot.y = bcs.rotY;
+                tempRot.z = bcs.rotZ;
+                tempRot.w = bcs.rotW;
+
+                //spawn an object at the world based on the saved object
+                GameObject tempObject = Instantiate(realObjects[bcs.buildingIndex], tempPos, tempRot);
+                
+                //set controller specific stats
+                BuildingController tempController = tempObject.GetComponent<BuildingController>();
+                tempController.SetBuildingIndex(bcs.buildingIndex);
+                tempController.SetBuildingLevel(bcs.currentBuildingLevel);
+
+                //finally add the loaded object into the list with all objects (very important in order to allow overriding saves)
+                allBuildingsSpawned.Add(tempObject);
+
+                //spawn that many villagers based on the number of villagersAssigned in the save file
+                for (int i = 0; i < bcs.numberOfVillagersAssigned; i++)
+                {
+                    Vector3 tempVillagerPos;
+                    tempVillagerPos.x = bcs.villagerXpositions[i];
+                    tempVillagerPos.y = bcs.villagerYpositions[i];
+                    tempVillagerPos.z = bcs.villagerZpositions[i];
+
+                    //this adds the villagers to a local scope list in the controller as well
+                    tempController.SpawnSpecificVillager(tempVillagerPos);
+                    Debug.Log("SETTING POSITIONS");
+                }
+            }
+        }      
         buildableLayerMask = LayerMask.GetMask("Terrain");
         mainCamera = Camera.main;
     }
@@ -166,16 +178,20 @@ public class ObjectSpawner : MonoBehaviour
             }
 
             GameObject tempObject = Instantiate(realObjects[currentObjectIndex], currentObject.transform.position, currentObject.transform.rotation);
+
+            //cache the current build index so it can be used when loading data
+            tempObject.GetComponent<BuildingController>().SetBuildingIndex(currentObjectIndex); 
+
             ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
             if (tempInterface != null)
                 tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
                
-           // GameObject building = tempObject.GetComponent<BuildingController>().GetBuildingData(currentObjectIndex);
+            //add the spawned object to the list with all spawned objects
             allBuildingsSpawned.Add(tempObject);
 
+            //invoke the delegate
             OnObjectSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>().GetRequirements());
-           
-            
+                 
             Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(false);
             Destroy(currentObject);
             currentObject = null;
@@ -215,14 +231,16 @@ public class ObjectSpawner : MonoBehaviour
         return currentObject != null;
     }
 
-    //saves the current state of all spawned buildings from the list
+    #region DataSaving
+    //saves the current state of all spawned buildings from the non-serializable list to a serializable list
     public List<BuildingControllerSerializable> GetBuildingsInfo()
     {
         foreach(GameObject building in allBuildingsSpawned)
         {
-            BuildingControllerSerializable bcs = building.GetComponent<BuildingController>().GetBuildingData(currentObjectIndex);
-            allBuildingSpawnedSerializable.Add(bcs);
+            BuildingControllerSerializable bcs = building.GetComponent<BuildingController>().GetBuildingData();
+            allBuildingsSpawnedSerializable.Add(bcs);
         }
-        return allBuildingSpawnedSerializable;
+        return allBuildingsSpawnedSerializable;
     }
+    #endregion
 }

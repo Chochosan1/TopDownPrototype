@@ -7,13 +7,30 @@ using UnityEngine;
 public enum HarvestableType { Wood, Gold, Iron }
 public class Harvestable_Controller : MonoBehaviour, IHarvestable
 {
+    private int currentHarvestableIndex; //used to spawn the right object when loading data
     [SerializeField] private SO_ResourceStats stats;
     [SerializeField] private HarvestableType harvestableType;
-    private float currentResourcesToHarvest;
+    public float currentResourcesToHarvest;
 
-    void Start()
+    private void Start()
     {
-        currentResourcesToHarvest = stats.maxResourcesToHarvest;
+        switch (harvestableType)
+        {
+            case HarvestableType.Wood:
+                currentHarvestableIndex = 0;
+                break;
+            case HarvestableType.Gold:
+                currentHarvestableIndex = 1;
+                break;
+            case HarvestableType.Iron:
+                currentHarvestableIndex = 2;
+                break;
+        }
+        if(!Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            HarvestableLoader.AddHarvestableToList(this);
+            currentResourcesToHarvest = stats.maxResourcesToHarvest;
+        }       
     }
 
     public void Harvest()
@@ -41,7 +58,21 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
     {
         if (currentResourcesToHarvest <= 0)
         {
+            HarvestableLoader.RemoveHarvestableFromList(this);
             Destroy(gameObject);
         }
     }
+
+    #region DataSaving
+    public HarvestableControllerSerializable GetHarvestableData()
+    {
+        HarvestableControllerSerializable hcs = new HarvestableControllerSerializable();
+        hcs.harvestableIndex = currentHarvestableIndex;
+        hcs.currentResourcesToHarvest = currentResourcesToHarvest;
+        hcs.x = transform.position.x;
+        hcs.y = transform.position.y;
+        hcs.z = transform.position.z;
+        return hcs;
+    }
+    #endregion
 }

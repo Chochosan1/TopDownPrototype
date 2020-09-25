@@ -9,6 +9,7 @@ public enum BuildingType { Wood, Iron, Gold }
 public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
 {
     public BuildingType buildingType;
+    public int buildingIndex;
     [Tooltip("Set to true if the building can be upgraded. Will be used to toggle the upgrade UI.")]
     [SerializeField] private bool isUpgradable = true;
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
@@ -69,21 +70,32 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
     public void SetBuildingLevel(int level)
     {
         currentBuildingLevel = level;
-        Debug.Log("BUILDING LEVEL: " + currentBuildingLevel);
+      //  Debug.Log("BUILDING LEVEL: " + currentBuildingLevel);
+    }
+
+    public void SetBuildingIndex(int index)
+    {
+        buildingIndex = index;
     }
 
     public void SpawnSpecificVillager(Vector3 position)
     {
-        Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
+        GameObject tempVillager = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
+
+        //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
+        assignedVillagersList.Add(tempVillager.GetComponent<AI_Villager>());
         Debug.Log("VILLAGER SPAWNED");
     }
 
+    #region DataSaving
     //used in ObjectSpawner.cs when retrieving the info for every spawned building in the list
-    public BuildingControllerSerializable GetBuildingData(int buildingIndex)
+    public BuildingControllerSerializable GetBuildingData()
     {
+        //create a serializable copy
         BuildingControllerSerializable bcs = new BuildingControllerSerializable();
+
+        //save specific stats that must be loaded later on
         bcs.currentBuildingLevel = currentBuildingLevel;
-        Debug.Log(bcs.currentBuildingLevel);
         bcs.buildingType = buildingType;
         bcs.buildingIndex = buildingIndex;
         bcs.x = transform.position.x;
@@ -93,19 +105,23 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
         bcs.rotY = transform.rotation.y;
         bcs.rotZ = transform.rotation.z;
         bcs.rotW = transform.rotation.w;
+
+        //this many villagers will spawn later on when loading data
         bcs.numberOfVillagersAssigned = assignedVillagersList.Count;
+
+        //initialize the arrays from the serializable copy
         bcs.villagerXpositions = new float[assignedVillagersList.Count];
         bcs.villagerYpositions = new float[assignedVillagersList.Count];
         bcs.villagerZpositions = new float[assignedVillagersList.Count];
-        for(int i = 0; i < assignedVillagersList.Count; i++)
+
+        //store each villager's X, Y, Z positions in arrays
+        for (int i = 0; i < assignedVillagersList.Count; i++)
         {
             bcs.villagerXpositions[i] = assignedVillagersList[i].transform.position.x;
             bcs.villagerYpositions[i] = assignedVillagersList[i].transform.position.y;
             bcs.villagerZpositions[i] = assignedVillagersList[i].transform.position.z;
-            Debug.Log("SAVING POSITIONS");
         }
-        
-
         return bcs;
     }
+    #endregion
 }

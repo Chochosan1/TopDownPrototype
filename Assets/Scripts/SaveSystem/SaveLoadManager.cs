@@ -19,7 +19,7 @@ namespace Chochosan
         {
             SeriouslyDeleteAllSaveFiles();
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/save.dat", FileMode.OpenOrCreate);
+            FileStream file = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Create);
             SaveData saveData = new SaveData();
             bf.Serialize(file, saveData);
             file.Close();
@@ -52,10 +52,10 @@ namespace Chochosan
         {
             if(savedGameData != null)
             {
-                Debug.Log("GOT YA");
+             //   Debug.Log("GOT YA");
                 return true;
             }
-            Debug.Log("PROBLEM");
+         //   Debug.Log("PROBLEM");
             return false;             
         }
 
@@ -65,6 +65,7 @@ namespace Chochosan
         {
             public InventorySaveData inventorySaveData = PlayerInventory.Instance.GetInventory();
             public List<BuildingControllerSerializable> buildingList = ObjectSpawner.Instance.GetBuildingsInfo();
+            public List<HarvestableControllerSerializable> harvestableList = HarvestableLoader.GetHarvestables();
         }
     }
 }
