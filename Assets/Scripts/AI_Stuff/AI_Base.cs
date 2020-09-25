@@ -18,7 +18,7 @@ public class AI_Base : MonoBehaviour
     [Tooltip("How far away can the AI unit detect its target without taking into consideration walls and such. Will be used after first looking for targets within the smaller range. ")]
     [SerializeField] protected float secondPureEnemySenseRange = 30f;
 
-    protected virtual void SetAgentTarget(NavMeshAgent agent, Vector3 targetPosition)
+    protected virtual void SetAgentDestination(NavMeshAgent agent, Vector3 targetPosition)
     {
         agent.destination = targetPosition;
     }

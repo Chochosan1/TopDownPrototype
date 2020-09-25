@@ -69,12 +69,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed849bf1213ae147ac713d7afcb8da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 2048
-  pureEnemySenseRange: 25
-  target: {fileID: 0}
+    m_Bits: 133120
+  firstPureEnemySenseRange: 5
+  secondPureEnemySenseRange: 30
+  attackerIndex: 0
+  defaultTargetIfNoOtherAvailable: {fileID: 0}
   stats: {fileID: 11400000, guid: 2bf87f2a53d90b54d80cfbe13200eea6, type: 2}
+  attackInterval: 1.5
+  customAgentStoppingDistance: 1
+  defaultAgentStoppingDistance: 1
 --- !u!54 &82121092
 Rigidbody:
   m_ObjectHideFlags: 0

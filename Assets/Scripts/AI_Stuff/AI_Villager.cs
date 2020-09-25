@@ -39,10 +39,10 @@ public class AI_Villager : AI_Base, ISelectable
             if(currentTarget == null)
             {
                 aiState = AIState_Villager.Idle;
-                SetAgentTarget(agent, agent.transform.position);
+                SetAgentDestination(agent, agent.transform.position);
                 return;
             }
-            SetAgentTarget(agent, currentTarget.transform.position);
+            SetAgentDestination(agent, currentTarget.transform.position);
      
             anim.SetBool("Walk", true);
             anim.SetBool("HarvestWood", false);
@@ -125,7 +125,7 @@ public class AI_Villager : AI_Base, ISelectable
             aiState = AIState_Villager.Idle;
             currentTarget = null;
             currentHarvestable = null;
-            SetAgentTarget(agent, agent.transform.position);
+            SetAgentDestination(agent, agent.transform.position);
         }
     }
 

@@ -7,6 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public struct BuildingControllerSerializable
 {
+    public float buildingCurrentHP;
     public float x, y, z; //position
     public int currentBuildingLevel;
     public BuildingType buildingType;

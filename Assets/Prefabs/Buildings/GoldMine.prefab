@@ -398,6 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingType: 2
+  buildingIndex: 0
   isUpgradable: 1
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   villagerToSpawn: {fileID: 2547033673265592964, guid: ff84ed475cfe7ba4eaf3e9062e5253be,
@@ -405,6 +406,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 3770130588655619510}
   spawnFirstVillageAfterSeconds: 2
   maxBuildingLevel: 7
+  customAgentStoppingDistance: 2.5
+  buildingMaxHP: 100
   assignedVillagersList: []
 --- !u!208 &8165875248773102535
 NavMeshObstacle:

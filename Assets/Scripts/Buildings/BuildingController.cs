@@ -6,10 +6,10 @@ using UnityEngine;
 /// </summary>
 
 public enum BuildingType { Wood, Iron, Gold }
-public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
+public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, IDamageable
 {
     public BuildingType buildingType;
-    public int buildingIndex;
+    private int buildingIndex;
     [Tooltip("Set to true if the building can be upgraded. Will be used to toggle the upgrade UI.")]
     [SerializeField] private bool isUpgradable = true;
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
@@ -20,8 +20,20 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
     [SerializeField] private float spawnFirstVillageAfterSeconds = 2f;
     [SerializeField] private int maxBuildingLevel = 3;
     private int currentBuildingLevel = 1;
+    [Header("Stats")]
+    [SerializeField] private float customAgentStoppingDistance;
+    [SerializeField] private float buildingMaxHP = 100;
+    private float buildingCurrentHP;
     [Tooltip("All villagers that have been spawned by this building.")]
     [SerializeField] private List<AI_Villager> assignedVillagersList;
+
+    private void Start()
+    {
+        if (!Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            SetInitialHP();
+        }
+    }
 
     public void StartInitialSetup()
     {
@@ -47,14 +59,45 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
         }      
     }
 
+    public void SetInitialHP()
+    {
+        buildingCurrentHP = buildingMaxHP;
+    }
+
+    public void SetBuildingHP(float hp)
+    {
+        buildingCurrentHP = hp > buildingMaxHP ? buildingMaxHP : hp;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        buildingCurrentHP -= damage;
+        if(buildingCurrentHP <= 0)
+        {
+            DestroyBuilding();
+        }
+    }
+
+    public void DestroyBuilding()
+    {
+        ObjectSpawner.Instance.RemoveBuildingFromList(gameObject);
+        Destroy(gameObject);
+    }
+
     public void ForceSetAgentArea(Vector3 destination)
     {
         Debug.Log("THIS IS NOT AN AGENT");
     }
 
+    public float GetCustomAgentStoppingDistance()
+    {
+        return customAgentStoppingDistance;
+    }
+
     public string GetSelectedUnitInfo()
     {
-        return "Building level: " + currentBuildingLevel;
+        string info = $"Building level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
+        return info;
     }
 
     public bool IsOpenUpgradePanel()
@@ -70,7 +113,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
     public void SetBuildingLevel(int level)
     {
         currentBuildingLevel = level;
-      //  Debug.Log("BUILDING LEVEL: " + currentBuildingLevel);
     }
 
     public void SetBuildingIndex(int index)
@@ -96,6 +138,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable
 
         //save specific stats that must be loaded later on
         bcs.currentBuildingLevel = currentBuildingLevel;
+        bcs.buildingCurrentHP = buildingCurrentHP;
         bcs.buildingType = buildingType;
         bcs.buildingIndex = buildingIndex;
         bcs.x = transform.position.x;

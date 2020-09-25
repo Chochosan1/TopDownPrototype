@@ -61,6 +61,7 @@ namespace Chochosan
         //activate the selection UI
         private void ActivateUnitSelectionUI(ISelectable unitSelectable)
         {
+            RefreshPanel(selectedUnitInfoPanel);
             selectedUnitInfoPanel.SetActive(true);
             selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
             if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
@@ -73,6 +74,12 @@ namespace Chochosan
             {
                 selectedBuildingUpgradePanel.SetActive(false);
             }
+        }
+
+        private void RefreshPanel(GameObject panel)
+        {
+            panel.SetActive(false);
+            panel.SetActive(true);
         }
 
         //clear all active UI

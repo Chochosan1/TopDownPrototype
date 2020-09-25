@@ -61,6 +61,7 @@ public class ObjectSpawner : MonoBehaviour
                 BuildingController tempController = tempObject.GetComponent<BuildingController>();
                 tempController.SetBuildingIndex(bcs.buildingIndex);
                 tempController.SetBuildingLevel(bcs.currentBuildingLevel);
+                tempController.SetBuildingHP(bcs.buildingCurrentHP);
 
                 //finally add the loaded object into the list with all objects (very important in order to allow overriding saves)
                 allBuildingsSpawned.Add(tempObject);
@@ -83,28 +84,10 @@ public class ObjectSpawner : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.BackQuote))
-        //{
-        //    CancelObject();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Mouse0))
-        //{
-        //    if (currentObject != null)
-        //    {
-        //        SpawnObjectAtWorld();
-        //    }
-        //}
-
         MoveCurrentObjectWithMouse();
-
-        //if (Input.GetKey(KeyCode.LeftControl))
-        //{
-        //    RotateCurrentObject();
-        //}
 
         if(Input.GetKeyDown(KeyCode.I))
         {
@@ -179,9 +162,10 @@ public class ObjectSpawner : MonoBehaviour
             }
 
             GameObject tempObject = Instantiate(realObjects[currentObjectIndex], currentObject.transform.position, currentObject.transform.rotation);
-
+            BuildingController tempController = tempObject.GetComponent<BuildingController>();
             //cache the current build index so it can be used when loading data
-            tempObject.GetComponent<BuildingController>().SetBuildingIndex(currentObjectIndex); 
+            tempController.SetBuildingIndex(currentObjectIndex);
+            tempController.SetInitialHP();
 
             ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
             if (tempInterface != null)
@@ -226,6 +210,11 @@ public class ObjectSpawner : MonoBehaviour
             currentObject = null;
             colCheckers = null;
         }
+    }
+
+    public void RemoveBuildingFromList(GameObject building)
+    {
+        allBuildingsSpawned.Remove(building);
     }
 
     public void ToggleObjectRotation()

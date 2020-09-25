@@ -65,6 +65,7 @@ namespace Chochosan
             public InventorySaveData inventorySaveData = PlayerInventory.Instance.GetInventory();
             public List<BuildingControllerSerializable> buildingList = ObjectSpawner.Instance.GetBuildingsInfo();
             public List<HarvestableControllerSerializable> harvestableList = HarvestableLoader.GetHarvestables();
+            public List<AI_Attacker_Serializable> attackerList = AI_Attacker_Loader.GetAttackers();
         }
     }
 }
