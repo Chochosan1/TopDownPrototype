@@ -5,7 +5,7 @@ using UnityEngine;
 /// Spawns a certain type of a villager. Attach to buildings like lumberyards, mines, etc.
 /// </summary>
 
-public enum BuildingType { Wood, Iron, Gold }
+public enum BuildingType { Wood, Iron, Gold, Turret }
 public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, IDamageable
 {
     public BuildingType buildingType;
@@ -29,6 +29,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     private void Start()
     {
+        assignedVillagersList = new List<AI_Villager>();
         if (!Chochosan.SaveLoadManager.IsSaveExists())
         {
             SetInitialHP();
@@ -37,7 +38,10 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public void StartInitialSetup()
     {
-        StartCoroutine(SpawnVillagerAfterTime());
+        if(villagerToSpawn != null)
+        {
+            StartCoroutine(SpawnVillagerAfterTime());
+        }    
     }
 
     private IEnumerator SpawnVillagerAfterTime()
@@ -72,6 +76,10 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void TakeDamage(float damage)
     {
         buildingCurrentHP -= damage;
+
+        //send a message that a displayable UI value has been changed (in this case the HP of the building)
+        Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
+
         if(buildingCurrentHP <= 0)
         {
             DestroyBuilding();

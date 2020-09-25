@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 5167992476932640361}
   - component: {fileID: -7015262603034686593}
   - component: {fileID: 1696154953695613664}
-  m_Layer: 0
+  - component: {fileID: -3078253805911415215}
+  m_Layer: 17
   m_Name: Tree1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,10 +108,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dc8d9dabe37ec24d9b57537ed070c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: 
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
-  pureEnemySenseRange: 25
+  firstPureEnemySenseRange: 5
+  secondPureEnemySenseRange: 30
   castCooldown: 0.5
   projectilePrefab: {fileID: 5194193526441880220, guid: 49d017d876859a142acc81e94d64cc35,
     type: 3}
@@ -135,3 +138,25 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.28800002, y: 1.4790001, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &-3078253805911415215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693210484172212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aead8f659ce734647b91efd2c0ba53c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingType: 3
+  isUpgradable: 1
+  costRequirements: {fileID: 11400000, guid: ef24c5683e5832d408a750e20184b5d6, type: 2}
+  villagerToSpawn: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  spawnFirstVillageAfterSeconds: 2
+  maxBuildingLevel: 3
+  customAgentStoppingDistance: 1.5
+  buildingMaxHP: 100
+  assignedVillagersList: []

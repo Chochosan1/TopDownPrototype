@@ -84,6 +84,11 @@ public class Turret : AI_Base, ISpawnedAtWorld
         isTurretEnabled = true;
     }
 
+    public void EnableTurret()
+    {
+        isTurretEnabled = true;
+    }
+
     public void StartInitialSetup()
     {
         StartCoroutine(EnableTurretAfter());

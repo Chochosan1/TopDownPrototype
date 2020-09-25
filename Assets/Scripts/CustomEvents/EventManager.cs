@@ -22,5 +22,9 @@ namespace Chochosan
         //event subscribed to for example in PlayerInventory in order to spend resources 
         public delegate void OnBuildingUpgradedDelegate(SO_CostRequirements requirements);
         public OnBuildingUpgradedDelegate OnBuildingUpgraded;
+
+        //event subscribed to in UI_Manager to trigger UI refresh when any of the displayed values has been changed
+        public delegate void OnDisplayedUIValueChangedDelegate(ISelectable selectable);
+        public OnDisplayedUIValueChangedDelegate OnDisplayedUIValueChanged;
     }
 }

@@ -30,6 +30,7 @@ namespace Chochosan
             PlayerInventory.Instance.OnInventoryValueChanged += UpdateTextValue;
             Unit_Controller.Instance.OnUnitSelected += ActivateUnitSelectionUI;
             Unit_Controller.Instance.OnUnitDeselected += DeactivateAllSelectionUI;
+            Chochosan.EventManager.Instance.OnDisplayedUIValueChanged += RefreshTextInfo;
         }
 
         private void OnDisable()
@@ -37,6 +38,7 @@ namespace Chochosan
             PlayerInventory.Instance.OnInventoryValueChanged -= UpdateTextValue;
             Unit_Controller.Instance.OnUnitSelected -= ActivateUnitSelectionUI;
             Unit_Controller.Instance.OnUnitDeselected -= DeactivateAllSelectionUI;
+            Chochosan.EventManager.Instance.OnDisplayedUIValueChanged -= RefreshTextInfo;
         }
 
         //automatically toggles on/off depending on the current state
@@ -61,7 +63,6 @@ namespace Chochosan
         //activate the selection UI
         private void ActivateUnitSelectionUI(ISelectable unitSelectable)
         {
-            RefreshPanel(selectedUnitInfoPanel);
             selectedUnitInfoPanel.SetActive(true);
             selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
             if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
@@ -76,10 +77,9 @@ namespace Chochosan
             }
         }
 
-        private void RefreshPanel(GameObject panel)
+        private void RefreshTextInfo(ISelectable selectable)
         {
-            panel.SetActive(false);
-            panel.SetActive(true);
+            selectedUnitText.text = selectable.GetSelectedUnitInfo();
         }
 
         //clear all active UI

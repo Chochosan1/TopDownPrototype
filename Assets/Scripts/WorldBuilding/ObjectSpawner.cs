@@ -56,6 +56,7 @@ public class ObjectSpawner : MonoBehaviour
 
                 //spawn an object at the world based on the saved object
                 GameObject tempObject = Instantiate(realObjects[bcs.buildingIndex], tempPos, tempRot);
+                tempObject.GetComponent<Turret>()?.EnableTurret();
                 
                 //set controller specific stats
                 BuildingController tempController = tempObject.GetComponent<BuildingController>();
