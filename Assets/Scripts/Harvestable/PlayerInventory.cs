@@ -27,14 +27,12 @@ public class PlayerInventory : MonoBehaviour
             CurrentWood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentWood;
             CurrentGold = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentGold;
             CurrentIron = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentIron;
-            Debug.Log("SUCCESS LOADING");
         }
         else
         {
             CurrentWood = 12;
             CurrentGold = 2;
             CurrentIron = 2;
-            Debug.Log("NO LOADING");
         }
        
 

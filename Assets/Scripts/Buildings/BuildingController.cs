@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// Spawns a certain type of a villager. Attach to buildings like lumberyards, mines, etc.
+/// Attach to buildings that must support saving. Can spawn a certain type of a villager if not left null. Attach to buildings like lumberyards, mines, etc.
 /// </summary>
 
-public enum BuildingType { Wood, Iron, Gold, Turret }
 public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, IDamageable
 {
-    public BuildingType buildingType;
     private int buildingIndex;
     [Tooltip("Set to true if the building can be upgraded. Will be used to toggle the upgrade UI.")]
     [SerializeField] private bool isUpgradable = true;
@@ -29,7 +27,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     private void Start()
     {
-        assignedVillagersList = new List<AI_Villager>();
+       // assignedVillagersList = new List<AI_Villager>();
         if (!Chochosan.SaveLoadManager.IsSaveExists())
         {
             SetInitialHP();
@@ -130,11 +128,14 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public void SpawnSpecificVillager(Vector3 position)
     {
-        GameObject tempVillager = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
+        if (villagerToSpawn != null)
+        {
+            GameObject tempVillager = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
 
-        //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
-        assignedVillagersList.Add(tempVillager.GetComponent<AI_Villager>());
-       // Debug.Log("VILLAGER SPAWNED");
+            //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
+            assignedVillagersList.Add(tempVillager.GetComponent<AI_Villager>());
+            Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
+        }
     }
 
     #region DataSaving
@@ -147,7 +148,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         //save specific stats that must be loaded later on
         bcs.currentBuildingLevel = currentBuildingLevel;
         bcs.buildingCurrentHP = buildingCurrentHP;
-        bcs.buildingType = buildingType;
         bcs.buildingIndex = buildingIndex;
         bcs.x = transform.position.x;
         bcs.y = transform.position.y;
@@ -171,6 +171,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
             bcs.villagerXpositions[i] = assignedVillagersList[i].transform.position.x;
             bcs.villagerYpositions[i] = assignedVillagersList[i].transform.position.y;
             bcs.villagerZpositions[i] = assignedVillagersList[i].transform.position.z;
+            Debug.Log("SAVED ONE VILLAGER");
         }
         return bcs;
     }

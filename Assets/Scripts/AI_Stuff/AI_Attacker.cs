@@ -57,7 +57,7 @@ public class AI_Attacker : AI_Base, IDamageable
                 {
                     currentDamageable.TakeDamage(stats.damage);
                     attackAnimTimestamp = Time.time + attackInterval;
-                    Chochosan.ChochosanHelper.ChochosanDebug("Attack", "green");
+                    Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
                 }
                 else
                 {
@@ -148,6 +148,7 @@ public class AI_Attacker : AI_Base, IDamageable
 
         if (currentHealth <= 0)
         {
+            AI_Attacker_Loader.RemoveAttackerFromList(this);
             Destroy(this.gameObject);
         }
     }

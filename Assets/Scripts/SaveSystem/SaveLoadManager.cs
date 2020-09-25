@@ -33,7 +33,6 @@ namespace Chochosan
                 BinaryFormatter bf = new BinaryFormatter();
                 FileStream file = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Open);
                 SaveData saveData = (SaveData)bf.Deserialize(file);
-                Debug.Log(saveData.buildingList);
                 file.Close();
                 return saveData;
             }

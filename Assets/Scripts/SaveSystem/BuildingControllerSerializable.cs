@@ -10,7 +10,6 @@ public struct BuildingControllerSerializable
     public float buildingCurrentHP;
     public float x, y, z; //position
     public int currentBuildingLevel;
-    public BuildingType buildingType;
     public int buildingIndex;
     public float rotX, rotY, rotZ, rotW;
     public int numberOfVillagersAssigned;

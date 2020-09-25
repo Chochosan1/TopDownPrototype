@@ -150,13 +150,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aead8f659ce734647b91efd2c0ba53c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingType: 3
   isUpgradable: 1
   costRequirements: {fileID: 11400000, guid: ef24c5683e5832d408a750e20184b5d6, type: 2}
   villagerToSpawn: {fileID: 0}
   spawnPoint: {fileID: 0}
   spawnFirstVillageAfterSeconds: 2
   maxBuildingLevel: 3
-  customAgentStoppingDistance: 1.5
+  customAgentStoppingDistance: 2
   buildingMaxHP: 100
   assignedVillagersList: []
