@@ -60,6 +60,7 @@ public class ObjectSpawner : MonoBehaviour
                 
                 //set controller specific stats
                 BuildingController tempController = tempObject.GetComponent<BuildingController>();
+                tempController.SetIsBuildingComplete(bcs.isBuildingComplete);
                 tempController.SetBuildingProgress(bcs.buildingProgress);
                 tempController.SetBuildingIndex(bcs.buildingIndex);
                 tempController.SetBuildingLevel(bcs.currentBuildingLevel);

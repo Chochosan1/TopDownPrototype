@@ -154,7 +154,7 @@ public class AI_Villager : AI_Base, ISelectable
                 break;
             case Villager_Type.Builder:
                 unitName = "Builder";
-                enemyLayer = LayerMask.GetMask("Ignore Raycast");
+                enemyLayer = LayerMask.GetMask("BuildingInProgress");
                 break;
         }
         //send a message that a displayable UI value has been changed (in this case the name of the villager)
@@ -184,7 +184,7 @@ public class AI_Villager : AI_Base, ISelectable
                 break;
             case "Builder":
                 unitName = "Builder";
-                enemyLayer = LayerMask.GetMask("Ignore Raycast");
+                enemyLayer = LayerMask.GetMask("BuildingInProgress");
                 break;
         }
     }

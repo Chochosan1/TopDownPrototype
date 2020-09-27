@@ -73,14 +73,16 @@ public class Unit_Controller : MonoBehaviour
             {
                 currentlySelectedUnit = hit.collider.gameObject;
                 tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
-                OnUnitSelected?.Invoke(tempSelectable);
+                if (tempSelectable != null)
+                    OnUnitSelected?.Invoke(tempSelectable);
                 Debug.Log(hit.collider.gameObject);
             }
             else if(Physics.Raycast(ray, out hit, 100, selectableBuildingLayer))
             {
                 currentlySelectedUnit = hit.collider.gameObject;
                 tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
-                OnUnitSelected?.Invoke(tempSelectable);
+                if(tempSelectable != null)
+                    OnUnitSelected?.Invoke(tempSelectable);
                 Debug.Log(hit.collider.gameObject);
             }
         }

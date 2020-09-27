@@ -64,20 +64,17 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public void FinishBuildingAndSpawn()
     {
-        if (!Chochosan.SaveLoadManager.IsSaveExists())
-        {
-            SetInitialHP();
-            StartInitialSetup();
-        }
+        mainBuilding.SetActive(true);
+        Destroy(buildingInProgress);  
+        buildingProgress = 100;
+        GetComponent<BoxCollider>().enabled = true;
+        UnlockUpgradeWhenBuilt();
 
-        if (!isBuildingComplete)
+        //isBuildingComplete becomes true the moment the building is done; if saved and then loaded this block will not execute again
+        if (!isBuildingComplete) 
         {
-            mainBuilding.SetActive(true);
-            Destroy(buildingInProgress);
+            StartInitialSetup();        
             isBuildingComplete = true;
-            buildingProgress = 100;
-            GetComponent<BoxCollider>().enabled = true;
-            UnlockUpgradeWhenBuilt();
         }
     }
 
@@ -87,12 +84,17 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         CheckBuildingStatus();
     }
 
+    public void SetIsBuildingComplete(bool value)
+    {
+        isBuildingComplete = value;
+    }
 
     //called when the building is first instantiated by the player(not when loading data)
     public void StartInitialSetup()
     {
         if (villagerToSpawn != null)
         {
+            SetInitialHP();
             StartCoroutine(SpawnVillagerAfterTime());
         }
     }
@@ -228,6 +230,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         BuildingControllerSerializable bcs = new BuildingControllerSerializable();
 
         //save specific stats that must be loaded later on
+        bcs.isBuildingComplete = isBuildingComplete;
         bcs.buildingProgress = buildingProgress;
         bcs.currentBuildingLevel = currentBuildingLevel;
         bcs.buildingCurrentHP = buildingCurrentHP;

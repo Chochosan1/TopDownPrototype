@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 5001622444936142184}
   - component: {fileID: 8812225748405376116}
   - component: {fileID: 341661282924725154}
-  m_Layer: 17
+  m_Layer: 18
   m_Name: BuildingInProgress
   m_TagString: BuildingInProgress
   m_Icon: {fileID: 0}
