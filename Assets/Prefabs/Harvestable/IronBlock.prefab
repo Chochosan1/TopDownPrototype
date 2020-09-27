@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2156315927456713837}
   m_Layer: 15
   m_Name: IronBlock
-  m_TagString: Untagged
+  m_TagString: Iron
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,3 +108,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 10200b8f1fa611a4b844c1f3852a9b60, type: 2}
   harvestableType: 2
+  currentResourcesToHarvest: 0

@@ -60,7 +60,7 @@ public class Unit_Controller : MonoBehaviour
         if (!objectSpawner.IsCurrentlySpawningBuilding())
         {
             RaycastHit hit;
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);       
                    
             if (Physics.Raycast(ray, out hit, 100, selectableUnitLayer))
             {
@@ -80,7 +80,7 @@ public class Unit_Controller : MonoBehaviour
     }
 
     private void CommandSelectedUnit()
-    {
+    {     
         if (currentlySelectedUnit != null)
         {
             RaycastHit hit;
@@ -91,11 +91,15 @@ public class Unit_Controller : MonoBehaviour
                 {
                     tempSelectable?.ForceSetAgentArea(hit.point);
                 }      
+                else
+                {
+                    tempSelectable?.ForceSetSpecificTarget(hit.collider.gameObject);
+                }
             }
         }
     }
 
-    private void ClearCurrentlySelectedUnit()
+    public void ClearCurrentlySelectedUnit()
     {
         currentlySelectedUnit = null;
         tempSelectable = null;

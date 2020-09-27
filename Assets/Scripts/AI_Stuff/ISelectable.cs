@@ -16,5 +16,7 @@ public interface ISelectable
     bool IsOpenUpgradePanel();
 
     //subscribed to the shown UI button
-    void UpgradeUnit(); 
+    void UpgradeUnit();
+
+    void ForceSetSpecificTarget(GameObject target);
 }

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Wood
   - DefaultTargetToProtect
+  - Gold
+  - Iron
   layers:
   - Default
   - TransparentFX

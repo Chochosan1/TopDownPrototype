@@ -654,6 +654,7 @@ MonoBehaviour:
   firstPureEnemySenseRange: 5
   secondPureEnemySenseRange: 30
   debugState: 0
+  villagerType: 2
   harvestInterval: 1.6
 --- !u!195 &2547033674450600918
 NavMeshAgent:

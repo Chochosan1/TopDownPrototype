@@ -4,12 +4,14 @@ using UnityEngine;
 /// <summary>
 /// Attach to buildings that must support saving. Can spawn a certain type of a villager if not left null. Attach to buildings like lumberyards, mines, etc.
 /// </summary>
-
+public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting }
 public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, IDamageable
 {
     private int buildingIndex;
     [Tooltip("Set to true if the building can be upgraded. Will be used to toggle the upgrade UI.")]
     [SerializeField] private bool isUpgradable = true;
+    [SerializeField] private string buildingName;
+    [SerializeField] private UpgradeToUnlock upgradeToUnlock;
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
     [SerializeField] SO_CostRequirements costRequirements;
     [SerializeField] private GameObject villagerToSpawn;
@@ -27,19 +29,37 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     private void Start()
     {
-       // assignedVillagersList = new List<AI_Villager>();
         if (!Chochosan.SaveLoadManager.IsSaveExists())
         {
             SetInitialHP();
         }
+
+        UnlockUpgradeWhenBuilt();
     }
 
+    //called when the building is first instantiated by the player(not when loading data)
     public void StartInitialSetup()
     {
         if(villagerToSpawn != null)
         {
             StartCoroutine(SpawnVillagerAfterTime());
         }    
+    }
+
+    private void UnlockUpgradeWhenBuilt()
+    {
+        switch(upgradeToUnlock)
+        {
+            case UpgradeToUnlock.WoodHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.WoodHarvesting);
+                break;
+            case UpgradeToUnlock.GoldHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.GoldHarvesting);
+                break;
+            case UpgradeToUnlock.IronHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.IronHarvesting);
+                break;
+        }
     }
 
     private IEnumerator SpawnVillagerAfterTime()
@@ -95,6 +115,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         Debug.Log("THIS IS NOT AN AGENT");
     }
 
+    public void ForceSetSpecificTarget(GameObject target)
+    {
+        Debug.Log("THIS IS NOT AN AGENT X2");
+    }
+
     public float GetCustomAgentStoppingDistance()
     {
         return customAgentStoppingDistance;
@@ -102,7 +127,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public string GetSelectedUnitInfo()
     {
-        string info = $"Building level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
+        string info = $"{buildingName}\nBuilding level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
         return info;
     }
 
@@ -126,14 +151,15 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         buildingIndex = index;
     }
 
-    public void SpawnSpecificVillager(Vector3 position)
+    public void SpawnSpecificVillager(Vector3 position, string villagerType)
     {
         if (villagerToSpawn != null)
         {
-            GameObject tempVillager = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
-
+            GameObject tempVillagerGameobject = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
+            AI_Villager tempVillagerController = tempVillagerGameobject.GetComponent<AI_Villager>();
+            tempVillagerController.SwitchVillagerType(villagerType);
             //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
-            assignedVillagersList.Add(tempVillager.GetComponent<AI_Villager>());
+            assignedVillagersList.Add(tempVillagerGameobject.GetComponent<AI_Villager>());
             Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
         }
     }
@@ -164,6 +190,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         bcs.villagerXpositions = new float[assignedVillagersList.Count];
         bcs.villagerYpositions = new float[assignedVillagersList.Count];
         bcs.villagerZpositions = new float[assignedVillagersList.Count];
+        bcs.villagerTypeStrings = new string[assignedVillagersList.Count];
 
         //store each villager's X, Y, Z positions in arrays
         for (int i = 0; i < assignedVillagersList.Count; i++)
@@ -171,6 +198,18 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
             bcs.villagerXpositions[i] = assignedVillagersList[i].transform.position.x;
             bcs.villagerYpositions[i] = assignedVillagersList[i].transform.position.y;
             bcs.villagerZpositions[i] = assignedVillagersList[i].transform.position.z;
+            switch(assignedVillagersList[i].GetCurrentVillagerType())
+            {
+                case Villager_Type.WoodWorker:
+                    bcs.villagerTypeStrings[i] = "Wood";
+                    break;
+                case Villager_Type.GoldWorker:
+                    bcs.villagerTypeStrings[i] = "Gold";
+                    break;
+                case Villager_Type.IronWorker:
+                    bcs.villagerTypeStrings[i] = "Iron";
+                    break;
+            }
             Debug.Log("SAVED ONE VILLAGER");
         }
         return bcs;

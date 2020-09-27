@@ -16,4 +16,5 @@ public struct BuildingControllerSerializable
     public float[] villagerXpositions;
     public float[] villagerYpositions;
     public float[] villagerZpositions;
+    public string[] villagerTypeStrings;
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7652127547560214987}
   m_Layer: 14
   m_Name: GoldBlock
-  m_TagString: Untagged
+  m_TagString: Gold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,3 +108,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: ce775ed413c05bb43b94937926e89fdd, type: 2}
   harvestableType: 1
+  currentResourcesToHarvest: 0

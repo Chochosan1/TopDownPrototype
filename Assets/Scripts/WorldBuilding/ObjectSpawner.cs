@@ -76,7 +76,7 @@ public class ObjectSpawner : MonoBehaviour
                     tempVillagerPos.z = bcs.villagerZpositions[i];
 
                     //this adds the villagers to a local scope list in the controller as well
-                    tempController.SpawnSpecificVillager(tempVillagerPos);
+                    tempController.SpawnSpecificVillager(tempVillagerPos, bcs.villagerTypeStrings[i]);
                   //  Debug.Log("SETTING POSITIONS");
                 }
             }
