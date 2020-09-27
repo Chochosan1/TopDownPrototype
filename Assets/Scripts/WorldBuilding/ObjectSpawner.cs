@@ -60,6 +60,7 @@ public class ObjectSpawner : MonoBehaviour
                 
                 //set controller specific stats
                 BuildingController tempController = tempObject.GetComponent<BuildingController>();
+                tempController.SetBuildingProgress(bcs.buildingProgress);
                 tempController.SetBuildingIndex(bcs.buildingIndex);
                 tempController.SetBuildingLevel(bcs.currentBuildingLevel);
                 tempController.SetBuildingHP(bcs.buildingCurrentHP);
@@ -166,11 +167,11 @@ public class ObjectSpawner : MonoBehaviour
             BuildingController tempController = tempObject.GetComponent<BuildingController>();
             //cache the current build index so it can be used when loading data
             tempController.SetBuildingIndex(currentObjectIndex);
-            tempController.SetInitialHP();
+         //   tempController.SetInitialHP();
 
-            ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
-            if (tempInterface != null)
-                tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
+            //ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
+            //if (tempInterface != null)
+            //    tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
                
             //add the spawned object to the list with all spawned objects
             allBuildingsSpawned.Add(tempObject);

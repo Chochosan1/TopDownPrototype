@@ -49,7 +49,14 @@ public class Unit_Controller : MonoBehaviour
             if(!objectSpawner.IsCurrentlySpawningBuilding())
             {
                  SelectUnit();
-                 CommandSelectedUnit();
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if(!objectSpawner.IsCurrentlySpawningBuilding())
+            {
+                CommandSelectedUnit();
             }
         }
     }

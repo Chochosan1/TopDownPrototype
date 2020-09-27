@@ -6,7 +6,7 @@ using UnityEngine.AI;
 /// Villager type AI unit that can harvest materials.
 /// </summary>
 public enum AIState_Villager { Idle, MovingToSpecificTarget, Harvesting, MovingToArea}
-public enum Villager_Type { WoodWorker, GoldWorker, IronWorker }
+public enum Villager_Type { WoodWorker, GoldWorker, IronWorker, Builder }
 public class AI_Villager : AI_Base, ISelectable
 {
     public bool debugState = false;
@@ -152,6 +152,10 @@ public class AI_Villager : AI_Base, ISelectable
                 enemyLayer = LayerMask.GetMask("Iron");
                 unitName = "Iron miner";
                 break;
+            case Villager_Type.Builder:
+                unitName = "Builder";
+                enemyLayer = LayerMask.GetMask("Ignore Raycast");
+                break;
         }
         //send a message that a displayable UI value has been changed (in this case the name of the villager)
         Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
@@ -177,6 +181,10 @@ public class AI_Villager : AI_Base, ISelectable
                 enemyLayer = LayerMask.GetMask("Iron");
                 villagerType = Villager_Type.IronWorker;
                 unitName = "Iron miner";
+                break;
+            case "Builder":
+                unitName = "Builder";
+                enemyLayer = LayerMask.GetMask("Ignore Raycast");
                 break;
         }
     }
@@ -229,6 +237,11 @@ public class AI_Villager : AI_Base, ISelectable
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Ironharvesting locked!", "red");
+                break;
+            case "BuildingInProgress":
+                SwitchVillagerType(Villager_Type.Builder);
+                aiState = AIState_Villager.MovingToSpecificTarget;
+                currentTarget = target;
                 break;
         }
     }

@@ -14,6 +14,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private UpgradeToUnlock upgradeToUnlock;
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
     [SerializeField] SO_CostRequirements costRequirements;
+    [SerializeField] private GameObject mainBuilding;
+    [SerializeField] private GameObject buildingInProgress;
     [SerializeField] private GameObject villagerToSpawn;
     [SerializeField] private GameObject spawnPoint;
     [Tooltip("Villager will spawn after that many seconds.")]
@@ -23,32 +25,81 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [Header("Stats")]
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float buildingMaxHP = 100;
-    private float buildingCurrentHP;
+    private float buildingCurrentHP = 1;
+    private bool isBuildingComplete;
+    [SerializeField] private float buildingProgress;
+
     [Tooltip("All villagers that have been spawned by this building.")]
     [SerializeField] private List<AI_Villager> assignedVillagersList;
 
     private void Start()
     {
+        CheckBuildingStatus();
+        //if (!Chochosan.SaveLoadManager.IsSaveExists())
+        //{
+        //    SetInitialHP();
+        //    mainBuilding.SetActive(false);
+        //    isBuildingComplete = false;
+        //    buildingProgress = 0;
+        //}
+        //else
+        //{
+
+        //}
+    }
+
+    private void CheckBuildingStatus()
+    {
+        if (buildingProgress < 100)
+        {
+            isBuildingComplete = false;
+            mainBuilding.SetActive(false);
+            GetComponent<BoxCollider>().enabled = false;
+        }
+        else
+        {
+            FinishBuildingAndSpawn();
+        }
+    }
+
+    public void FinishBuildingAndSpawn()
+    {
         if (!Chochosan.SaveLoadManager.IsSaveExists())
         {
             SetInitialHP();
+            StartInitialSetup();
         }
 
-        UnlockUpgradeWhenBuilt();
+        if (!isBuildingComplete)
+        {
+            mainBuilding.SetActive(true);
+            Destroy(buildingInProgress);
+            isBuildingComplete = true;
+            buildingProgress = 100;
+            GetComponent<BoxCollider>().enabled = true;
+            UnlockUpgradeWhenBuilt();
+        }
     }
+
+    public void AddBuildProgress()
+    {
+        buildingProgress += 25;
+        CheckBuildingStatus();
+    }
+
 
     //called when the building is first instantiated by the player(not when loading data)
     public void StartInitialSetup()
     {
-        if(villagerToSpawn != null)
+        if (villagerToSpawn != null)
         {
             StartCoroutine(SpawnVillagerAfterTime());
-        }    
+        }
     }
 
     private void UnlockUpgradeWhenBuilt()
     {
-        switch(upgradeToUnlock)
+        switch (upgradeToUnlock)
         {
             case UpgradeToUnlock.WoodHarvesting:
                 Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.WoodHarvesting);
@@ -73,12 +124,12 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     private void UpgradeBuildingLevel()
     {
-        if(maxBuildingLevel > currentBuildingLevel && PlayerInventory.Instance.IsHaveEnoughResources(costRequirements))
+        if (maxBuildingLevel > currentBuildingLevel && PlayerInventory.Instance.IsHaveEnoughResources(costRequirements))
         {
             currentBuildingLevel++;
             Chochosan.EventManager.Instance.OnBuildingUpgraded?.Invoke(costRequirements);
             StartCoroutine(SpawnVillagerAfterTime());
-        }      
+        }
     }
 
     public void SetInitialHP()
@@ -91,6 +142,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         buildingCurrentHP = hp > buildingMaxHP ? buildingMaxHP : hp;
     }
 
+    public void SetBuildingProgress(float buildingProgress)
+    {
+        this.buildingProgress = buildingProgress;
+    }
+
     public void TakeDamage(float damage)
     {
         buildingCurrentHP -= damage;
@@ -98,7 +154,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         //send a message that a displayable UI value has been changed (in this case the HP of the building)
         Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
 
-        if(buildingCurrentHP <= 0)
+        if (buildingCurrentHP <= 0)
         {
             DestroyBuilding();
         }
@@ -172,6 +228,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         BuildingControllerSerializable bcs = new BuildingControllerSerializable();
 
         //save specific stats that must be loaded later on
+        bcs.buildingProgress = buildingProgress;
         bcs.currentBuildingLevel = currentBuildingLevel;
         bcs.buildingCurrentHP = buildingCurrentHP;
         bcs.buildingIndex = buildingIndex;
@@ -198,7 +255,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
             bcs.villagerXpositions[i] = assignedVillagersList[i].transform.position.x;
             bcs.villagerYpositions[i] = assignedVillagersList[i].transform.position.y;
             bcs.villagerZpositions[i] = assignedVillagersList[i].transform.position.z;
-            switch(assignedVillagersList[i].GetCurrentVillagerType())
+            switch (assignedVillagersList[i].GetCurrentVillagerType())
             {
                 case Villager_Type.WoodWorker:
                     bcs.villagerTypeStrings[i] = "Wood";
@@ -208,6 +265,9 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
                     break;
                 case Villager_Type.IronWorker:
                     bcs.villagerTypeStrings[i] = "Iron";
+                    break;
+                case Villager_Type.Builder:
+                    bcs.villagerTypeStrings[i] = "Builder";
                     break;
             }
             Debug.Log("SAVED ONE VILLAGER");

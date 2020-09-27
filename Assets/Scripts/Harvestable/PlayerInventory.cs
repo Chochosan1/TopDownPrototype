@@ -30,7 +30,7 @@ public class PlayerInventory : MonoBehaviour
         }
         else
         {
-            CurrentWood = 12;
+            CurrentWood = 120;
             CurrentGold = 2;
             CurrentIron = 2;
         }
