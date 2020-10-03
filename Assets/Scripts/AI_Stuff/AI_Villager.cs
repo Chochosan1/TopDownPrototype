@@ -27,6 +27,7 @@ public class AI_Villager : AI_Base, ISelectable
         anim = GetComponent<Animator>();
         aiState = AIState_Villager.Idle;
         SwitchVillagerType(villagerType);
+        PlayerInventory.Instance.CurrentPopulation++;
     }
 
     void Update()
@@ -36,6 +37,7 @@ public class AI_Villager : AI_Base, ISelectable
             anim.SetBool("Idle", true);
             anim.SetBool("Walk", false);
             anim.SetBool("HarvestWood", false);
+            anim.SetBool("Build", false);
             ChooseNewTarget(true);
         }
         else if (aiState == AIState_Villager.MovingToSpecificTarget) //if a specific target has been chosen by the AI
@@ -50,6 +52,7 @@ public class AI_Villager : AI_Base, ISelectable
 
             anim.SetBool("Walk", true);
             anim.SetBool("HarvestWood", false);
+            anim.SetBool("Build", false);
         }
         else if (aiState == AIState_Villager.MovingToArea) //if set to move to a specific area without having a specific target
         {
@@ -59,6 +62,7 @@ public class AI_Villager : AI_Base, ISelectable
             }
             anim.SetBool("Walk", true);
             anim.SetBool("HarvestWood", false);
+            anim.SetBool("Build", false);
         }
         else if (aiState == AIState_Villager.Harvesting)
         {
@@ -67,8 +71,8 @@ public class AI_Villager : AI_Base, ISelectable
                 aiState = AIState_Villager.Idle;
                 return;
             }
-            anim.SetBool("Walk", false);
-            anim.SetBool("HarvestWood", true);
+         //   anim.SetBool("Walk", false);
+         //   anim.SetBool("HarvestWood", true);
             if (Time.time >= harvestAnimTimestamp)
             {
                 if (currentHarvestable != null)
@@ -101,6 +105,29 @@ public class AI_Villager : AI_Base, ISelectable
                     aiState = AIState_Villager.Harvesting;
                     harvestAnimTimestamp = Time.time + harvestInterval;
                     currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
+                    switch (villagerType)
+                    {
+                        case Villager_Type.WoodWorker:
+                            anim.SetBool("Walk", false);
+                            anim.SetBool("Build", false);
+                            anim.SetBool("HarvestWood", true);
+                            break;
+                        case Villager_Type.GoldWorker:
+                            anim.SetBool("Walk", false);
+                            anim.SetBool("Build", false);
+                            anim.SetBool("HarvestWood", true);
+                            break;
+                        case Villager_Type.IronWorker:
+                            anim.SetBool("Walk", false);
+                            anim.SetBool("Build", false);
+                            anim.SetBool("HarvestWood", true);
+                            break;
+                        case Villager_Type.Builder:
+                            anim.SetBool("Walk", false);
+                            anim.SetBool("HarvestWood", false);
+                            anim.SetBool("Build", true);
+                            break;
+                    }
                     LookAtTarget();
                 }
             }

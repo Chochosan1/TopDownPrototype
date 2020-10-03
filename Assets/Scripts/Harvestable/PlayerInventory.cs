@@ -27,12 +27,14 @@ public class PlayerInventory : MonoBehaviour
             CurrentWood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentWood;
             CurrentGold = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentGold;
             CurrentIron = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentIron;
+            MaxPopulation = 3;
         }
         else
         {
             CurrentWood = 120;
             CurrentGold = 2;
             CurrentIron = 2;
+            MaxPopulation = 3;
         }
        
 
@@ -89,6 +91,34 @@ public class PlayerInventory : MonoBehaviour
         }
     }
     private float currentIron;
+
+    public float CurrentPopulation
+    {
+        get
+        {
+            return currentPopulation;
+        }
+        set
+        {
+            currentPopulation = value;
+            OnInventoryValueChanged?.Invoke("currentPopulation", currentPopulation);
+        }
+    }
+    private float currentPopulation;
+
+    public float MaxPopulation
+    {
+        get
+        {
+            return maxPopulation;
+        }
+        set
+        {
+            maxPopulation = value;
+            OnInventoryValueChanged?.Invoke("maxPopulation", maxPopulation);
+        }
+    }
+    private float maxPopulation;
 
     //Called when building/upgrading. All cost requirements are stored in a ScriptableObject that is passed to here.
     public bool IsHaveEnoughResources(SO_CostRequirements requirements)

@@ -16,6 +16,8 @@ namespace Chochosan
         [SerializeField] private TextMeshProUGUI woodText;
         [SerializeField] private TextMeshProUGUI goldText;
         [SerializeField] private TextMeshProUGUI ironText;
+        [SerializeField] private TextMeshProUGUI currentPopulationText;
+        [SerializeField] private TextMeshProUGUI maxPopulationText;
 
         private void Awake()
         {
@@ -109,6 +111,15 @@ namespace Chochosan
                 case "iron":
                     ironText.text = value.ToString();
                     break;
+                case "currentPopulation":
+                    currentPopulationText.text = value.ToString();
+                    break;
+                case "maxPopulation":
+                    maxPopulationText.text = value.ToString();
+                    break;
+
+
+
             }        
         }
 

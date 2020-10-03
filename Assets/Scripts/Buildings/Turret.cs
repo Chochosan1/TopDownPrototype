@@ -23,6 +23,12 @@ public class Turret : AI_Base, ISpawnedAtWorld
     public List<GameObject> projectilePool;
     private bool isStillSpawning = true;
 
+    private void Start()
+    {
+        StartInitialSetup();
+        Debug.Log("HELLO TURRET sTART");
+    }
+
     void Update()
     {
         ChooseNewTarget(false);
@@ -81,6 +87,7 @@ public class Turret : AI_Base, ISpawnedAtWorld
     private IEnumerator EnableTurretAfter()
     {
         yield return new WaitForSeconds(enableTurretAfterSeconds);
+        Debug.Log("Turret enabled");
         isTurretEnabled = true;
     }
 
@@ -91,6 +98,7 @@ public class Turret : AI_Base, ISpawnedAtWorld
 
     public void StartInitialSetup()
     {
+        Debug.Log("START INIT TURRET");
         StartCoroutine(EnableTurretAfter());
     }
 }

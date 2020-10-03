@@ -25,6 +25,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [Header("Stats")]
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float buildingMaxHP = 100;
+    [SerializeField] private int housingSpace;
     private float buildingCurrentHP = 1;
     private bool isBuildingComplete;
     [SerializeField] private float buildingProgress;
@@ -35,17 +36,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     private void Start()
     {
         CheckBuildingStatus();
-        //if (!Chochosan.SaveLoadManager.IsSaveExists())
-        //{
-        //    SetInitialHP();
-        //    mainBuilding.SetActive(false);
-        //    isBuildingComplete = false;
-        //    buildingProgress = 0;
-        //}
-        //else
-        //{
-
-        //}
     }
 
     private void CheckBuildingStatus()
@@ -65,7 +55,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void FinishBuildingAndSpawn()
     {
         mainBuilding.SetActive(true);
-        Destroy(buildingInProgress);  
+        Destroy(buildingInProgress);
+        PlayerInventory.Instance.MaxPopulation += housingSpace;
         buildingProgress = 100;
         GetComponent<BoxCollider>().enabled = true;
         UnlockUpgradeWhenBuilt();
@@ -92,9 +83,9 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     //called when the building is first instantiated by the player(not when loading data)
     public void StartInitialSetup()
     {
+        SetInitialHP();
         if (villagerToSpawn != null)
-        {
-            SetInitialHP();
+        {           
             StartCoroutine(SpawnVillagerAfterTime());
         }
     }
