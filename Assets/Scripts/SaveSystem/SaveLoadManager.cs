@@ -65,6 +65,7 @@ namespace Chochosan
             public List<BuildingControllerSerializable> buildingList = ObjectSpawner.Instance.GetBuildingsInfo();
             public List<HarvestableControllerSerializable> harvestableList = HarvestableLoader.GetHarvestables();
             public List<AI_Attacker_Serializable> attackerList = AI_Attacker_Loader.GetAttackers();
+            public UnitsSerializable unitsSaveData = Unit_Controller.Instance.GetSpawnedUnitsData();
         }
     }
 }

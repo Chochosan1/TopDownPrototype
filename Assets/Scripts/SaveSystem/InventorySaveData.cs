@@ -6,4 +6,5 @@ using UnityEngine;
 public struct InventorySaveData
 {
     public float currentWood, currentGold, currentIron;
+    public int maxPopulation;
 }

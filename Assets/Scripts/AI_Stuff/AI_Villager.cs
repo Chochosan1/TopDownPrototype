@@ -13,8 +13,7 @@ public class AI_Villager : AI_Base, ISelectable
     private NavMeshAgent agent;
     private Animator anim;
     private AIState_Villager aiState;
-    [SerializeField]
-    private Villager_Type villagerType;
+    [SerializeField] private Villager_Type villagerType;
     [Tooltip("How often should the villager loot resource from the harvestable object. Best way is to match it with the animation.")]
     [SerializeField] private float harvestInterval = 1.5f;
     private float harvestAnimTimestamp;
@@ -210,8 +209,9 @@ public class AI_Villager : AI_Base, ISelectable
                 unitName = "Iron miner";
                 break;
             case "Builder":
-                unitName = "Builder";
                 enemyLayer = LayerMask.GetMask("BuildingInProgress");
+                villagerType = Villager_Type.Builder;
+                unitName = "Builder";                          
                 break;
         }
     }

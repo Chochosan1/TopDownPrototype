@@ -30,8 +30,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     private bool isBuildingComplete;
     [SerializeField] private float buildingProgress;
 
-    [Tooltip("All villagers that have been spawned by this building.")]
-    [SerializeField] private List<AI_Villager> assignedVillagersList;
+    //[Tooltip("All villagers that have been spawned by this building.")]
+    //[SerializeField] private List<AI_Villager> assignedVillagersList;
 
     private void Start()
     {
@@ -55,8 +55,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void FinishBuildingAndSpawn()
     {
         mainBuilding.SetActive(true);
-        Destroy(buildingInProgress);
-        PlayerInventory.Instance.MaxPopulation += housingSpace;
+        Destroy(buildingInProgress);       
         buildingProgress = 100;
         GetComponent<BoxCollider>().enabled = true;
         UnlockUpgradeWhenBuilt();
@@ -71,8 +70,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public void AddBuildProgress()
     {
-        buildingProgress += 25;
-        CheckBuildingStatus();
+        if (!isBuildingComplete)
+        {
+            buildingProgress += 25;
+            CheckBuildingStatus();
+        }
     }
 
     public void SetIsBuildingComplete(bool value)
@@ -84,6 +86,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void StartInitialSetup()
     {
         SetInitialHP();
+        PlayerInventory.Instance.MaxPopulation += housingSpace;
         if (villagerToSpawn != null)
         {           
             StartCoroutine(SpawnVillagerAfterTime());
@@ -112,7 +115,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         GameObject tempVillager = Instantiate(villagerToSpawn, spawnPoint.transform.position, villagerToSpawn.transform.rotation);
         AI_Villager tempAIVillager = tempVillager.GetComponent<AI_Villager>();
         tempAIVillager.SetHomeBuilding(this);
-        assignedVillagersList.Add(tempAIVillager);
+        Unit_Controller.Instance.AddVillagerToList(tempAIVillager);
+      //  assignedVillagersList.Add(tempAIVillager);
     }
 
     private void UpgradeBuildingLevel()
@@ -200,18 +204,19 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         buildingIndex = index;
     }
 
-    public void SpawnSpecificVillager(Vector3 position, string villagerType)
-    {
-        if (villagerToSpawn != null)
-        {
-            GameObject tempVillagerGameobject = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
-            AI_Villager tempVillagerController = tempVillagerGameobject.GetComponent<AI_Villager>();
-            tempVillagerController.SwitchVillagerType(villagerType);
-            //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
-            assignedVillagersList.Add(tempVillagerGameobject.GetComponent<AI_Villager>());
-            Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
-        }
-    }
+    //public void SpawnSpecificVillager(Vector3 position, string villagerType)
+    //{
+    //    if (villagerToSpawn != null)
+    //    {
+    //        GameObject tempVillagerGameobject = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
+    //        AI_Villager tempVillagerController = tempVillagerGameobject.GetComponent<AI_Villager>();
+    //        tempVillagerController.SwitchVillagerType(villagerType);
+    //        //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
+    //     //   assignedVillagersList.Add(tempVillagerGameobject.GetComponent<AI_Villager>());
+    //        Unit_Controller.Instance.AddVillagerToList(tempVillagerController);
+    //        Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
+    //    }
+    //}
 
     #region DataSaving
     //used in ObjectSpawner.cs when retrieving the info for every spawned building in the list
@@ -234,38 +239,38 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         bcs.rotZ = transform.rotation.z;
         bcs.rotW = transform.rotation.w;
 
-        //this many villagers will spawn later on when loading data
-        bcs.numberOfVillagersAssigned = assignedVillagersList.Count;
+        ////this many villagers will spawn later on when loading data
+        //bcs.numberOfVillagersAssigned = assignedVillagersList.Count;
 
-        //initialize the arrays from the serializable copy
-        bcs.villagerXpositions = new float[assignedVillagersList.Count];
-        bcs.villagerYpositions = new float[assignedVillagersList.Count];
-        bcs.villagerZpositions = new float[assignedVillagersList.Count];
-        bcs.villagerTypeStrings = new string[assignedVillagersList.Count];
+        ////initialize the arrays from the serializable copy
+        //bcs.villagerXpositions = new float[assignedVillagersList.Count];
+        //bcs.villagerYpositions = new float[assignedVillagersList.Count];
+        //bcs.villagerZpositions = new float[assignedVillagersList.Count];
+        //bcs.villagerTypeStrings = new string[assignedVillagersList.Count];
 
-        //store each villager's X, Y, Z positions in arrays
-        for (int i = 0; i < assignedVillagersList.Count; i++)
-        {
-            bcs.villagerXpositions[i] = assignedVillagersList[i].transform.position.x;
-            bcs.villagerYpositions[i] = assignedVillagersList[i].transform.position.y;
-            bcs.villagerZpositions[i] = assignedVillagersList[i].transform.position.z;
-            switch (assignedVillagersList[i].GetCurrentVillagerType())
-            {
-                case Villager_Type.WoodWorker:
-                    bcs.villagerTypeStrings[i] = "Wood";
-                    break;
-                case Villager_Type.GoldWorker:
-                    bcs.villagerTypeStrings[i] = "Gold";
-                    break;
-                case Villager_Type.IronWorker:
-                    bcs.villagerTypeStrings[i] = "Iron";
-                    break;
-                case Villager_Type.Builder:
-                    bcs.villagerTypeStrings[i] = "Builder";
-                    break;
-            }
-            Debug.Log("SAVED ONE VILLAGER");
-        }
+        ////store each villager's X, Y, Z positions in arrays
+        //for (int i = 0; i < assignedVillagersList.Count; i++)
+        //{
+        //    bcs.villagerXpositions[i] = assignedVillagersList[i].transform.position.x;
+        //    bcs.villagerYpositions[i] = assignedVillagersList[i].transform.position.y;
+        //    bcs.villagerZpositions[i] = assignedVillagersList[i].transform.position.z;
+        //    switch (assignedVillagersList[i].GetCurrentVillagerType())
+        //    {
+        //        case Villager_Type.WoodWorker:
+        //            bcs.villagerTypeStrings[i] = "Wood";
+        //            break;
+        //        case Villager_Type.GoldWorker:
+        //            bcs.villagerTypeStrings[i] = "Gold";
+        //            break;
+        //        case Villager_Type.IronWorker:
+        //            bcs.villagerTypeStrings[i] = "Iron";
+        //            break;
+        //        case Villager_Type.Builder:
+        //            bcs.villagerTypeStrings[i] = "Builder";
+        //            break;
+        //    }
+        //    Debug.Log("SAVED ONE VILLAGER");
+       // }
         return bcs;
     }
     #endregion
