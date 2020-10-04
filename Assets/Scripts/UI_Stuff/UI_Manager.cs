@@ -18,6 +18,7 @@ namespace Chochosan
         [SerializeField] private TextMeshProUGUI ironText;
         [SerializeField] private TextMeshProUGUI currentPopulationText;
         [SerializeField] private TextMeshProUGUI maxPopulationText;
+        [SerializeField] private TextMeshProUGUI currentCharismaText;
 
         private void Awake()
         {
@@ -117,9 +118,9 @@ namespace Chochosan
                 case "maxPopulation":
                     maxPopulationText.text = value.ToString();
                     break;
-
-
-
+                case "charisma":
+                    currentCharismaText.text = value.ToString();
+                    break;
             }        
         }
 
@@ -127,5 +128,12 @@ namespace Chochosan
         {
             Chochosan.ChochosanHelper.ChochosanDebug("NOT ENOUGH RESOURCES", "red");
         }
+
+        #region ButtonAssignables
+        public void DeleteSave()
+        {
+            Chochosan.SaveLoadManager.SeriouslyDeleteAllSaveFiles();
+        }
+        #endregion
     }
 }

@@ -6,15 +6,32 @@ public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;
 
+    private BuildingController townHallController;
+
     private bool isWorkersCanHarvestWood;
     private bool isWorkersCanHarvestGold;
     private bool isWorkersCanHarvestIron;
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
+        }
+    }
+
+    private void Update()
+    {
+        PlayerInventory.Instance.CurrentVillageCharisma += Time.deltaTime * 10f;
+        if (PlayerInventory.Instance.CurrentVillageCharisma >= 100 && PlayerInventory.Instance.IsHaveEnoughHousingSpace())
+        {
+            if(townHallController == null)
+            {
+                townHallController = GameObject.FindGameObjectWithTag("TownHall").GetComponent<BuildingController>();
+                return;
+            }
+            StartCoroutine(townHallController.SpawnVillagerAfterTime());
+            PlayerInventory.Instance.CurrentVillageCharisma = 0;
         }
     }
 
@@ -31,7 +48,7 @@ public class Progress_Manager : MonoBehaviour
             case UpgradeToUnlock.IronHarvesting:
                 isWorkersCanHarvestIron = true;
                 break;
-        }    
+        }
     }
 
     public bool IsWoodHarvestingUnlocked()

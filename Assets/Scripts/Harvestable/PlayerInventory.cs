@@ -34,7 +34,7 @@ public class PlayerInventory : MonoBehaviour
             CurrentWood = 120;
             CurrentGold = 2;
             CurrentIron = 2;
-            MaxPopulation = 3;
+            CurrentVillageCharisma = 190;
         }
        
 
@@ -119,6 +119,25 @@ public class PlayerInventory : MonoBehaviour
         }
     }
     private int maxPopulation;
+   
+    public float CurrentVillageCharisma
+    {
+        get
+        {
+            return currentVillageCharisma;
+        }
+        set
+        {
+            currentVillageCharisma = value;
+            OnInventoryValueChanged?.Invoke("charisma", currentVillageCharisma);
+        }
+    }
+    private float currentVillageCharisma;
+
+    public bool IsHaveEnoughHousingSpace()
+    {
+        return CurrentPopulation < MaxPopulation;
+    }
 
     //Called when building/upgrading. All cost requirements are stored in a ScriptableObject that is passed to here.
     public bool IsHaveEnoughResources(SO_CostRequirements requirements)

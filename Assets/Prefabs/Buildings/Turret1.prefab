@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -3078253805911415215}
   - component: {fileID: 5167992476932640361}
   m_Layer: 17
-  m_Name: Tree1
+  m_Name: Turret1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,8 +58,8 @@ MonoBehaviour:
   maxBuildingLevel: 3
   customAgentStoppingDistance: 2
   buildingMaxHP: 150
+  housingSpace: 0
   buildingProgress: 0
-  assignedVillagersList: []
 --- !u!65 &5167992476932640361
 BoxCollider:
   m_ObjectHideFlags: 0

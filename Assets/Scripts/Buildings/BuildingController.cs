@@ -28,6 +28,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private int housingSpace;
     private float buildingCurrentHP = 1;
     private bool isBuildingComplete;
+    [Tooltip("Set to 100 if the building must be built as a part of the level instead of requiring player input. ")]
     [SerializeField] private float buildingProgress;
 
     //[Tooltip("All villagers that have been spawned by this building.")]
@@ -109,7 +110,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         }
     }
 
-    private IEnumerator SpawnVillagerAfterTime()
+    public IEnumerator SpawnVillagerAfterTime()
     {
         yield return new WaitForSeconds(spawnFirstVillageAfterSeconds);
         GameObject tempVillager = Instantiate(villagerToSpawn, spawnPoint.transform.position, villagerToSpawn.transform.rotation);
@@ -125,7 +126,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         {
             currentBuildingLevel++;
             Chochosan.EventManager.Instance.OnBuildingUpgraded?.Invoke(costRequirements);
-            StartCoroutine(SpawnVillagerAfterTime());
+            Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
+           // StartCoroutine(SpawnVillagerAfterTime());
         }
     }
 
@@ -212,7 +214,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     //        AI_Villager tempVillagerController = tempVillagerGameobject.GetComponent<AI_Villager>();
     //        tempVillagerController.SwitchVillagerType(villagerType);
     //        //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
-    //     //   assignedVillagersList.Add(tempVillagerGameobject.GetComponent<AI_Villager>());
+    //        //   assignedVillagersList.Add(tempVillagerGameobject.GetComponent<AI_Villager>());
     //        Unit_Controller.Instance.AddVillagerToList(tempVillagerController);
     //        Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
     //    }

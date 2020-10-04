@@ -400,15 +400,14 @@ MonoBehaviour:
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 8754522089380227624}
   buildingInProgress: {fileID: 7298958008938605159}
-  villagerToSpawn: {fileID: 2547033673265592964, guid: ff84ed475cfe7ba4eaf3e9062e5253be,
-    type: 3}
+  villagerToSpawn: {fileID: 0}
   spawnPoint: {fileID: 3770130588655619510}
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7
   customAgentStoppingDistance: 2.5
   buildingMaxHP: 100
+  housingSpace: 0
   buildingProgress: 0
-  assignedVillagersList: []
 --- !u!208 &8165875248773102535
 NavMeshObstacle:
   m_ObjectHideFlags: 0

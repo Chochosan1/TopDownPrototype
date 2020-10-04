@@ -9,6 +9,7 @@ TagManager:
   - Gold
   - Iron
   - BuildingInProgress
+  - TownHall
   layers:
   - Default
   - TransparentFX
