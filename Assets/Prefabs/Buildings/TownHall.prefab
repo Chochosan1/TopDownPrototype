@@ -51,10 +51,12 @@ MonoBehaviour:
   isUpgradable: 1
   buildingName: Town Hall
   upgradeToUnlock: 0
+  buildingType: 1
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 2991102026199028080}
   buildingInProgress: {fileID: 2402920277593236457}
-  villagerToSpawn: {fileID: 0}
+  villagerToSpawn: {fileID: 2547033673265592964, guid: 5a35919e2f2767e449b572b346b02c15,
+    type: 3}
   spawnPoint: {fileID: 8075583710565968776}
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 3

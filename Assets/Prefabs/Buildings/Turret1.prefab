@@ -49,6 +49,7 @@ MonoBehaviour:
   isUpgradable: 1
   buildingName: Turret
   upgradeToUnlock: 0
+  buildingType: 6
   costRequirements: {fileID: 11400000, guid: ef24c5683e5832d408a750e20184b5d6, type: 2}
   mainBuilding: {fileID: 4615549727649083427}
   buildingInProgress: {fileID: 7267497703070496067}

@@ -397,6 +397,7 @@ MonoBehaviour:
   isUpgradable: 1
   buildingName: Gold mine
   upgradeToUnlock: 2
+  buildingType: 4
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 8754522089380227624}
   buildingInProgress: {fileID: 7298958008938605159}

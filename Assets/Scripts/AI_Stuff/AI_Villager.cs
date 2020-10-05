@@ -19,9 +19,11 @@ public class AI_Villager : AI_Base, ISelectable
     private float harvestAnimTimestamp;
     private Harvestable_Controller currentHarvestable;
     private BuildingController buildingController;
+    private Transform thisTransform;
 
     void Start()
     {
+        thisTransform = GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         aiState = AIState_Villager.Idle;
@@ -91,7 +93,7 @@ public class AI_Villager : AI_Base, ISelectable
         float distance = 10000;
         if (currentTarget != null)
         {
-            distance = Vector3.Distance(currentTarget.transform.position, transform.position);
+            distance = Vector3.Distance(currentTarget.transform.position, thisTransform.position);
 
             if (distance <= secondPureEnemySenseRange && distance > agent.stoppingDistance && aiState != AIState_Villager.Harvesting) //if player is far but scented then go to him
             {

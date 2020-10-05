@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Attach to buildings that must support saving. Can spawn a certain type of a villager if not left null. Attach to buildings like lumberyards, mines, etc.
 /// </summary>
-public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting }
+
 public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, IDamageable
 {
     private int buildingIndex;
@@ -12,6 +12,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private bool isUpgradable = true;
     [SerializeField] private string buildingName;
     [SerializeField] private UpgradeToUnlock upgradeToUnlock;
+    [SerializeField] private Buildings buildingType;
+  //  [SerializeField] private string[] buildingRequirementsBeforeBuilding;
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
     [SerializeField] SO_CostRequirements costRequirements;
     [SerializeField] private GameObject mainBuilding;
@@ -60,6 +62,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         buildingProgress = 100;
         GetComponent<BoxCollider>().enabled = true;
         UnlockUpgradeWhenBuilt();
+        Chochosan.EventManager.Instance.OnBuildingBuiltFinally?.Invoke(buildingName, buildingType);
 
         //isBuildingComplete becomes true the moment the building is done; if saved and then loaded this block will not execute again
         if (!isBuildingComplete) 
@@ -85,13 +88,14 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     //called when the building is first instantiated by the player(not when loading data)
     public void StartInitialSetup()
-    {
+    {      
         SetInitialHP();
         PlayerInventory.Instance.MaxPopulation += housingSpace;
-        if (villagerToSpawn != null)
-        {           
-            StartCoroutine(SpawnVillagerAfterTime());
-        }
+        
+        //if (villagerToSpawn != null)
+        //{           
+        //    StartCoroutine(SpawnVillagerAfterTime());
+        //}
     }
 
     private void UnlockUpgradeWhenBuilt()

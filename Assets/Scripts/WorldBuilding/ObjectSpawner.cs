@@ -23,7 +23,7 @@ public class ObjectSpawner : MonoBehaviour
 
     //event subscribed to for example in PlayerInventory in order to spend resources 
     public delegate void OnObjectSpawnedAtWorldDelegate(SO_CostRequirements requirements);
-    public event OnObjectSpawnedAtWorldDelegate OnObjectSpawnedAtWorld;
+    public event OnObjectSpawnedAtWorldDelegate OnObjectBuildableSpawnedAtWorld;
 
     private void Awake()
     {
@@ -178,7 +178,7 @@ public class ObjectSpawner : MonoBehaviour
             allBuildingsSpawned.Add(tempObject);
 
             //invoke the delegate
-            OnObjectSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>().GetRequirements());
+            OnObjectBuildableSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>().GetRequirements());
                  
             Chochosan.UI_Manager.Instance.ToggleObjectManipulationInfo(false);
             Destroy(currentObject);

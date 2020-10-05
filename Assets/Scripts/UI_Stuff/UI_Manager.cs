@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 namespace Chochosan
@@ -20,6 +21,14 @@ namespace Chochosan
         [SerializeField] private TextMeshProUGUI maxPopulationText;
         [SerializeField] private TextMeshProUGUI currentCharismaText;
 
+        [Header("Building Buttons")]
+        [SerializeField] private Button townHallButton;
+        [SerializeField] private Button woodCampButton;
+        [SerializeField] private Button ironMineButton;
+        [SerializeField] private Button goldMineButton;
+        [SerializeField] private Button houseButton;
+        [SerializeField] private Button turretButton;
+
         private void Awake()
         {
             if(Instance == null)
@@ -34,6 +43,7 @@ namespace Chochosan
             Unit_Controller.Instance.OnUnitSelected += ActivateUnitSelectionUI;
             Unit_Controller.Instance.OnUnitDeselected += DeactivateAllSelectionUI;
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged += RefreshTextInfo;
+            Chochosan.EventManager.Instance.OnBuildingBuiltFinally += UpdateBuildingUI;
         }
 
         private void OnDisable()
@@ -42,6 +52,7 @@ namespace Chochosan
             Unit_Controller.Instance.OnUnitSelected -= ActivateUnitSelectionUI;
             Unit_Controller.Instance.OnUnitDeselected -= DeactivateAllSelectionUI;
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged -= RefreshTextInfo;
+            Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= UpdateBuildingUI;
         }
 
         //automatically toggles on/off depending on the current state
@@ -122,6 +133,27 @@ namespace Chochosan
                     currentCharismaText.text = value.ToString();
                     break;
             }        
+        }
+
+        private void UpdateBuildingUI(string buildingName, Buildings buildingType)
+        {
+            switch (buildingType)
+            {
+                case Buildings.TownHall:
+                    townHallButton.interactable = false;
+                    woodCampButton.interactable = true;
+                    houseButton.interactable = true;
+                    break;
+                case Buildings.Woodcamp:                 
+                    ironMineButton.interactable = true;
+                    break;
+                case Buildings.Ironmine:
+                    goldMineButton.interactable = true;
+                    break;
+                case Buildings.Goldmine:
+                    turretButton.interactable = true;
+                    break;
+            }
         }
 
         public void DisplayWarningMessage()

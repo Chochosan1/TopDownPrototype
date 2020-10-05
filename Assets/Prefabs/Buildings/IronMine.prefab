@@ -397,6 +397,7 @@ MonoBehaviour:
   isUpgradable: 1
   buildingName: Quarry
   upgradeToUnlock: 3
+  buildingType: 3
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 7909035779972364110}
   buildingInProgress: {fileID: 7284834151001687511}
@@ -529,7 +530,7 @@ GameObject:
   - component: {fileID: 1693511717899860151}
   - component: {fileID: 7288032053535895222}
   - component: {fileID: 4541665870431721392}
-  m_Layer: 17
+  m_Layer: 18
   m_Name: BuildingInProgress
   m_TagString: BuildingInProgress
   m_Icon: {fileID: 0}

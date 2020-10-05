@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting }
+public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret }
 public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;
@@ -22,10 +23,10 @@ public class Progress_Manager : MonoBehaviour
 
     private void Update()
     {
-        PlayerInventory.Instance.CurrentVillageCharisma += Time.deltaTime * 10f;
+        PlayerInventory.Instance.CurrentVillageCharisma += Time.deltaTime * 0.1f;
         if (PlayerInventory.Instance.CurrentVillageCharisma >= 100 && PlayerInventory.Instance.IsHaveEnoughHousingSpace())
         {
-            if(townHallController == null)
+            if (townHallController == null)
             {
                 townHallController = GameObject.FindGameObjectWithTag("TownHall").GetComponent<BuildingController>();
                 return;

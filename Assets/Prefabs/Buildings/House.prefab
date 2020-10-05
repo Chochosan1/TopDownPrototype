@@ -274,6 +274,7 @@ MonoBehaviour:
   isUpgradable: 1
   buildingName: House
   upgradeToUnlock: 0
+  buildingType: 5
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 1665884766213995463}
   buildingInProgress: {fileID: 2288969273519311198}
@@ -285,7 +286,6 @@ MonoBehaviour:
   buildingMaxHP: 50
   housingSpace: 2
   buildingProgress: 0
-  assignedVillagersList: []
 --- !u!208 &833138697224746830
 NavMeshObstacle:
   m_ObjectHideFlags: 0

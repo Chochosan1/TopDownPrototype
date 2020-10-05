@@ -506,6 +506,7 @@ MonoBehaviour:
   isUpgradable: 1
   buildingName: Woodman's hut
   upgradeToUnlock: 1
+  buildingType: 2
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 8831520187914753045}
   buildingInProgress: {fileID: 4989160621327128196}

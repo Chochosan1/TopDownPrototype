@@ -34,19 +34,19 @@ public class PlayerInventory : MonoBehaviour
             CurrentWood = 120;
             CurrentGold = 2;
             CurrentIron = 2;
-            CurrentVillageCharisma = 190;
+            CurrentVillageCharisma = 0;
         }
        
 
         //Event subscription
         objectSpawner = GetComponent<ObjectSpawner>();
-        objectSpawner.OnObjectSpawnedAtWorld += SpendResources;
+        objectSpawner.OnObjectBuildableSpawnedAtWorld += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded += SpendResources;
     }
 
     private void OnDisable()
     {
-        objectSpawner.OnObjectSpawnedAtWorld -= SpendResources;
+        objectSpawner.OnObjectBuildableSpawnedAtWorld -= SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded -= SpendResources;
     }
 
