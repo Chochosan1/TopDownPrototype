@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4864654615894354017}
   - component: {fileID: 4893764038527735347}
   - component: {fileID: 4882035604190552761}
-  - component: {fileID: 4861417955461578787}
   - component: {fileID: 5030119879594979266}
+  - component: {fileID: 7036596788800813992}
   m_Layer: 13
   m_Name: TreeResource1
   m_TagString: Wood
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4870131986853693331}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 104.59, y: 0, z: 96.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -81,20 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4861417955461578787
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4870131986853693331}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 2a0ebe52fc32c31418ae08b12480c4d2, type: 3}
 --- !u!114 &5030119879594979266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,3 +94,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 10880fef0f94f194591b4c8c0b2af763, type: 2}
+  harvestableType: 0
+  customStoppingDistance: 2
+  currentResourcesToHarvest: 0
+--- !u!65 &7036596788800813992
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4870131986853693331}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0678611, y: 2.4454823, z: 1.5314878}
+  m_Center: {x: -0.00031912327, y: 1.2153468, z: 0.0022535622}

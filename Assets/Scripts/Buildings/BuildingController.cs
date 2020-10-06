@@ -28,6 +28,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float buildingMaxHP = 100;
     [SerializeField] private int housingSpace;
+    [SerializeField] private float charismaOnBuilt = 5f;
     private float buildingCurrentHP = 1;
     private bool isBuildingComplete;
     [Tooltip("Set to 100 if the building must be built as a part of the level instead of requiring player input. ")]

@@ -10,6 +10,7 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
     private int currentHarvestableIndex; //used to spawn the right object when loading data
     [SerializeField] private SO_ResourceStats stats;
     [SerializeField] private HarvestableType harvestableType;
+    public float customStoppingDistance;
     private BuildingController buildingController; //building also work like Harvestables but the villagers add progress to them
     public float currentResourcesToHarvest;
 
@@ -30,13 +31,13 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
                 buildingController = GetComponentInParent<BuildingController>();
                 break;
 
-            
+
         }
-        if(!Chochosan.SaveLoadManager.IsSaveExists() && harvestableType != HarvestableType.BuildingInProgress)
+        if (!Chochosan.SaveLoadManager.IsSaveExists() && harvestableType != HarvestableType.BuildingInProgress)
         {
             HarvestableLoader.AddHarvestableToList(this);
             currentResourcesToHarvest = stats.maxResourcesToHarvest;
-        }       
+        }
     }
 
     public void Harvest()
@@ -62,7 +63,7 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
                 buildingController.AddBuildProgress();
                 break;
         }
-        
+
     }
 
     //removes the harvestable if depleted

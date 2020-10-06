@@ -28,6 +28,7 @@ public class PlayerInventory : MonoBehaviour
             CurrentGold = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentGold;
             CurrentIron = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentIron;
             MaxPopulation = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxPopulation;
+            CurrentVillageCharisma = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentCharisma;
         }
         else
         {
@@ -163,10 +164,11 @@ public class PlayerInventory : MonoBehaviour
     public InventorySaveData GetInventory()
     {
         InventorySaveData saveData = new InventorySaveData();
-        saveData.currentWood = CurrentWood;
+        saveData.currentWood = currentWood;
         saveData.currentGold = currentGold;
         saveData.currentIron = currentIron;
         saveData.maxPopulation = maxPopulation;
+        saveData.currentCharisma = currentVillageCharisma;
         return saveData;
     }
 }

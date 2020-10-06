@@ -72,6 +72,7 @@ public class HarvestableLoader : MonoBehaviour
     //later in order to load the harvestables save.
     public static List<HarvestableControllerSerializable> GetHarvestables()
     {
+        allSpawnedHarvestablesSerializable = new List<HarvestableControllerSerializable>(); //reset the list so that multiple saves do not stack and spawn many more objects
         foreach (Harvestable_Controller harvestableController in HarvestableLoader.allSpawnedHarvestables)
         {
             HarvestableControllerSerializable hcs = harvestableController.GetHarvestableData();

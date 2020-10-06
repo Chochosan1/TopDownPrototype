@@ -97,7 +97,15 @@ public class AI_Villager : AI_Base, ISelectable
 
             if (distance <= secondPureEnemySenseRange && distance > agent.stoppingDistance && aiState != AIState_Villager.Harvesting) //if player is far but scented then go to him
             {
-                aiState = AIState_Villager.MovingToSpecificTarget;
+                if(aiState != AIState_Villager.MovingToSpecificTarget)
+                {
+                    aiState = AIState_Villager.MovingToSpecificTarget;
+                    Harvestable_Controller hc = currentTarget.GetComponent<Harvestable_Controller>();
+                    if(hc != null)
+                    {
+                        agent.stoppingDistance = hc.customStoppingDistance;
+                    }
+                }             
             }
             else if (distance <= agent.stoppingDistance) //if player is within stop range and can attack go to attack state
             {
@@ -227,6 +235,7 @@ public class AI_Villager : AI_Base, ISelectable
     public void ForceSetAgentArea(Vector3 destination)
     {
         aiState = AIState_Villager.MovingToArea;
+        agent.stoppingDistance = 0;
         currentTarget = null;
         currentHarvestable = null;
         agent.destination = destination;
@@ -243,6 +252,7 @@ public class AI_Villager : AI_Base, ISelectable
                     SwitchVillagerType(Villager_Type.WoodWorker);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
+                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Woodharvesting locked!", "red");
@@ -253,6 +263,7 @@ public class AI_Villager : AI_Base, ISelectable
                     SwitchVillagerType(Villager_Type.GoldWorker);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
+                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Goldharvesting locked!", "red");
@@ -263,6 +274,7 @@ public class AI_Villager : AI_Base, ISelectable
                     SwitchVillagerType(Villager_Type.IronWorker);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
+                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Ironharvesting locked!", "red");
@@ -271,6 +283,7 @@ public class AI_Villager : AI_Base, ISelectable
                 SwitchVillagerType(Villager_Type.Builder);
                 aiState = AIState_Villager.MovingToSpecificTarget;
                 currentTarget = target;
+                agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 break;
         }
     }

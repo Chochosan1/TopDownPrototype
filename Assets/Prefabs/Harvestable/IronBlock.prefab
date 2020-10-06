@@ -108,4 +108,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 10200b8f1fa611a4b844c1f3852a9b60, type: 2}
   harvestableType: 2
+  customStoppingDistance: 2
   currentResourcesToHarvest: 0

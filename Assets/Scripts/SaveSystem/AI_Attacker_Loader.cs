@@ -73,6 +73,7 @@ public class AI_Attacker_Loader : MonoBehaviour
     //later in order to load the harvestables save.
     public static List<AI_Attacker_Serializable> GetAttackers()
     {
+        allSpawnedAttackersSerializable = new List<AI_Attacker_Serializable>();
         foreach (AI_Attacker aiAttacker in AI_Attacker_Loader.allSpawnedAttackers)
         {
             AI_Attacker_Serializable acs = aiAttacker.GetAttackerData();

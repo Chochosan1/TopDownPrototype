@@ -143,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
   harvestableType: 3
+  customStoppingDistance: 1.5
   currentResourcesToHarvest: 0
 --- !u!1 &3130484465196470762
 GameObject:

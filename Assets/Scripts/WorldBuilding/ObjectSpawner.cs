@@ -237,8 +237,9 @@ public class ObjectSpawner : MonoBehaviour
     //saves the current state of all spawned buildings from the non-serializable list to a serializable list
     public List<BuildingControllerSerializable> GetBuildingsInfo()
     {
-        foreach(GameObject building in allBuildingsSpawned)
-        {
+        allBuildingsSpawnedSerializable = new List<BuildingControllerSerializable>(); //reset the list so that multiple saves do not stack and spawn many more objects
+        foreach (GameObject building in allBuildingsSpawned)
+        {           
             BuildingControllerSerializable bcs = building.GetComponent<BuildingController>().GetBuildingData();
             allBuildingsSpawnedSerializable.Add(bcs);
         }

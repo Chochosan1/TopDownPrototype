@@ -696,7 +696,8 @@ PrefabInstance:
       propertyPath: defaultTargetIfNoOtherAvailable
       value: 
       objectReference: {fileID: 378362835}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: b5248566de8d9894fbb9f3db0f6b4394, type: 3}
 --- !u!4 &72553971 stripped
 Transform:
@@ -1254,7 +1255,8 @@ PrefabInstance:
       propertyPath: defaultTargetIfNoOtherAvailable
       value: 
       objectReference: {fileID: 378362835}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: b5248566de8d9894fbb9f3db0f6b4394, type: 3}
 --- !u!1 &211458816
 GameObject:
@@ -4014,7 +4016,8 @@ PrefabInstance:
       propertyPath: defaultTargetIfNoOtherAvailable
       value: 
       objectReference: {fileID: 378362835}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: b5248566de8d9894fbb9f3db0f6b4394, type: 3}
 --- !u!1001 &846187645
 PrefabInstance:
@@ -6345,7 +6348,8 @@ PrefabInstance:
       propertyPath: defaultTargetIfNoOtherAvailable
       value: 
       objectReference: {fileID: 378362835}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: b5248566de8d9894fbb9f3db0f6b4394, type: 3}
 --- !u!1001 &1464374201
 PrefabInstance:
@@ -7635,7 +7639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1846711123
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9305,7 +9309,8 @@ PrefabInstance:
       propertyPath: defaultTargetIfNoOtherAvailable
       value: 
       objectReference: {fileID: 378362835}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: b5248566de8d9894fbb9f3db0f6b4394, type: 3}
 --- !u!1001 &4869018773425947575
 PrefabInstance:

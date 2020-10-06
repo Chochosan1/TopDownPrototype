@@ -305,4 +305,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
   harvestableType: 3
+  customStoppingDistance: 1.5
   currentResourcesToHarvest: 0

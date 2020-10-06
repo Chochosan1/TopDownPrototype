@@ -38,7 +38,6 @@ public class AI_Attacker : AI_Base, IDamageable
 
     private void Update()
     {
-        ChooseNewTarget(true);
         if (aiState == AIState.MovingToTarget)
         {
             if (currentTarget == null)
@@ -70,7 +69,7 @@ public class AI_Attacker : AI_Base, IDamageable
         {
             SetAgentDestination(agent, defaultTargetIfNoOtherAvailable.transform.position);
             agent.stoppingDistance = defaultAgentStoppingDistance;
-           
+            ChooseNewTarget(true);
         }
         
 
