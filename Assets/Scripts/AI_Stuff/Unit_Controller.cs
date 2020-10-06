@@ -170,6 +170,9 @@ public class Unit_Controller : MonoBehaviour
                 case Villager_Type.IronWorker:
                     us.villagerTypeStrings[i] = "Iron";
                     break;
+                case Villager_Type.FoodWorker:
+                    us.villagerTypeStrings[i] = "Food";
+                    break;
                 case Villager_Type.Builder:
                     us.villagerTypeStrings[i] = "Builder";
                     break;

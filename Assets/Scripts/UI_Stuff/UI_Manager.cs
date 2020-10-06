@@ -14,12 +14,15 @@ namespace Chochosan
         [SerializeField] private GameObject selectedUnitInfoPanel;
         [SerializeField] private GameObject selectedBuildingUpgradePanel;
         [SerializeField] private TextMeshProUGUI selectedUnitText;
+
+        [Header("Resources Texts")]
         [SerializeField] private TextMeshProUGUI woodText;
         [SerializeField] private TextMeshProUGUI goldText;
         [SerializeField] private TextMeshProUGUI ironText;
         [SerializeField] private TextMeshProUGUI currentPopulationText;
         [SerializeField] private TextMeshProUGUI maxPopulationText;
         [SerializeField] private TextMeshProUGUI currentCharismaText;
+        [SerializeField] private TextMeshProUGUI currentFoodText;
 
         [Header("Building Buttons")]
         [SerializeField] private Button townHallButton;
@@ -130,7 +133,10 @@ namespace Chochosan
                     maxPopulationText.text = value.ToString();
                     break;
                 case "charisma":
-                    currentCharismaText.text = value.ToString();
+                    currentCharismaText.text = value.ToString("F0");
+                    break;
+                case "food":
+                    currentFoodText.text = value.ToString();
                     break;
             }        
         }

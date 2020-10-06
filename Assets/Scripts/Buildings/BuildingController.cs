@@ -16,23 +16,27 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
   //  [SerializeField] private string[] buildingRequirementsBeforeBuilding;
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
     [SerializeField] SO_CostRequirements costRequirements;
+    [Tooltip("The part of the prefab that holds the finally built building.")]
     [SerializeField] private GameObject mainBuilding;
+    [Tooltip("The part of the prefab that holds the part of the building that should be targettable by builders.")]
     [SerializeField] private GameObject buildingInProgress;
     [SerializeField] private GameObject villagerToSpawn;
     [SerializeField] private GameObject spawnPoint;
     [Tooltip("Villager will spawn after that many seconds.")]
     [SerializeField] private float spawnFirstVillageAfterSeconds = 2f;
     [SerializeField] private int maxBuildingLevel = 3;
-    private int currentBuildingLevel = 1;
+    private int currentBuildingLevel = 1; //default starting level
     [Header("Stats")]
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float buildingMaxHP = 100;
     [SerializeField] private int housingSpace;
     [SerializeField] private float charismaOnBuilt = 5f;
-    private float buildingCurrentHP = 1;
-    private bool isBuildingComplete;
-    [Tooltip("Set to 100 if the building must be built as a part of the level instead of requiring player input. ")]
+    private float buildingCurrentHP = 1; //initial HP before being finally built
+    private bool isBuildingComplete; 
+    [Tooltip("The current building progress. Set to 100 if the building must be built as a part of the level instead of requiring player input. ")]
     [SerializeField] private float buildingProgress;
+    [Tooltip("How much progress should be added to the building per single progress iteration (e.g when the builder swings with his hammer although progress adding will not always match with the animation)")]
+    [SerializeField] private float progressPerBuildIteration = 25f;
 
     //[Tooltip("All villagers that have been spawned by this building.")]
     //[SerializeField] private List<AI_Villager> assignedVillagersList;
@@ -77,7 +81,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     {
         if (!isBuildingComplete)
         {
-            buildingProgress += 25;
+            buildingProgress += progressPerBuildIteration;
             CheckBuildingStatus();
         }
     }
@@ -92,6 +96,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     {      
         SetInitialHP();
         PlayerInventory.Instance.MaxPopulation += housingSpace;
+        PlayerInventory.Instance.CurrentVillageCharisma += charismaOnBuilt;
         
         //if (villagerToSpawn != null)
         //{           
@@ -111,6 +116,9 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
                 break;
             case UpgradeToUnlock.IronHarvesting:
                 Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.IronHarvesting);
+                break;
+            case UpgradeToUnlock.FoodHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.FoodHarvesting);
                 break;
         }
     }

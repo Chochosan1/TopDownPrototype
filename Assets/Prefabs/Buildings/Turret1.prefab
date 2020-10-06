@@ -60,7 +60,9 @@ MonoBehaviour:
   customAgentStoppingDistance: 2
   buildingMaxHP: 150
   housingSpace: 0
+  charismaOnBuilt: 5
   buildingProgress: 0
+  progressPerBuildIteration: 25
 --- !u!65 &5167992476932640361
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -304,6 +306,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
-  harvestableType: 3
+  harvestableType: 4
   customStoppingDistance: 1.5
   currentResourcesToHarvest: 0

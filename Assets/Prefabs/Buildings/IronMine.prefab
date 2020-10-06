@@ -408,7 +408,9 @@ MonoBehaviour:
   customAgentStoppingDistance: 2.5
   buildingMaxHP: 100
   housingSpace: 0
+  charismaOnBuilt: 5
   buildingProgress: 0
+  progressPerBuildIteration: 10
 --- !u!208 &8165875248773102535
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -624,7 +626,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
-  harvestableType: 3
+  harvestableType: 4
+  customStoppingDistance: 1.5
   currentResourcesToHarvest: 0
 --- !u!1 &7909035779972364110
 GameObject:

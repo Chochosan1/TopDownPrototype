@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isUpgradable: 1
   buildingName: Town Hall
-  upgradeToUnlock: 0
+  upgradeToUnlock: 4
   buildingType: 1
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 2991102026199028080}
@@ -63,7 +63,9 @@ MonoBehaviour:
   customAgentStoppingDistance: 2.5
   buildingMaxHP: 500
   housingSpace: 2
+  charismaOnBuilt: 80
   buildingProgress: 0
+  progressPerBuildIteration: 25
 --- !u!208 &3824410492233211385
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -279,7 +281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
-  harvestableType: 3
+  harvestableType: 4
   customStoppingDistance: 1.5
   currentResourcesToHarvest: 0
 --- !u!1 &2538118842246156306

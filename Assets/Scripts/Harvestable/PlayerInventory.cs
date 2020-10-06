@@ -29,6 +29,7 @@ public class PlayerInventory : MonoBehaviour
             CurrentIron = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentIron;
             MaxPopulation = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxPopulation;
             CurrentVillageCharisma = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentCharisma;
+            CurrentFood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentFood;
         }
         else
         {
@@ -135,6 +136,20 @@ public class PlayerInventory : MonoBehaviour
     }
     private float currentVillageCharisma;
 
+    public float CurrentFood
+    {
+        get
+        {
+            return currentFood;
+        }
+        set
+        {
+            currentFood = value;
+            OnInventoryValueChanged?.Invoke("food", currentFood);
+        }
+    }
+    private float currentFood;
+
     public bool IsHaveEnoughHousingSpace()
     {
         return CurrentPopulation < MaxPopulation;
@@ -143,9 +158,10 @@ public class PlayerInventory : MonoBehaviour
     //Called when building/upgrading. All cost requirements are stored in a ScriptableObject that is passed to here.
     public bool IsHaveEnoughResources(SO_CostRequirements requirements)
     {
-        if(currentWood >= requirements.woodRequired &&
+        if (currentWood >= requirements.woodRequired &&
            currentGold >= requirements.goldRequired &&
-           currentIron >= requirements.ironRequired
+           currentIron >= requirements.ironRequired &&
+           currentFood >= requirements.foodRequired
            )
         {
             return true;
@@ -158,7 +174,8 @@ public class PlayerInventory : MonoBehaviour
     {
         CurrentWood -= requirements.woodRequired;
         CurrentGold -= requirements.goldRequired;
-        CurrentIron -= requirements.ironRequired;        
+        CurrentIron -= requirements.ironRequired;
+        CurrentFood -= requirements.foodRequired;
     }
 
     public InventorySaveData GetInventory()
@@ -169,6 +186,7 @@ public class PlayerInventory : MonoBehaviour
         saveData.currentIron = currentIron;
         saveData.maxPopulation = maxPopulation;
         saveData.currentCharisma = currentVillageCharisma;
+        saveData.currentFood = currentFood;
         return saveData;
     }
 }

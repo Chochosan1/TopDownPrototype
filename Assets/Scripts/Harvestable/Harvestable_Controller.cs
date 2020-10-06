@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Attach to a harvestable object. The HarvestableType determines what kind of a resource the harvestable object will yield to the PlayerInventory.
 /// </summary>
-public enum HarvestableType { Wood, Gold, Iron, BuildingInProgress }
+public enum HarvestableType { Wood, Gold, Iron, Food, BuildingInProgress }
 public class Harvestable_Controller : MonoBehaviour, IHarvestable
 {
     private int currentHarvestableIndex; //used to spawn the right object when loading data
@@ -26,6 +26,9 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
                 break;
             case HarvestableType.Iron:
                 currentHarvestableIndex = 2;
+                break;
+            case HarvestableType.Food:
+                currentHarvestableIndex = 3;
                 break;
             case HarvestableType.BuildingInProgress:
                 buildingController = GetComponentInParent<BuildingController>();
@@ -57,6 +60,11 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
             case HarvestableType.Iron:
                 currentResourcesToHarvest -= stats.resourcePerSingleHarvest;
                 PlayerInventory.Instance.CurrentIron += stats.resourcePerSingleHarvest;
+                CheckHarvestableState();
+                break;
+            case HarvestableType.Food:
+                currentResourcesToHarvest -= stats.resourcePerSingleHarvest;
+                PlayerInventory.Instance.CurrentFood += stats.resourcePerSingleHarvest;
                 CheckHarvestableState();
                 break;
             case HarvestableType.BuildingInProgress:

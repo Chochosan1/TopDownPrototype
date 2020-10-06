@@ -6,7 +6,7 @@ using UnityEngine.AI;
 /// Villager type AI unit that can harvest materials.
 /// </summary>
 public enum AIState_Villager { Idle, MovingToSpecificTarget, Harvesting, MovingToArea}
-public enum Villager_Type { WoodWorker, GoldWorker, IronWorker, Builder }
+public enum Villager_Type { WoodWorker, GoldWorker, IronWorker, FoodWorker, Builder }
 public class AI_Villager : AI_Base, ISelectable
 {
     public bool debugState = false;
@@ -131,6 +131,11 @@ public class AI_Villager : AI_Base, ISelectable
                             anim.SetBool("Build", false);
                             anim.SetBool("HarvestWood", true);
                             break;
+                        case Villager_Type.FoodWorker:
+                            anim.SetBool("Walk", false);
+                            anim.SetBool("Build", false);
+                            anim.SetBool("HarvestWood", true);
+                            break;
                         case Villager_Type.Builder:
                             anim.SetBool("Walk", false);
                             anim.SetBool("HarvestWood", false);
@@ -188,6 +193,10 @@ public class AI_Villager : AI_Base, ISelectable
                 enemyLayer = LayerMask.GetMask("Iron");
                 unitName = "Iron miner";
                 break;
+            case Villager_Type.FoodWorker:
+                enemyLayer = LayerMask.GetMask("Food");
+                unitName = "Food gatherer";
+                break;
             case Villager_Type.Builder:
                 unitName = "Builder";
                 enemyLayer = LayerMask.GetMask("BuildingInProgress");
@@ -217,6 +226,11 @@ public class AI_Villager : AI_Base, ISelectable
                 enemyLayer = LayerMask.GetMask("Iron");
                 villagerType = Villager_Type.IronWorker;
                 unitName = "Iron miner";
+                break;
+            case "Food":
+                enemyLayer = LayerMask.GetMask("Food");
+                villagerType = Villager_Type.FoodWorker;
+                unitName = "Food gatherer";
                 break;
             case "Builder":
                 enemyLayer = LayerMask.GetMask("BuildingInProgress");
@@ -278,6 +292,17 @@ public class AI_Villager : AI_Base, ISelectable
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Ironharvesting locked!", "red");
+                break;
+            case "Food":
+                if (Progress_Manager.Instance.IsFoodHarvestingUnlocked())
+                {
+                    SwitchVillagerType(Villager_Type.FoodWorker);
+                    aiState = AIState_Villager.MovingToSpecificTarget;
+                    currentTarget = target;
+                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
+                }
+                else
+                    Chochosan.ChochosanHelper.ChochosanDebug("Foodharvesting locked!", "red");
                 break;
             case "BuildingInProgress":
                 SwitchVillagerType(Villager_Type.Builder);

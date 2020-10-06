@@ -647,14 +647,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f246db222001d4cae4c647ab15fa55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: WoodCutter
+  unitName: Builder
   enemyLayer:
     serializedVersion: 2
     m_Bits: 262144
   firstPureEnemySenseRange: 5
   secondPureEnemySenseRange: 30
   debugState: 0
-  villagerType: 3
+  villagerType: 4
   harvestInterval: 1.6
 --- !u!195 &2547033674450600918
 NavMeshAgent:

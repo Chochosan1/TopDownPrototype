@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting }
+public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting, FoodHarvesting }
 public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret }
 public class Progress_Manager : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class Progress_Manager : MonoBehaviour
     private bool isWorkersCanHarvestWood;
     private bool isWorkersCanHarvestGold;
     private bool isWorkersCanHarvestIron;
+    private bool isWorkersCanHarvestFood;
 
     private void Awake()
     {
@@ -49,6 +50,9 @@ public class Progress_Manager : MonoBehaviour
             case UpgradeToUnlock.IronHarvesting:
                 isWorkersCanHarvestIron = true;
                 break;
+            case UpgradeToUnlock.FoodHarvesting:
+                isWorkersCanHarvestFood = true;
+                break;
         }
     }
 
@@ -65,5 +69,10 @@ public class Progress_Manager : MonoBehaviour
     public bool IsIronHarvestingUnlocked()
     {
         return isWorkersCanHarvestIron;
+    }
+
+    public bool IsFoodHarvestingUnlocked()
+    {
+        return isWorkersCanHarvestFood;
     }
 }

@@ -8,4 +8,5 @@ public class SO_CostRequirements : ScriptableObject
     public float woodRequired;
     public float goldRequired;
     public float ironRequired;
+    public float foodRequired;
 }
