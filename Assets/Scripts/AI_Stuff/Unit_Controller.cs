@@ -30,12 +30,12 @@ public class Unit_Controller : MonoBehaviour
         {
             Instance = this;
         }
+        spawnedVillagersList = new List<AI_Villager>();
     }
 
     // Start is called before the first frame update
     void Start()
-    {
-        spawnedVillagersList = new List<AI_Villager>();
+    {     
         objectSpawner = GetComponent<ObjectSpawner>();
         mainCamera = Camera.main;
 
@@ -137,6 +137,7 @@ public class Unit_Controller : MonoBehaviour
 
     public void AddVillagerToList(AI_Villager villager)
     {
+        Debug.Log("Villager added: " + villager.name);
         spawnedVillagersList.Add(villager);
     }
 
@@ -146,7 +147,7 @@ public class Unit_Controller : MonoBehaviour
 
         //this many villagers will spawn later on when loading data
         us.numberOfVillagersAssigned = spawnedVillagersList.Count;
-
+        Debug.Log(spawnedVillagersList.Count);
         //initialize the arrays from the serializable copy
         us.villagerXpositions = new float[spawnedVillagersList.Count];
         us.villagerYpositions = new float[spawnedVillagersList.Count];
@@ -182,7 +183,7 @@ public class Unit_Controller : MonoBehaviour
         return us;
     }
 
-    public void SpawnSpecificUnit(Vector3 position, string villagerType)
+    private void SpawnSpecificUnit(Vector3 position, string villagerType)
     {
         if (genericVillager != null)
         {

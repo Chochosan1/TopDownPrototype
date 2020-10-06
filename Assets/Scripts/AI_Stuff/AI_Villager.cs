@@ -21,14 +21,26 @@ public class AI_Villager : AI_Base, ISelectable
     private BuildingController buildingController;
     private Transform thisTransform;
 
+    [Tooltip("Use for defaulted by the level objects. For example, if the level must started with 1 villager, mark the villager to force save so that next time the game loads he'll still be there.")]
+    [SerializeField] private bool defaultedWorldObject = false;
+
     void Start()
     {
+        //if it is a defaulted world object
+        if(defaultedWorldObject)
+        {
+            Unit_Controller.Instance.AddVillagerToList(gameObject.GetComponent<AI_Villager>()); //add to the list with spawned objects
+
+            //all defaulted objects are parented to an object that gets deleted if there is an existing save
+            //however navmesh agents break if they are parented so if they exist (parent object not deleted) it's necessary to remove their parent 
+            gameObject.transform.SetParent(null); 
+        }
         thisTransform = GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         aiState = AIState_Villager.Idle;
         SwitchVillagerType(villagerType);
-        PlayerInventory.Instance.CurrentPopulation++;
+        PlayerInventory.Instance.CurrentPopulation++;   
     }
 
     void Update()
@@ -158,7 +170,7 @@ public class AI_Villager : AI_Base, ISelectable
 
         if (debugState)
         {
-            Chochosan.ChochosanHelper.ChochosanDebug("Target", currentTarget, "red");
+          //  Chochosan.ChochosanHelper.ChochosanDebug("Target", currentTarget, "red");
             Chochosan.ChochosanHelper.ChochosanDebug("State", aiState, "green");
         }
     }
@@ -197,9 +209,9 @@ public class AI_Villager : AI_Base, ISelectable
                 enemyLayer = LayerMask.GetMask("Food");
                 unitName = "Food gatherer";
                 break;
-            case Villager_Type.Builder:
-                unitName = "Builder";
+            case Villager_Type.Builder:              
                 enemyLayer = LayerMask.GetMask("BuildingInProgress");
+                unitName = "Builder";
                 break;
         }
         //send a message that a displayable UI value has been changed (in this case the name of the villager)

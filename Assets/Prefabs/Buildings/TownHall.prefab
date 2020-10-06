@@ -63,9 +63,9 @@ MonoBehaviour:
   customAgentStoppingDistance: 2.5
   buildingMaxHP: 500
   housingSpace: 2
-  charismaOnBuilt: 80
+  charismaOnBuilt: 101
   buildingProgress: 0
-  progressPerBuildIteration: 25
+  progressPerBuildIteration: 100
 --- !u!208 &3824410492233211385
 NavMeshObstacle:
   m_ObjectHideFlags: 0

@@ -22,13 +22,18 @@ public class HarvestableLoader : MonoBehaviour
     {
         allSpawnedHarvestables = new List<Harvestable_Controller>();
         allSpawnedHarvestablesSerializable = new List<HarvestableControllerSerializable>();
+
+        if(Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            Destroy(defaultSceneResourcesPrefab);
+        }
     }
 
     private void Start()
     {
         if (Chochosan.SaveLoadManager.IsSaveExists())
         {
-            Destroy(defaultSceneResourcesPrefab);
+            
             foreach (HarvestableControllerSerializable hcs in Chochosan.SaveLoadManager.savedGameData.harvestableList)
             {
                 //load the position

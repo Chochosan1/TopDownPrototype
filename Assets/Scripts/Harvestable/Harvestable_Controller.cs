@@ -36,7 +36,7 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
 
 
         }
-        if (!Chochosan.SaveLoadManager.IsSaveExists() && harvestableType != HarvestableType.BuildingInProgress)
+        if (!Chochosan.SaveLoadManager.IsSaveExists() && harvestableType != HarvestableType.BuildingInProgress) //dont add buildingInProgress to the harvestable list; this is instead handled by the general building saving
         {
             HarvestableLoader.AddHarvestableToList(this);
             currentResourcesToHarvest = stats.maxResourcesToHarvest;

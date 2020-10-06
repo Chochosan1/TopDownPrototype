@@ -102,6 +102,7 @@ public class PlayerInventory : MonoBehaviour
         }
         set
         {
+            Debug.Log("ADDED POP");
             currentPopulation = value;
             OnInventoryValueChanged?.Invoke("currentPopulation", currentPopulation);
         }
