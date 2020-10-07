@@ -47,6 +47,8 @@ public class AI_Villager : AI_Base, ISelectable
     {
         if (aiState == AIState_Villager.Idle)
         {
+            currentTarget = null;
+            currentHarvestable = null;
             anim.SetBool("Idle", true);
             anim.SetBool("Walk", false);
             anim.SetBool("HarvestWood", false);
@@ -55,7 +57,7 @@ public class AI_Villager : AI_Base, ISelectable
         }
         else if (aiState == AIState_Villager.MovingToSpecificTarget) //if a specific target has been chosen by the AI
         {
-            if (currentTarget == null)
+            if (currentTarget == null || currentHarvestable == null)
             {
                 aiState = AIState_Villager.Idle;
                 SetAgentDestination(agent, agent.transform.position);
@@ -79,13 +81,11 @@ public class AI_Villager : AI_Base, ISelectable
         }
         else if (aiState == AIState_Villager.Harvesting)
         {
-            if (currentTarget == null)
+            if (currentTarget == null || currentHarvestable == null)
             {
                 aiState = AIState_Villager.Idle;
                 return;
             }
-         //   anim.SetBool("Walk", false);
-         //   anim.SetBool("HarvestWood", true);
             if (Time.time >= harvestAnimTimestamp)
             {
                 if (currentHarvestable != null)
@@ -112,10 +112,10 @@ public class AI_Villager : AI_Base, ISelectable
                 if(aiState != AIState_Villager.MovingToSpecificTarget)
                 {
                     aiState = AIState_Villager.MovingToSpecificTarget;
-                    Harvestable_Controller hc = currentTarget.GetComponent<Harvestable_Controller>();
-                    if(hc != null)
+                    currentHarvestable = currentTarget.GetComponentInChildren<Harvestable_Controller>();
+                    if(currentHarvestable != null)
                     {
-                        agent.stoppingDistance = hc.customStoppingDistance;
+                        agent.stoppingDistance = currentHarvestable.customStoppingDistance;
                     }
                 }             
             }
@@ -125,7 +125,7 @@ public class AI_Villager : AI_Base, ISelectable
                 {
                     aiState = AIState_Villager.Harvesting;
                     harvestAnimTimestamp = Time.time + harvestInterval;
-                    currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
+                    currentHarvestable = currentTarget.GetComponentInChildren<Harvestable_Controller>();
                     switch (villagerType)
                     {
                         case Villager_Type.WoodWorker:
@@ -159,7 +159,10 @@ public class AI_Villager : AI_Base, ISelectable
             }
             else
             {
-                GoIntoIdleState();
+                if(currentTarget == null)
+                {
+                    GoIntoIdleState();
+                }             
             }
         }
         else
@@ -316,11 +319,21 @@ public class AI_Villager : AI_Base, ISelectable
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Foodharvesting locked!", "red");
                 break;
-            case "BuildingInProgress":
-                SwitchVillagerType(Villager_Type.Builder);
-                aiState = AIState_Villager.MovingToSpecificTarget;
-                currentTarget = target;
-                agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
+            //case "BuildingInProgress":
+            //    SwitchVillagerType(Villager_Type.Builder);
+            //    aiState = AIState_Villager.MovingToSpecificTarget;
+            //    currentTarget = target;
+            //    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
+            //    break;
+            case "SelectableBuilding":
+                if(!target.GetComponent<BuildingController>().GetIsBuildingComplete())
+                {
+                    SwitchVillagerType(Villager_Type.Builder);
+                    aiState = AIState_Villager.MovingToSpecificTarget;
+                    currentTarget = target;
+                    currentHarvestable = currentTarget.GetComponentInChildren<Harvestable_Controller>();
+                    agent.stoppingDistance = currentHarvestable.customStoppingDistance;
+                }          
                 break;
         }
     }

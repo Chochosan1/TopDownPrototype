@@ -52,7 +52,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         {
             isBuildingComplete = false;
             mainBuilding.SetActive(false);
-            GetComponent<BoxCollider>().enabled = false;
+        //    GetComponent<BoxCollider>().enabled = false;
         }
         else
         {
@@ -65,7 +65,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         mainBuilding.SetActive(true);
         Destroy(buildingInProgress);       
         buildingProgress = 100;
-        GetComponent<BoxCollider>().enabled = true;
+     //   GetComponent<BoxCollider>().enabled = true;
         UnlockUpgradeWhenBuilt();
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally?.Invoke(buildingName, buildingType);
 
@@ -89,6 +89,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void SetIsBuildingComplete(bool value)
     {
         isBuildingComplete = value;
+    }
+
+    public bool GetIsBuildingComplete()
+    {
+        return isBuildingComplete;
     }
 
     //called when the building is first instantiated by the player(not when loading data)
@@ -173,7 +178,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     }
 
     public void DestroyBuilding()
-    {
+    {      
         ObjectSpawner.Instance.RemoveBuildingFromList(gameObject);
         Destroy(gameObject);
     }

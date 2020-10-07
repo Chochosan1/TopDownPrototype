@@ -11,6 +11,7 @@ TagManager:
   - BuildingInProgress
   - TownHall
   - Food
+  - SelectableBuilding
   layers:
   - Default
   - TransparentFX

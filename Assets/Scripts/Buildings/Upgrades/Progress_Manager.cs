@@ -29,7 +29,7 @@ public class Progress_Manager : MonoBehaviour
         {
             if (townHallController == null)
             {
-                townHallController = GameObject.FindGameObjectWithTag("TownHall").GetComponent<BuildingController>();
+                townHallController = GameObject.Find("TownHallNew(Clone)").GetComponent<BuildingController>();
                 return;
             }
             StartCoroutine(townHallController.SpawnVillagerAfterTime());

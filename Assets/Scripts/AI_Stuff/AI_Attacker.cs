@@ -38,9 +38,10 @@ public class AI_Attacker : AI_Base, IDamageable
 
     private void Update()
     {
+        //ChooseNewTarget(true);
         if (aiState == AIState.MovingToTarget)
         {
-            if (currentTarget == null)
+            if (currentTarget == null || currentDamageable == null)
             {
                 aiState = AIState.GoingToDefaultTarget;
                 SetAgentDestination(agent, agent.transform.position);
@@ -60,6 +61,8 @@ public class AI_Attacker : AI_Base, IDamageable
                 }
                 else
                 {
+                    currentTarget = null;
+                    currentDamageable = null;
                     aiState = AIState.GoingToDefaultTarget;
                     Chochosan.ChochosanHelper.ChochosanDebug("NULL CAUGHT || ATTACKER", "red");
                 }
@@ -67,6 +70,8 @@ public class AI_Attacker : AI_Base, IDamageable
         }
         else if(aiState == AIState.GoingToDefaultTarget)
         {
+            currentTarget = null;
+            currentDamageable = null;
             SetAgentDestination(agent, defaultTargetIfNoOtherAvailable.transform.position);
             agent.stoppingDistance = defaultAgentStoppingDistance;
             ChooseNewTarget(true);

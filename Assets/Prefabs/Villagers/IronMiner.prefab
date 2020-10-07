@@ -656,6 +656,7 @@ MonoBehaviour:
   debugState: 0
   villagerType: 2
   harvestInterval: 1.6
+  defaultedWorldObject: 0
 --- !u!195 &2547033674450600918
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -667,7 +668,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.25
   m_Speed: 2.5
-  m_Acceleration: 8
+  m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 2

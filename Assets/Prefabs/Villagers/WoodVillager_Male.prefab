@@ -654,7 +654,9 @@ MonoBehaviour:
   firstPureEnemySenseRange: 5
   secondPureEnemySenseRange: 30
   debugState: 0
+  villagerType: 0
   harvestInterval: 1.6
+  defaultedWorldObject: 0
 --- !u!195 &2547033674450600918
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -666,7 +668,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.25
   m_Speed: 2.5
-  m_Acceleration: 8
+  m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 2
@@ -2543,6 +2545,7 @@ Transform:
   - {fileID: 2547033673265335168}
   - {fileID: 2547033673265420636}
   - {fileID: 2547033673265340746}
+  - {fileID: 3298502997237963944}
   m_Father: {fileID: 2547033673265399280}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4172,3 +4175,78 @@ Transform:
   m_Father: {fileID: 2547033673265350582}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3298502997237661260
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2547033673265403742}
+    m_Modifications:
+    - target: {fileID: 191440, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_Name
+      value: SM_Wep_Halberd_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -32.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.71330804
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0131394835
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.013378144
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7005998
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 91.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 2.149994
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.0009918213
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.00005
+      objectReference: {fileID: 0}
+    - target: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100.00003
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 316022a1c585a7b45b3cc2f855960c93, type: 3}
+--- !u!4 &3298502997237963944 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 484068, guid: 316022a1c585a7b45b3cc2f855960c93,
+    type: 3}
+  m_PrefabInstance: {fileID: 3298502997237661260}
+  m_PrefabAsset: {fileID: 0}

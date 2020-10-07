@@ -71,7 +71,7 @@ MonoBehaviour:
   unitName: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 395264
+    m_Bits: 133120
   firstPureEnemySenseRange: 5
   secondPureEnemySenseRange: 30
   attackerIndex: 0
