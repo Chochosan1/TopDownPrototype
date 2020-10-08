@@ -281,6 +281,7 @@ public class AI_Villager : AI_Base, ISelectable
                     SwitchVillagerType(Villager_Type.WoodWorker);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
+                    currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
                     agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 }
                 else
@@ -292,6 +293,7 @@ public class AI_Villager : AI_Base, ISelectable
                     SwitchVillagerType(Villager_Type.GoldWorker);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
+                    currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
                     agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 }
                 else
@@ -303,6 +305,7 @@ public class AI_Villager : AI_Base, ISelectable
                     SwitchVillagerType(Villager_Type.IronWorker);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
+                    currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
                     agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 }
                 else
@@ -314,6 +317,7 @@ public class AI_Villager : AI_Base, ISelectable
                     SwitchVillagerType(Villager_Type.FoodWorker);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
+                    currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
                     agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
                 }
                 else

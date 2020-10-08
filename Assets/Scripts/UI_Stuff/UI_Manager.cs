@@ -118,13 +118,13 @@ namespace Chochosan
             switch (valueName)
             {
                 case "wood":
-                    woodText.text = value.ToString();
+                    woodText.text = value.ToString("F0");
                     break;
                 case "gold":
-                    goldText.text = value.ToString();
+                    goldText.text = value.ToString("F0");
                     break;
                 case "iron":
-                    ironText.text = value.ToString();
+                    ironText.text = value.ToString("F0");
                     break;
                 case "currentPopulation":
                     currentPopulationText.text = value.ToString();
@@ -136,12 +136,12 @@ namespace Chochosan
                     currentCharismaText.text = value.ToString("F0");
                     break;
                 case "food":
-                    currentFoodText.text = value.ToString();
+                    currentFoodText.text = value.ToString("F0");
                     break;
             }        
         }
 
-        private void UpdateBuildingUI(string buildingName, Buildings buildingType)
+        private void UpdateBuildingUI(BuildingController bc, Buildings buildingType)
         {
             switch (buildingType)
             {

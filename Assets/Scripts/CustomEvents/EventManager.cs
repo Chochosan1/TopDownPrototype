@@ -28,7 +28,7 @@ namespace Chochosan
         public OnDisplayedUIValueChangedDelegate OnDisplayedUIValueChanged;
 
         //event subscribed to in UI_Manager to trigger UI refresh when any of the displayed values has been changed
-        public delegate void OnBuildingBuiltDelegate(string buildingName, Buildings buildingType);
+        public delegate void OnBuildingBuiltDelegate(BuildingController bc, Buildings buildingType);
         public OnBuildingBuiltDelegate OnBuildingBuiltFinally;
     }
 }

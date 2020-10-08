@@ -11044,7 +11044,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3714809898216194262}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.72, y: 0, z: -9.32}
+  m_LocalPosition: {x: 13.96, y: 0, z: -5.4}
   m_LocalScale: {x: 1.967897, y: 1, z: 2.1077244}
   m_Children: []
   m_Father: {fileID: 7042563272359978497}
@@ -17043,7 +17043,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7037983396764710905}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.2700021, y: 0.2, z: 0.24999821}
+  m_LocalPosition: {x: -0.02, y: 0.2, z: -0.32}
   m_LocalScale: {x: 0.50815666, y: 1, z: 0.4744453}
   m_Children:
   - {fileID: 8540888313577951070}
@@ -17178,7 +17178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7086632345889355059}
   m_LocalRotation: {x: -0, y: 0.5448437, z: -0, w: 0.83853763}
-  m_LocalPosition: {x: -17.91, y: 0, z: 3.37}
+  m_LocalPosition: {x: -10.71, y: 0, z: 4.6}
   m_LocalScale: {x: 1.967897, y: 1, z: 2.1077244}
   m_Children: []
   m_Father: {fileID: 7042563272359978497}
@@ -22294,6 +22294,7 @@ MonoBehaviour:
   buildingMaxHP: 100
   housingSpace: 0
   charismaOnBuilt: 5
+  woodUpkeepAfterBuilding: 0
   buildingProgress: 0
   progressPerBuildIteration: 10
 --- !u!65 &3502552411119768181

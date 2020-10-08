@@ -528,6 +528,7 @@ MonoBehaviour:
   buildingMaxHP: 100
   housingSpace: 0
   charismaOnBuilt: 5
+  woodUpkeepAfterBuilding: 0
   buildingProgress: 0
   progressPerBuildIteration: 25
 --- !u!65 &9140430474104290833

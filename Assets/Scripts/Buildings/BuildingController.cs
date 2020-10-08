@@ -13,7 +13,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private string buildingName;
     [SerializeField] private UpgradeToUnlock upgradeToUnlock;
     [SerializeField] private Buildings buildingType;
-  //  [SerializeField] private string[] buildingRequirementsBeforeBuilding;
+    //  [SerializeField] private string[] buildingRequirementsBeforeBuilding;
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
     [SerializeField] SO_CostRequirements costRequirements;
     [Tooltip("The part of the prefab that holds the finally built building.")]
@@ -25,13 +25,27 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [Tooltip("Villager will spawn after that many seconds.")]
     [SerializeField] private float spawnFirstVillageAfterSeconds = 2f;
     [SerializeField] private int maxBuildingLevel = 3;
-    private int currentBuildingLevel = 1; //default starting level
+    //default starting level
+    private int currentBuildingLevel = 1; 
     [Header("Stats")]
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float buildingMaxHP = 100;
     [SerializeField] private int housingSpace;
     [SerializeField] private float charismaOnBuilt = 5f;
-    private float buildingCurrentHP = 1; //initial HP before being finally built
+    [Tooltip("After the building is built, it will consume that many wood for its upkeep.")]
+    [SerializeField] private float woodUpkeepAfterBuilding = 0f;
+    public float WoodUpkeep
+    {
+        get
+        {
+            return buildingProgress >= 100 ? woodUpkeepAfterBuilding : 0;
+        }
+
+        private set { }
+    }
+
+    //initial HP before being finally built
+    private float buildingCurrentHP = 1; 
     private bool isBuildingComplete; 
     [Tooltip("The current building progress. Set to 100 if the building must be built as a part of the level instead of requiring player input. ")]
     [SerializeField] private float buildingProgress;
@@ -67,7 +81,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         buildingProgress = 100;
      //   GetComponent<BoxCollider>().enabled = true;
         UnlockUpgradeWhenBuilt();
-        Chochosan.EventManager.Instance.OnBuildingBuiltFinally?.Invoke(buildingName, buildingType);
+        Chochosan.EventManager.Instance.OnBuildingBuiltFinally?.Invoke(this, buildingType);
 
         //isBuildingComplete becomes true the moment the building is done; if saved and then loaded this block will not execute again
         if (!isBuildingComplete) 

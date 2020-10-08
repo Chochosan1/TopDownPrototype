@@ -25,6 +25,7 @@ public class Progress_Manager : MonoBehaviour
     private void Update()
     {
         PlayerInventory.Instance.CurrentVillageCharisma += Time.deltaTime * 0.1f;
+        PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / 5f;
         if (PlayerInventory.Instance.CurrentVillageCharisma >= 100 && PlayerInventory.Instance.IsHaveEnoughHousingSpace())
         {
             if (townHallController == null)

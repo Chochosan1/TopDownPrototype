@@ -44,13 +44,30 @@ public class PlayerInventory : MonoBehaviour
         objectSpawner = GetComponent<ObjectSpawner>();
         objectSpawner.OnObjectBuildableSpawnedAtWorld += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded += SpendResources;
+        Chochosan.EventManager.Instance.OnBuildingBuiltFinally += CalculateUpkeep;
     }
 
     private void OnDisable()
     {
         objectSpawner.OnObjectBuildableSpawnedAtWorld -= SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded -= SpendResources;
+        Chochosan.EventManager.Instance.OnBuildingBuiltFinally = CalculateUpkeep;
     }
+
+    public float CurrentWoodUpkeep
+    {
+        get
+        {
+            return currentWoodUpkeep;
+        }
+        set
+        {
+            currentWoodUpkeep = value;
+            OnInventoryValueChanged?.Invoke("woodupkeep", currentWoodUpkeep);
+            Debug.Log("Upkeep: " + currentWoodUpkeep);
+        }
+    }
+    private float currentWoodUpkeep;
 
     public float CurrentWood
     {
@@ -177,6 +194,11 @@ public class PlayerInventory : MonoBehaviour
         CurrentGold -= requirements.goldRequired;
         CurrentIron -= requirements.ironRequired;
         CurrentFood -= requirements.foodRequired;
+    }
+
+    private void CalculateUpkeep(BuildingController bc, Buildings buildingType)
+    {
+        CurrentWoodUpkeep += bc.WoodUpkeep;
     }
 
     public InventorySaveData GetInventory()

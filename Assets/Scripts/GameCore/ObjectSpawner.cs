@@ -67,7 +67,8 @@ public class ObjectSpawner : MonoBehaviour
                 tempController.SetBuildingHP(bcs.buildingCurrentHP);
 
                 //finally add the loaded object into the list with all objects (very important in order to allow overriding saves)
-                allBuildingsSpawned.Add(tempObject);
+          //      allBuildingsSpawned.Add(tempObject);
+                AddBuildingToList(tempObject);
 
                 ////spawn that many villagers based on the number of villagersAssigned in the save file
                 //for (int i = 0; i < bcs.numberOfVillagersAssigned; i++)
@@ -168,14 +169,15 @@ public class ObjectSpawner : MonoBehaviour
             BuildingController tempController = tempObject.GetComponent<BuildingController>();
             //cache the current build index so it can be used when loading data
             tempController.SetBuildingIndex(currentObjectIndex);
-         //   tempController.SetInitialHP();
+            //   tempController.SetInitialHP();
 
             //ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
             //if (tempInterface != null)
             //    tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
-               
+
             //add the spawned object to the list with all spawned objects
-            allBuildingsSpawned.Add(tempObject);
+            //allBuildingsSpawned.Add(tempObject);
+            AddBuildingToList(tempObject);
 
             //invoke the delegate
             OnObjectBuildableSpawnedAtWorld?.Invoke(currentObject.GetComponent<RequirementsToBuild>().GetRequirements());
@@ -213,6 +215,15 @@ public class ObjectSpawner : MonoBehaviour
             currentObject = null;
             colCheckers = null;
         }
+    }
+
+    public void AddBuildingToList(GameObject building)
+    {
+        if (building == null)
+        {
+            return;
+        }
+        allBuildingsSpawned.Add(building);
     }
 
     public void RemoveBuildingFromList(GameObject building)
