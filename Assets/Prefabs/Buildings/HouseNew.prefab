@@ -246,7 +246,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7
-  customAgentStoppingDistance: 2.5
+  customAgentStoppingDistance: 4
   buildingMaxHP: 50
   housingSpace: 2
   charismaOnBuilt: 101

@@ -5,6 +5,8 @@ using UnityEngine;
 /// Attach to a harvestable object. The HarvestableType determines what kind of a resource the harvestable object will yield to the PlayerInventory.
 /// </summary>
 public enum HarvestableType { Wood, Gold, Iron, Food, BuildingInProgress }
+
+[RequireComponent(typeof(BoxCollider))] //the collider must be present in order for the object to be detectable by villagers
 public class Harvestable_Controller : MonoBehaviour, IHarvestable
 {
     private int currentHarvestableIndex; //used to spawn the right object when loading data
