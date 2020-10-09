@@ -138,10 +138,11 @@ MonoBehaviour:
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7
   customAgentStoppingDistance: 6
-  buildingMaxHP: 50
-  housingSpace: 2
+  buildingMaxHP: 200
+  housingSpace: 0
   charismaOnBuilt: 50
-  woodUpkeepAfterBuilding: 0
+  woodUpkeepAfterBuilding: 5
+  foodGeneration: 12
   buildingProgress: 0
   progressPerBuildIteration: 20
 --- !u!65 &7329684871986615859
@@ -759,7 +760,7 @@ GameObject:
   - component: {fileID: 1558468091879419659}
   - component: {fileID: 2466587312021126327}
   - component: {fileID: 1705371482881729429}
-  - component: {fileID: 1066002545915224126}
+  - component: {fileID: 1362502438}
   m_Layer: 0
   m_Name: Propeller
   m_TagString: Untagged
@@ -828,19 +829,25 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &1066002545915224126
-MonoBehaviour:
+--- !u!95 &1362502438
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5527748349824701677}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2476b8f898c89aa48b9d4125fc4f8e09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spinSpeed: 8
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3252d652f563be947bd9aa6ea6447b72, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8305469968679070034
 GameObject:
   m_ObjectHideFlags: 0

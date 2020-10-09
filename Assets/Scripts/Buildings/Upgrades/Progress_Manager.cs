@@ -7,6 +7,7 @@ public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;
 
+    [Header("General Game Settings")]
     [Tooltip("How often should values in the game update? Measured in seconds.")]
     [SerializeField] private float gameTickCooldown = 1f;
     private float gameTickTimestamp;
@@ -16,7 +17,7 @@ public class Progress_Manager : MonoBehaviour
 
     //values in the game are set as per daily basis (e.g costs 20 wood upkeep per day) but the values themself are updated 
     //much more frequently than that. This requires a displayValueReducer to turn the perDayValues into values that can be updated more often
-    private float displayValueReducer;
+    private float updateValueReducer;
 
     private BuildingController townHallController;
 
@@ -32,7 +33,7 @@ public class Progress_Manager : MonoBehaviour
             Instance = this;
         }
 
-        displayValueReducer = dayDurationInSeconds / gameTickCooldown;
+        updateValueReducer = dayDurationInSeconds / gameTickCooldown;
     }
 
     private void Start()
@@ -45,7 +46,7 @@ public class Progress_Manager : MonoBehaviour
         {
             CurrentDayTimestamp = dayDurationInSeconds;
         }
-
+        gameTickTimestamp = gameTickCooldown;
         Debug.Log(CurrentDayTimestamp);
     }
 
@@ -53,30 +54,29 @@ public class Progress_Manager : MonoBehaviour
     {
         if (Time.time >= gameTickTimestamp)
         {
-            PlayerInventory.Instance.CurrentVillageCharisma += 33f / displayValueReducer;
-            PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / displayValueReducer;
-            PlayerInventory.Instance.CurrentFood += PlayerInventory.Instance.CurrentAutoFoodGeneration / displayValueReducer;
-            dayTimestamp--;
-
+            PlayerInventory.Instance.CurrentVillageCharisma += 33f / updateValueReducer;
+            PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / updateValueReducer;
+            PlayerInventory.Instance.CurrentFood += (PlayerInventory.Instance.CurrentAutoFoodGeneration - PlayerInventory.Instance.CurrentFoodConsumption) / updateValueReducer;
+            dayTimestamp -= gameTickCooldown;
+         
             if (dayTimestamp <= 0)
             {
                 PlayerInventory.Instance.CurrentDay++;
                 dayTimestamp = dayDurationInSeconds;
             }
-
             gameTickTimestamp = Time.time + gameTickCooldown;
-        }
 
-        if (PlayerInventory.Instance.CurrentVillageCharisma >= 100 && PlayerInventory.Instance.IsHaveEnoughHousingSpace())
-        {
-            if (townHallController == null)
+            if (PlayerInventory.Instance.CurrentVillageCharisma >= 100 && PlayerInventory.Instance.IsHaveEnoughHousingSpace())
             {
-                townHallController = GameObject.Find("TownHallNew(Clone)").GetComponent<BuildingController>();
-                return;
+                if (townHallController == null)
+                {
+                    townHallController = GameObject.Find("TownHallNew(Clone)").GetComponent<BuildingController>();
+                    return;
+                }
+                StartCoroutine(townHallController.SpawnVillagerAfterTime());
+                PlayerInventory.Instance.CurrentVillageCharisma = 0;
             }
-            StartCoroutine(townHallController.SpawnVillagerAfterTime());
-            PlayerInventory.Instance.CurrentVillageCharisma = 0;
-        }
+        }      
     }
 
     public float CurrentDayTimestamp

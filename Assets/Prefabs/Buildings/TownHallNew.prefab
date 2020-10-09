@@ -5811,7 +5811,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31b16fd87cf33014c946e9d512d1e03c, type: 2}
+  - {fileID: 2100000, guid: ddfdabbfb4e91b241b158cc818176b18, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5969,7 +5969,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31b16fd87cf33014c946e9d512d1e03c, type: 2}
+  - {fileID: 2100000, guid: 31ea7f3deb6af554c95422dc687690bc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6924,6 +6924,7 @@ MonoBehaviour:
   housingSpace: 2
   charismaOnBuilt: 101
   woodUpkeepAfterBuilding: 10
+  foodGeneration: 0
   buildingProgress: 0
   progressPerBuildIteration: 100
 --- !u!65 &1162139078762324997

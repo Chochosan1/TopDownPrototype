@@ -656,6 +656,7 @@ MonoBehaviour:
   debugState: 0
   villagerType: 4
   harvestInterval: 1.6
+  foodConsumption: 5
   defaultedWorldObject: 0
 --- !u!195 &2547033674450600918
 NavMeshAgent:

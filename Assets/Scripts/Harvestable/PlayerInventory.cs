@@ -19,10 +19,13 @@ public class PlayerInventory : MonoBehaviour
     public event OnInventoryValueChangedDelegate OnInventoryValueChanged;
 
     private ObjectSpawner objectSpawner;
+    [Header("Production")]
+    [Tooltip("That much food is required in order to activate the auto food generation that comes from buildings like the Mill.")]
+    [SerializeField] private float minFoodRequiredToAutoGenerateFood = 15f;
 
     private void Start()
     {
-        if(Chochosan.SaveLoadManager.IsSaveExists())
+        if (Chochosan.SaveLoadManager.IsSaveExists())
         {
             CurrentWood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentWood;
             CurrentGold = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentGold;
@@ -40,7 +43,7 @@ public class PlayerInventory : MonoBehaviour
             CurrentVillageCharisma = 0;
             CurrentDay = 1;
         }
-       
+
 
         //Event subscription
         objectSpawner = GetComponent<ObjectSpawner>();
@@ -142,7 +145,7 @@ public class PlayerInventory : MonoBehaviour
         }
     }
     private int maxPopulation;
-   
+
     public float CurrentVillageCharisma
     {
         get
@@ -175,7 +178,16 @@ public class PlayerInventory : MonoBehaviour
     {
         get
         {
-            return currentAutoFoodGeneration;
+            if (currentFood >= minFoodRequiredToAutoGenerateFood)
+            {
+                OnInventoryValueChanged?.Invoke("autoFood", currentAutoFoodGeneration);
+                return currentAutoFoodGeneration;
+            }             
+            else
+            {
+                OnInventoryValueChanged?.Invoke("autoFood", 0);
+                return 0;
+            }              
         }
         set
         {
@@ -184,6 +196,20 @@ public class PlayerInventory : MonoBehaviour
         }
     }
     private float currentAutoFoodGeneration;
+
+    public float CurrentFoodConsumption
+    {
+        get
+        {
+            return currentFoodConsumption;
+        }
+        set
+        {
+            currentFoodConsumption = value;
+            OnInventoryValueChanged?.Invoke("foodConsumption", currentFoodConsumption);
+        }
+    }
+    private float currentFoodConsumption;
 
     public int CurrentDay
     {
@@ -234,10 +260,10 @@ public class PlayerInventory : MonoBehaviour
 
     private void AddAutoFoodGeneration(BuildingController bc, Buildings buildingType)
     {
-        switch(buildingType)
+        switch (buildingType)
         {
             case Buildings.Mill:
-                CurrentAutoFoodGeneration += 20f;
+                CurrentAutoFoodGeneration += bc.FoodGeneration;
                 break;
         }
     }

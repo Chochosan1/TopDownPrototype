@@ -32,13 +32,25 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private float buildingMaxHP = 100;
     [SerializeField] private int housingSpace;
     [SerializeField] private float charismaOnBuilt = 5f;
-    [Tooltip("After the building is built, it will consume that many wood for its upkeep.")]
+    [Tooltip("After the building is built, it will consume that many wood per day for its upkeep.")]
     [SerializeField] private float woodUpkeepAfterBuilding = 0f;
+    [Tooltip("After the building is built, it will autogenerate that much food per day.")]
+    [SerializeField] private float foodGeneration = 0f;
     public float WoodUpkeep
     {
         get
         {
             return buildingProgress >= 100 ? woodUpkeepAfterBuilding : 0;
+        }
+
+        private set { }
+    }
+
+    public float FoodGeneration
+    {
+        get
+        {
+            return foodGeneration;
         }
 
         private set { }

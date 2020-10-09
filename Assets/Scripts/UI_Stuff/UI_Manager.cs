@@ -22,8 +22,11 @@ namespace Chochosan
         [SerializeField] private TextMeshProUGUI currentPopulationText;
         [SerializeField] private TextMeshProUGUI maxPopulationText;
         [SerializeField] private TextMeshProUGUI currentCharismaText;
-        [SerializeField] private TextMeshProUGUI currentFoodText;
+        [SerializeField] private TextMeshProUGUI foodText;
+        [SerializeField] private TextMeshProUGUI autoFoodText;
+        [SerializeField] private TextMeshProUGUI foodConsumptionText;
         [SerializeField] private TextMeshProUGUI currentDayText;
+        [SerializeField] private TextMeshProUGUI woodUpkeepText;
 
         [Header("Building Buttons")]
         [SerializeField] private Button townHallButton;
@@ -137,10 +140,19 @@ namespace Chochosan
                     currentCharismaText.text = value.ToString("F0");
                     break;
                 case "food":
-                    currentFoodText.text = value.ToString("F0");
+                    foodText.text = value.ToString("F0");
+                    break;
+                case "autoFood":
+                    autoFoodText.text = value.ToString("F0");
+                    break;
+                case "foodConsumption":
+                    foodConsumptionText.text = value.ToString("F0");
                     break;
                 case "currentDay":
                     currentDayText.text = value.ToString();
+                    break;
+                case "woodupkeep":
+                    woodUpkeepText.text = value.ToString("F0");
                     break;
             }        
         }

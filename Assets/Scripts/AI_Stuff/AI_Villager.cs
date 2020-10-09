@@ -16,6 +16,8 @@ public class AI_Villager : AI_Base, ISelectable
     [SerializeField] private Villager_Type villagerType;
     [Tooltip("How often should the villager loot resource from the harvestable object. Best way is to match it with the animation.")]
     [SerializeField] private float harvestInterval = 1.5f;
+    [Tooltip("How much food does this unit consume per day?")]
+    [SerializeField] private float foodConsumption;
     private float harvestAnimTimestamp;
     private Harvestable_Controller currentHarvestable;
     private BuildingController buildingController;
@@ -40,7 +42,8 @@ public class AI_Villager : AI_Base, ISelectable
         anim = GetComponent<Animator>();
         aiState = AIState_Villager.Idle;
         SwitchVillagerType(villagerType);
-        PlayerInventory.Instance.CurrentPopulation++;   
+        PlayerInventory.Instance.CurrentPopulation++;
+        PlayerInventory.Instance.CurrentFoodConsumption += foodConsumption;
     }
 
     void Update()
