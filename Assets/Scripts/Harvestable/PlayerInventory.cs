@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Takes care of all stats for the village.
+/// </summary>
 public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory Instance;
@@ -22,35 +24,51 @@ public class PlayerInventory : MonoBehaviour
     [Header("Production")]
     [Tooltip("That much food is required in order to activate the auto food generation that comes from buildings like the Mill.")]
     [SerializeField] private float minFoodRequiredToAutoGenerateFood = 15f;
+    [SerializeField] private float warehouseBonusWoodCapacity;
+    [SerializeField] private float warehouseBonusIronCapacity;
+    [SerializeField] private float warehouseBonusGoldCapacity;
+    [SerializeField] private float warehouseBonusFoodCapacity;
 
     private void Start()
     {
         if (Chochosan.SaveLoadManager.IsSaveExists())
         {
+            MaxWood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxWood;
+            MaxGold = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxGold;
+            MaxIron = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxIron;
+            MaxFood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxFood;
+
             CurrentWood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentWood;
             CurrentGold = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentGold;
             CurrentIron = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentIron;
             MaxPopulation = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxPopulation;
             CurrentVillageCharisma = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentCharisma;
             CurrentFood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentFood;
+            CurrentAutoFoodGeneration = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentAutoFoodGeneration;
             CurrentDay = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentDay;
         }
         else
         {
+            MaxWood = 130;
+            MaxGold = 5;
+            MaxIron = 5;
+            MaxFood = 30;
+
             CurrentWood = 120;
             CurrentGold = 2;
             CurrentIron = 2;
+            CurrentFood = 15;
             CurrentVillageCharisma = 0;
+            CurrentAutoFoodGeneration = 0;
             CurrentDay = 1;
         }
-
 
         //Event subscription
         objectSpawner = GetComponent<ObjectSpawner>();
         objectSpawner.OnObjectBuildableSpawnedAtWorld += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally += CalculateUpkeep;
-        Chochosan.EventManager.Instance.OnBuildingBuiltFinally += AddAutoFoodGeneration;
+    //    Chochosan.EventManager.Instance.OnBuildingBuiltFinally += AddBuildingBonus;
     }
 
     private void OnDisable()
@@ -58,7 +76,7 @@ public class PlayerInventory : MonoBehaviour
         objectSpawner.OnObjectBuildableSpawnedAtWorld -= SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded -= SpendResources;
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= CalculateUpkeep;
-        Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= AddAutoFoodGeneration;
+   //     Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= AddBuildingBonus;
     }
 
     public float CurrentWoodUpkeep
@@ -83,11 +101,36 @@ public class PlayerInventory : MonoBehaviour
         }
         set
         {
-            currentWood = value;
+            if (value <= maxWood)
+            {
+                currentWood = value;
+
+                if (currentWood < 0)
+                    currentWood = 0;
+            }
+            else
+            {
+                currentWood = maxWood;
+                Debug.Log("MAX WOOD GRANTED -> " + currentWood + " / " + value);
+            }
             OnInventoryValueChanged?.Invoke("wood", currentWood);
         }
     }
     private float currentWood;
+
+    public float MaxWood
+    {
+        get
+        {
+            return maxWood;
+        }
+        set
+        {
+            maxWood = value;
+            OnInventoryValueChanged?.Invoke("maxWood", maxWood);
+        }
+    }
+    private float maxWood;
 
     public float CurrentGold
     {
@@ -97,11 +140,35 @@ public class PlayerInventory : MonoBehaviour
         }
         set
         {
-            currentGold = value;
+            if (value <= maxGold)
+            {
+                currentGold = value;
+
+                if (currentGold < 0)
+                    currentGold = 0;
+            }
+            else
+            {
+                currentGold = maxGold;
+            }
             OnInventoryValueChanged?.Invoke("gold", currentGold);
         }
     }
     private float currentGold;
+
+    public float MaxGold
+    {
+        get
+        {
+            return maxGold;
+        }
+        set
+        {
+            maxGold = value;
+            OnInventoryValueChanged?.Invoke("maxGold", maxGold);
+        }
+    }
+    private float maxGold;
 
     public float CurrentIron
     {
@@ -111,11 +178,35 @@ public class PlayerInventory : MonoBehaviour
         }
         set
         {
-            currentIron = value;
+            if (value <= maxIron)
+            {
+                currentIron = value;
+
+                if (currentIron < 0)
+                    currentIron = 0;
+            }
+            else
+            {
+                currentIron = maxIron;
+            }
             OnInventoryValueChanged?.Invoke("iron", currentIron);
         }
     }
     private float currentIron;
+
+    public float MaxIron
+    {
+        get
+        {
+            return maxIron;
+        }
+        set
+        {
+            maxIron = value;
+            OnInventoryValueChanged?.Invoke("maxIron", maxIron);
+        }
+    }
+    private float maxIron;
 
     public int CurrentPopulation
     {
@@ -168,11 +259,35 @@ public class PlayerInventory : MonoBehaviour
         }
         set
         {
-            currentFood = value;
+            if (value <= maxFood)
+            {
+                currentFood = value;
+
+                if (currentFood < 0)
+                    currentFood = 0;
+            }
+            else
+            {
+                currentFood = maxFood;
+            }
             OnInventoryValueChanged?.Invoke("food", currentFood);
         }
     }
     private float currentFood;
+
+    public float MaxFood
+    {
+        get
+        {
+            return maxFood;
+        }
+        set
+        {
+            maxFood = value;
+            OnInventoryValueChanged?.Invoke("maxFood", maxFood);
+        }
+    }
+    private float maxFood;
 
     public float CurrentAutoFoodGeneration
     {
@@ -182,12 +297,12 @@ public class PlayerInventory : MonoBehaviour
             {
                 OnInventoryValueChanged?.Invoke("autoFood", currentAutoFoodGeneration);
                 return currentAutoFoodGeneration;
-            }             
+            }
             else
             {
                 OnInventoryValueChanged?.Invoke("autoFood", 0);
                 return 0;
-            }              
+            }
         }
         set
         {
@@ -258,12 +373,18 @@ public class PlayerInventory : MonoBehaviour
         CurrentWoodUpkeep += bc.WoodUpkeep;
     }
 
-    private void AddAutoFoodGeneration(BuildingController bc, Buildings buildingType)
+    public void AddBuildingBonus(BuildingController bc, Buildings buildingType)
     {
         switch (buildingType)
         {
             case Buildings.Mill:
                 CurrentAutoFoodGeneration += bc.FoodGeneration;
+                break;
+            case Buildings.Warehouse:
+                MaxWood += warehouseBonusWoodCapacity;
+                MaxIron += warehouseBonusIronCapacity;
+                MaxGold += warehouseBonusGoldCapacity;
+                MaxFood += warehouseBonusFoodCapacity;
                 break;
         }
     }
@@ -277,7 +398,12 @@ public class PlayerInventory : MonoBehaviour
         saveData.maxPopulation = maxPopulation;
         saveData.currentCharisma = currentVillageCharisma;
         saveData.currentFood = currentFood;
+        saveData.currentAutoFoodGeneration = currentAutoFoodGeneration;
         saveData.currentDay = currentDay;
+        saveData.maxWood = maxWood;
+        saveData.maxGold = maxGold;
+        saveData.maxIron = maxIron;
+        saveData.maxFood = maxFood;
         saveData.currentDayTimestamp = Progress_Manager.Instance.CurrentDayTimestamp;
         return saveData;
     }

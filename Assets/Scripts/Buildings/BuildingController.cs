@@ -128,6 +128,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         SetInitialHP();
         PlayerInventory.Instance.MaxPopulation += housingSpace;
         PlayerInventory.Instance.CurrentVillageCharisma += charismaOnBuilt;
+        PlayerInventory.Instance.AddBuildingBonus(this, buildingType);
         
         //if (villagerToSpawn != null)
         //{           
@@ -243,6 +244,12 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void SetBuildingLevel(int level)
     {
         currentBuildingLevel = level;
+    }
+
+
+    public int GetBuildingLevel()
+    {
+        return currentBuildingLevel;
     }
 
     public void SetBuildingIndex(int index)

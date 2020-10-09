@@ -27,6 +27,10 @@ namespace Chochosan
         [SerializeField] private TextMeshProUGUI foodConsumptionText;
         [SerializeField] private TextMeshProUGUI currentDayText;
         [SerializeField] private TextMeshProUGUI woodUpkeepText;
+        [SerializeField] private TextMeshProUGUI maxWoodText;
+        [SerializeField] private TextMeshProUGUI maxIronText;
+        [SerializeField] private TextMeshProUGUI maxGoldText;
+        [SerializeField] private TextMeshProUGUI maxFoodText;
 
         [Header("Building Buttons")]
         [SerializeField] private Button townHallButton;
@@ -153,6 +157,18 @@ namespace Chochosan
                     break;
                 case "woodupkeep":
                     woodUpkeepText.text = value.ToString("F0");
+                    break;
+                case "maxWood":
+                    maxWoodText.text = value.ToString("F0");
+                    break;
+                case "maxIron":
+                    maxIronText.text = value.ToString("F0");
+                    break;
+                case "maxGold":
+                    maxGoldText.text = value.ToString("F0");
+                    break;
+                case "maxFood":
+                    maxFoodText.text = value.ToString("F0");
                     break;
             }        
         }

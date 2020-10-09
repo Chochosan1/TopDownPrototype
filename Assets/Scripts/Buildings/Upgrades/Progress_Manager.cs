@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/// <summary>
+/// Calculates different stats all the time and unlocks progress.
+/// </summary>
 public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting, FoodHarvesting }
-public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill }
+public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill, Warehouse }
 public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;
@@ -38,7 +41,7 @@ public class Progress_Manager : MonoBehaviour
 
     private void Start()
     {
-        if(Chochosan.SaveLoadManager.IsSaveExists())
+        if (Chochosan.SaveLoadManager.IsSaveExists())
         {
             CurrentDayTimestamp = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentDayTimestamp;
         }
@@ -58,7 +61,7 @@ public class Progress_Manager : MonoBehaviour
             PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / updateValueReducer;
             PlayerInventory.Instance.CurrentFood += (PlayerInventory.Instance.CurrentAutoFoodGeneration - PlayerInventory.Instance.CurrentFoodConsumption) / updateValueReducer;
             dayTimestamp -= gameTickCooldown;
-         
+
             if (dayTimestamp <= 0)
             {
                 PlayerInventory.Instance.CurrentDay++;
@@ -76,14 +79,15 @@ public class Progress_Manager : MonoBehaviour
                 StartCoroutine(townHallController.SpawnVillagerAfterTime());
                 PlayerInventory.Instance.CurrentVillageCharisma = 0;
             }
-        }      
+        }
     }
 
     public float CurrentDayTimestamp
-    { get { return dayTimestamp; }
-      set { dayTimestamp = value <= dayDurationInSeconds ? value : dayDurationInSeconds; }
+    {
+        get { return dayTimestamp; }
+        set { dayTimestamp = value <= dayDurationInSeconds ? value : dayDurationInSeconds; }
     }
-    
+
 
     public void EnableSpecificHarvesting(UpgradeToUnlock specificHarvesting)
     {
