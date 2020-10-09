@@ -9,4 +9,6 @@ public struct InventorySaveData
     public int maxPopulation;
     public float currentCharisma;
     public float currentFood;
+    public int currentDay;
+    public float currentDayTimestamp;
 }

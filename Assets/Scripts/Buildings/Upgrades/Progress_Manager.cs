@@ -2,10 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting, FoodHarvesting }
-public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret }
+public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill }
 public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;
+
+    [Tooltip("How often should values in the game update? Measured in seconds.")]
+    [SerializeField] private float gameTickCooldown = 1f;
+    private float gameTickTimestamp;
+    [Tooltip("How often should a day last? Measured in seconds.")]
+    [SerializeField] private float dayDurationInSeconds = 60f;
+    private float dayTimestamp;
+
+    //values in the game are set as per daily basis (e.g costs 20 wood upkeep per day) but the values themself are updated 
+    //much more frequently than that. This requires a displayValueReducer to turn the perDayValues into values that can be updated more often
+    private float displayValueReducer;
 
     private BuildingController townHallController;
 
@@ -20,12 +31,42 @@ public class Progress_Manager : MonoBehaviour
         {
             Instance = this;
         }
+
+        displayValueReducer = dayDurationInSeconds / gameTickCooldown;
+    }
+
+    private void Start()
+    {
+        if(Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            CurrentDayTimestamp = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentDayTimestamp;
+        }
+        else
+        {
+            CurrentDayTimestamp = dayDurationInSeconds;
+        }
+
+        Debug.Log(CurrentDayTimestamp);
     }
 
     private void Update()
     {
-        PlayerInventory.Instance.CurrentVillageCharisma += Time.deltaTime * 0.1f;
-        PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / 5f;
+        if (Time.time >= gameTickTimestamp)
+        {
+            PlayerInventory.Instance.CurrentVillageCharisma += 33f / displayValueReducer;
+            PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / displayValueReducer;
+            PlayerInventory.Instance.CurrentFood += PlayerInventory.Instance.CurrentAutoFoodGeneration / displayValueReducer;
+            dayTimestamp--;
+
+            if (dayTimestamp <= 0)
+            {
+                PlayerInventory.Instance.CurrentDay++;
+                dayTimestamp = dayDurationInSeconds;
+            }
+
+            gameTickTimestamp = Time.time + gameTickCooldown;
+        }
+
         if (PlayerInventory.Instance.CurrentVillageCharisma >= 100 && PlayerInventory.Instance.IsHaveEnoughHousingSpace())
         {
             if (townHallController == null)
@@ -37,6 +78,12 @@ public class Progress_Manager : MonoBehaviour
             PlayerInventory.Instance.CurrentVillageCharisma = 0;
         }
     }
+
+    public float CurrentDayTimestamp
+    { get { return dayTimestamp; }
+      set { dayTimestamp = value <= dayDurationInSeconds ? value : dayDurationInSeconds; }
+    }
+    
 
     public void EnableSpecificHarvesting(UpgradeToUnlock specificHarvesting)
     {

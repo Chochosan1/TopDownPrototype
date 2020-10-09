@@ -30,6 +30,7 @@ public class PlayerInventory : MonoBehaviour
             MaxPopulation = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.maxPopulation;
             CurrentVillageCharisma = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentCharisma;
             CurrentFood = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentFood;
+            CurrentDay = Chochosan.SaveLoadManager.savedGameData.inventorySaveData.currentDay;
         }
         else
         {
@@ -37,6 +38,7 @@ public class PlayerInventory : MonoBehaviour
             CurrentGold = 2;
             CurrentIron = 2;
             CurrentVillageCharisma = 0;
+            CurrentDay = 1;
         }
        
 
@@ -45,13 +47,15 @@ public class PlayerInventory : MonoBehaviour
         objectSpawner.OnObjectBuildableSpawnedAtWorld += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally += CalculateUpkeep;
+        Chochosan.EventManager.Instance.OnBuildingBuiltFinally += AddAutoFoodGeneration;
     }
 
     private void OnDisable()
     {
         objectSpawner.OnObjectBuildableSpawnedAtWorld -= SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded -= SpendResources;
-        Chochosan.EventManager.Instance.OnBuildingBuiltFinally = CalculateUpkeep;
+        Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= CalculateUpkeep;
+        Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= AddAutoFoodGeneration;
     }
 
     public float CurrentWoodUpkeep
@@ -64,7 +68,6 @@ public class PlayerInventory : MonoBehaviour
         {
             currentWoodUpkeep = value;
             OnInventoryValueChanged?.Invoke("woodupkeep", currentWoodUpkeep);
-            Debug.Log("Upkeep: " + currentWoodUpkeep);
         }
     }
     private float currentWoodUpkeep;
@@ -168,6 +171,34 @@ public class PlayerInventory : MonoBehaviour
     }
     private float currentFood;
 
+    public float CurrentAutoFoodGeneration
+    {
+        get
+        {
+            return currentAutoFoodGeneration;
+        }
+        set
+        {
+            currentAutoFoodGeneration = value;
+            OnInventoryValueChanged?.Invoke("autoFood", currentAutoFoodGeneration);
+        }
+    }
+    private float currentAutoFoodGeneration;
+
+    public int CurrentDay
+    {
+        get
+        {
+            return currentDay;
+        }
+        set
+        {
+            currentDay = value;
+            OnInventoryValueChanged?.Invoke("currentDay", currentDay);
+        }
+    }
+    private int currentDay;
+
     public bool IsHaveEnoughHousingSpace()
     {
         return CurrentPopulation < MaxPopulation;
@@ -201,6 +232,16 @@ public class PlayerInventory : MonoBehaviour
         CurrentWoodUpkeep += bc.WoodUpkeep;
     }
 
+    private void AddAutoFoodGeneration(BuildingController bc, Buildings buildingType)
+    {
+        switch(buildingType)
+        {
+            case Buildings.Mill:
+                CurrentAutoFoodGeneration += 20f;
+                break;
+        }
+    }
+
     public InventorySaveData GetInventory()
     {
         InventorySaveData saveData = new InventorySaveData();
@@ -210,6 +251,8 @@ public class PlayerInventory : MonoBehaviour
         saveData.maxPopulation = maxPopulation;
         saveData.currentCharisma = currentVillageCharisma;
         saveData.currentFood = currentFood;
+        saveData.currentDay = currentDay;
+        saveData.currentDayTimestamp = Progress_Manager.Instance.CurrentDayTimestamp;
         return saveData;
     }
 }
