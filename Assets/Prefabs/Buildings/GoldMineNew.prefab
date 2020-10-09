@@ -168,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1511158038774817948}
   - component: {fileID: 1668812414865819770}
+  - component: {fileID: 6561793791885226207}
   m_Layer: 0
   m_Name: MainBuilding
   m_TagString: Untagged
@@ -223,6 +224,25 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.88, y: 0.66, z: -1.41}
   m_TimeToStationary: 0.5
+--- !u!95 &6561793791885226207
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668812414865819771}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ebbd6250f03c3074b88861118fdc1e9c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1682035928276961429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,6 +1342,8 @@ MonoBehaviour:
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 1668812414865819771}
   buildingInProgress: {fileID: 2925655287624714986}
+  buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
+    type: 3}
   villagerToSpawn: {fileID: 0}
   spawnPoint: {fileID: 3770130588655619510, guid: 982f2b466c7079a4e9e23ca2eae97218,
     type: 3}
@@ -1332,6 +1354,7 @@ MonoBehaviour:
   housingSpace: 0
   charismaOnBuilt: 5
   woodUpkeepAfterBuilding: 0
+  foodGeneration: 0
   buildingProgress: 0
   progressPerBuildIteration: 10
 --- !u!65 &8766929282638802790

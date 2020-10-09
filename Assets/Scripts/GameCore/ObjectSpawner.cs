@@ -10,6 +10,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private GameObject[] previewObjects;
     [SerializeField] private GameObject[] realObjects;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private GameObject onObjectSpawnedParticle;
     [Tooltip("If set to true, the object will match the surface rotation.")]
     [SerializeField] private bool is_ObjectSlopeRotationMatch;
     private bool canRotateCurrentObject;
@@ -167,16 +168,10 @@ public class ObjectSpawner : MonoBehaviour
 
             GameObject tempObject = Instantiate(realObjects[currentObjectIndex], currentObject.transform.position, currentObject.transform.rotation);
             BuildingController tempController = tempObject.GetComponent<BuildingController>();
+            Instantiate(onObjectSpawnedParticle, tempObject.transform.position + new Vector3(0, 1, 0), onObjectSpawnedParticle.transform.rotation);
+           
             //cache the current build index so it can be used when loading data
             tempController.SetBuildingIndex(currentObjectIndex);
-            //   tempController.SetInitialHP();
-
-            //ISpawnedAtWorld tempInterface = tempObject.GetComponent<ISpawnedAtWorld>();
-            //if (tempInterface != null)
-            //    tempObject.GetComponent<ISpawnedAtWorld>().StartInitialSetup();
-
-            //add the spawned object to the list with all spawned objects
-            //allBuildingsSpawned.Add(tempObject);
             AddBuildingToList(tempObject);
 
             //invoke the delegate

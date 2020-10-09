@@ -14,12 +14,14 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private UpgradeToUnlock upgradeToUnlock;
     [SerializeField] private Buildings buildingType;
     //  [SerializeField] private string[] buildingRequirementsBeforeBuilding;
+    [Header("Prefabs")]
     [Tooltip("Reference to the ScriptableObject that holds the cost requirements.")]
     [SerializeField] SO_CostRequirements costRequirements;
     [Tooltip("The part of the prefab that holds the finally built building.")]
     [SerializeField] private GameObject mainBuilding;
     [Tooltip("The part of the prefab that holds the part of the building that should be targettable by builders.")]
     [SerializeField] private GameObject buildingInProgress;
+    [SerializeField] private GameObject buildingDoneParticle;
     [SerializeField] private GameObject villagerToSpawn;
     [SerializeField] private GameObject spawnPoint;
     [Tooltip("Villager will spawn after that many seconds.")]
@@ -129,6 +131,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         PlayerInventory.Instance.MaxPopulation += housingSpace;
         PlayerInventory.Instance.CurrentVillageCharisma += charismaOnBuilt;
         PlayerInventory.Instance.AddBuildingBonus(this, buildingType);
+        Instantiate(buildingDoneParticle, transform.position + new Vector3(0, 2f, 0), buildingDoneParticle.transform.rotation);
         
         //if (villagerToSpawn != null)
         //{           

@@ -12010,6 +12010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6758008982217595279}
   - component: {fileID: 6780489657551058281}
+  - component: {fileID: 4053244745630363721}
   m_Layer: 0
   m_Name: MainBuilding
   m_TagString: Untagged
@@ -12084,6 +12085,25 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -5.01, y: 1.41, z: -2.6}
   m_TimeToStationary: 0.5
+--- !u!95 &4053244745630363721
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780489657551058280}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ebbd6250f03c3074b88861118fdc1e9c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6802187664351573382
 GameObject:
   m_ObjectHideFlags: 0
@@ -22295,6 +22315,7 @@ MonoBehaviour:
   housingSpace: 0
   charismaOnBuilt: 5
   woodUpkeepAfterBuilding: 0
+  foodGeneration: 0
   buildingProgress: 0
   progressPerBuildIteration: 10
 --- !u!65 &3502552411119768181
