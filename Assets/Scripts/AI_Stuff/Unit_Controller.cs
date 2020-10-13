@@ -174,16 +174,12 @@ public class Unit_Controller : MonoBehaviour
             {
                 if (movableAreaLayer == (movableAreaLayer | (1 << hit.collider.gameObject.layer))) //check if the object is in the specific layer
                 {
-                //    int i = 0;
                     foreach(GameObject selectedUnit in currentlySelectedUnits)
                     {
+                        //offset each individual unit's position so that they don't fight for exactly the same spot
                         int offset = currentlySelectedUnits.IndexOf(selectedUnit);
-                        float angle = currentlySelectedUnits.IndexOf(selectedUnit) * (360f / currentlySelectedUnits.Count);
-                        Vector3 dir = ApplyRotationToVector(new Vector3(1, 0), angle);
-                        //   Vector3 position = hit.point + dir * 2f;
                         Vector3 position = hit.point + new Vector3(offset, 0, offset / 2);
                         selectedUnit.GetComponent<ISelectable>()?.ForceSetAgentArea(position);
-                  //      i++;
                     }
                 }
                 else
