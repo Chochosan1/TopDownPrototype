@@ -71,23 +71,28 @@ public class Unit_Controller : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (!objectSpawner.IsCurrentlySpawningBuilding())
-            {
-                ClearCurrentlySelectedUnits();              
+            {                  
                 startClickRect = Input.mousePosition;
-                selectRect = new Rect(10, 10, 10, 10);
-            //    SelectUnit();
+                //SelectUnit();
             }
         }
 
         if (Input.GetMouseButton(0))
         {
+            //resize the rect
             selectRect = new Rect(startClickRect.x, InvertMouseY(startClickRect.y), Input.mousePosition.x - startClickRect.x,
                 InvertMouseY(Input.mousePosition.y) - InvertMouseY(startClickRect.y));
         }
 
         if (Input.GetMouseButtonUp(0))
-        { 
+        {
+            //clear all currently selected units
+            ClearCurrentlySelectedUnits();
+
+            //hide the rect 
             startClickRect = -Vector3.one;
+            
+            //so that selectRect works no matter from which to which direction it goes
             if (selectRect.width < 0)
             {
                 selectRect.x += selectRect.width;
@@ -99,6 +104,7 @@ public class Unit_Controller : MonoBehaviour
                 selectRect.height = -selectRect.height;
             }
             OnTryToSelectUnits?.Invoke();
+            SelectUnit();
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -168,9 +174,16 @@ public class Unit_Controller : MonoBehaviour
             {
                 if (movableAreaLayer == (movableAreaLayer | (1 << hit.collider.gameObject.layer))) //check if the object is in the specific layer
                 {
+                //    int i = 0;
                     foreach(GameObject selectedUnit in currentlySelectedUnits)
                     {
-                        selectedUnit.GetComponent<ISelectable>()?.ForceSetAgentArea(hit.point);
+                        int offset = currentlySelectedUnits.IndexOf(selectedUnit);
+                        float angle = currentlySelectedUnits.IndexOf(selectedUnit) * (360f / currentlySelectedUnits.Count);
+                        Vector3 dir = ApplyRotationToVector(new Vector3(1, 0), angle);
+                        //   Vector3 position = hit.point + dir * 2f;
+                        Vector3 position = hit.point + new Vector3(offset, 0, offset / 2);
+                        selectedUnit.GetComponent<ISelectable>()?.ForceSetAgentArea(position);
+                  //      i++;
                     }
                 }
                 else
@@ -182,6 +195,11 @@ public class Unit_Controller : MonoBehaviour
                 }
             }
         }
+    }
+
+    private Vector3 ApplyRotationToVector(Vector3 vec, float angle)
+    {
+        return Quaternion.Euler(0, 0, angle) * vec;
     }
 
     public void ClearCurrentlySelectedUnits()
