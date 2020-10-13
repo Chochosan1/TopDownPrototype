@@ -19,4 +19,7 @@ public interface ISelectable
     void UpgradeUnit();
 
     void ForceSetSpecificTarget(GameObject target);
+
+    void CheckIfSelectedBySelector();
+    void ToggleSelectedIndicator(bool value);
 }

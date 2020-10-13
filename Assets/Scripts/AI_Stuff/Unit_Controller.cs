@@ -7,22 +7,32 @@ using UnityEngine;
 public class Unit_Controller : MonoBehaviour
 {
     public static Unit_Controller Instance;
+    [SerializeField] private Texture2D selectRectTexture2D = null;
     [SerializeField] private LayerMask selectableUnitLayer;
     [SerializeField] private LayerMask selectableBuildingLayer;
     [SerializeField] private LayerMask movableAreaLayer;
     private ObjectSpawner objectSpawner;
     private Camera mainCamera;
-    private GameObject currentlySelectedUnit;
-    private ISelectable tempSelectable;
+    [Tooltip("A villager to spawn after loading a save or by a building.")]
     [SerializeField] private GameObject genericVillager;
-    [Tooltip("All villagers that have been spawned by this building.")]
-    [SerializeField] private List<AI_Villager> spawnedVillagersList;
+    private List<AI_Villager> spawnedVillagersList;
+
+    //unit selection
+    private List<GameObject> currentlySelectedUnits;
+    private GameObject currentlySelectedBuilding;
+    private ISelectable tempSelectableBuilding;
+    [HideInInspector]
+    public Rect selectRect = new Rect();
+    private Vector3 startClickRect = -Vector3.one;
 
     public delegate void OnUnitSelectedDelegate(ISelectable unitSelectable);
     public event OnUnitSelectedDelegate OnUnitSelected;
 
     public delegate void OnUnitDeselectedDelegate();
     public event OnUnitDeselectedDelegate OnUnitDeselected;
+
+    public delegate void OnTryToSelectUnitsDelegate();
+    public event OnTryToSelectUnitsDelegate OnTryToSelectUnits;
 
     private void Awake()
     {
@@ -33,9 +43,9 @@ public class Unit_Controller : MonoBehaviour
         spawnedVillagersList = new List<AI_Villager>();
     }
 
-    // Start is called before the first frame update
     void Start()
-    {     
+    {
+        currentlySelectedUnits = new List<GameObject>();
         objectSpawner = GetComponent<ObjectSpawner>();
         mainCamera = Camera.main;
 
@@ -58,18 +68,37 @@ public class Unit_Controller : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.BackQuote))
-        {
-            ClearCurrentlySelectedUnit();
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetMouseButtonDown(0))
         {
             if (!objectSpawner.IsCurrentlySpawningBuilding())
             {
-                SelectUnit();
+                ClearCurrentlySelectedUnits();              
+                startClickRect = Input.mousePosition;
+                selectRect = new Rect(10, 10, 10, 10);
+            //    SelectUnit();
             }
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            selectRect = new Rect(startClickRect.x, InvertMouseY(startClickRect.y), Input.mousePosition.x - startClickRect.x,
+                InvertMouseY(Input.mousePosition.y) - InvertMouseY(startClickRect.y));
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        { 
+            startClickRect = -Vector3.one;
+            if (selectRect.width < 0)
+            {
+                selectRect.x += selectRect.width;
+                selectRect.width = -selectRect.width;
+            }
+            if (selectRect.height < 0)
+            {
+                selectRect.y += selectRect.height;
+                selectRect.height = -selectRect.height;
+            }
+            OnTryToSelectUnits?.Invoke();
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -78,6 +107,21 @@ public class Unit_Controller : MonoBehaviour
             {
                 CommandSelectedUnit();
             }
+        }
+    }
+
+    public float InvertMouseY(float y)
+    {
+        return Screen.height - y;
+    }
+
+    //draw the select rect here
+    private void OnGUI()
+    {
+        if (startClickRect != -Vector3.one)
+        {
+            GUI.color = new Color(1, 1, 1, 0.5f);
+            GUI.DrawTexture(selectRect, selectRectTexture2D);
         }
     }
 
@@ -91,18 +135,24 @@ public class Unit_Controller : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 100, selectableUnitLayer))
             {
-                currentlySelectedUnit = hit.collider.gameObject;
-                tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
-                if (tempSelectable != null)
+                AddUnitToSelectedList(hit.collider.gameObject);
+                ISelectable tempSelectable = hit.collider.gameObject.GetComponent<ISelectable>();
+                if(tempSelectable != null)
+                {
+                    tempSelectable.ToggleSelectedIndicator(true);
                     OnUnitSelected?.Invoke(tempSelectable);
+                }
                 Debug.Log(hit.collider.gameObject);
             }
             else if (Physics.Raycast(ray, out hit, 100, selectableBuildingLayer))
             {
-                currentlySelectedUnit = hit.collider.gameObject;
-                tempSelectable = currentlySelectedUnit.GetComponent<ISelectable>();
-                if (tempSelectable != null)
-                    OnUnitSelected?.Invoke(tempSelectable);
+                currentlySelectedBuilding = hit.collider.gameObject;
+                tempSelectableBuilding = currentlySelectedBuilding.GetComponent<ISelectable>();
+                if (tempSelectableBuilding != null)
+                {
+                    tempSelectableBuilding.ToggleSelectedIndicator(true);
+                    OnUnitSelected?.Invoke(tempSelectableBuilding);
+                }                 
                 Debug.Log(hit.collider.gameObject);
             }
         }
@@ -110,7 +160,7 @@ public class Unit_Controller : MonoBehaviour
 
     private void CommandSelectedUnit()
     {
-        if (currentlySelectedUnit != null)
+        if (currentlySelectedUnits != null && currentlySelectedUnits.Count > 0)
         {
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -118,22 +168,36 @@ public class Unit_Controller : MonoBehaviour
             {
                 if (movableAreaLayer == (movableAreaLayer | (1 << hit.collider.gameObject.layer))) //check if the object is in the specific layer
                 {
-                    tempSelectable?.ForceSetAgentArea(hit.point);
+                    foreach(GameObject selectedUnit in currentlySelectedUnits)
+                    {
+                        selectedUnit.GetComponent<ISelectable>()?.ForceSetAgentArea(hit.point);
+                    }
                 }
                 else
                 {
-                    tempSelectable?.ForceSetSpecificTarget(hit.collider.gameObject);
+                    foreach (GameObject selectedUnit in currentlySelectedUnits)
+                    {
+                        selectedUnit.GetComponent<ISelectable>()?.ForceSetSpecificTarget(hit.collider.gameObject);
+                    }
                 }
             }
         }
     }
 
-    public void ClearCurrentlySelectedUnit()
+    public void ClearCurrentlySelectedUnits()
     {
-        currentlySelectedUnit = null;
-        tempSelectable = null;
+        currentlySelectedUnits.Clear();
+        currentlySelectedBuilding = null;
+        tempSelectableBuilding?.ToggleSelectedIndicator(false);
+        tempSelectableBuilding = null;
         OnUnitDeselected?.Invoke();
     }
+
+    public void AddUnitToSelectedList(GameObject selectedUnit)
+    {
+        currentlySelectedUnits.Add(selectedUnit);
+    }
+    #endregion
 
     public void AddVillagerToList(AI_Villager villager)
     {
@@ -195,5 +259,4 @@ public class Unit_Controller : MonoBehaviour
             Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
         }
     }
-    #endregion
 }

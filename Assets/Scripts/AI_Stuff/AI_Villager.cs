@@ -26,8 +26,21 @@ public class AI_Villager : AI_Base, ISelectable
     [Tooltip("Use for defaulted by the level objects. For example, if the level must started with 1 villager, mark the villager to force save so that next time the game loads he'll still be there.")]
     [SerializeField] private bool defaultedWorldObject = false;
 
+    private Camera mainCamera;
+    private new SkinnedMeshRenderer renderer;
+    private bool isSelected = false;
+    [SerializeField] private GameObject selectedIndicator;
+
+    private void OnDisable()
+    {
+        Unit_Controller.Instance.OnTryToSelectUnits -= CheckIfSelectedBySelector;
+    }
+
     void Start()
     {
+        Unit_Controller.Instance.OnTryToSelectUnits += CheckIfSelectedBySelector;
+        mainCamera = Camera.main;
+        renderer = GetComponentInChildren<SkinnedMeshRenderer>();
         //if it is a defaulted world object
         if(defaultedWorldObject)
         {
@@ -363,5 +376,28 @@ public class AI_Villager : AI_Base, ISelectable
     public void UpgradeUnit()
     {
         Debug.Log("This unit cannot be upgraded");
-    } 
+    }
+
+    public void CheckIfSelectedBySelector()
+    {
+        if(renderer.isVisible)
+        {
+            Vector3 camPos = mainCamera.WorldToScreenPoint(transform.position);
+            camPos.y = Unit_Controller.Instance.InvertMouseY(camPos.y);
+            if(Unit_Controller.Instance.selectRect.Contains(camPos))
+            {
+                Unit_Controller.Instance.AddUnitToSelectedList(this.gameObject);
+                ToggleSelectedIndicator(true);
+            }
+            else
+            {
+                ToggleSelectedIndicator(false);
+            }
+        }
+    }
+
+    public void ToggleSelectedIndicator(bool value)
+    {
+        selectedIndicator.SetActive(value);
+    }
 }

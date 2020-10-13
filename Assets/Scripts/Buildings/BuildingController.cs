@@ -27,8 +27,9 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [Tooltip("Villager will spawn after that many seconds.")]
     [SerializeField] private float spawnFirstVillageAfterSeconds = 2f;
     [SerializeField] private int maxBuildingLevel = 3;
+    [SerializeField] private GameObject selectedIndicator;
     //default starting level
-    private int currentBuildingLevel = 1; 
+    private int currentBuildingLevel = 1;
     [Header("Stats")]
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float buildingMaxHP = 100;
@@ -38,6 +39,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private float woodUpkeepAfterBuilding = 0f;
     [Tooltip("After the building is built, it will autogenerate that much food per day.")]
     [SerializeField] private float foodGeneration = 0f;
+    private Camera mainCamera;
     public float WoodUpkeep
     {
         get
@@ -59,8 +61,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     }
 
     //initial HP before being finally built
-    private float buildingCurrentHP = 1; 
-    private bool isBuildingComplete; 
+    private float buildingCurrentHP = 1;
+    private bool isBuildingComplete;
     [Tooltip("The current building progress. Set to 100 if the building must be built as a part of the level instead of requiring player input. ")]
     [SerializeField] private float buildingProgress;
     [Tooltip("How much progress should be added to the building per single progress iteration (e.g when the builder swings with his hammer although progress adding will not always match with the animation)")]
@@ -71,6 +73,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     private void Start()
     {
+        mainCamera = Camera.main;
         CheckBuildingStatus();
     }
 
@@ -80,7 +83,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         {
             isBuildingComplete = false;
             mainBuilding.SetActive(false);
-        //    GetComponent<BoxCollider>().enabled = false;
+            //    GetComponent<BoxCollider>().enabled = false;
         }
         else
         {
@@ -91,16 +94,16 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void FinishBuildingAndSpawn()
     {
         mainBuilding.SetActive(true);
-        Destroy(buildingInProgress);       
+        Destroy(buildingInProgress);
         buildingProgress = 100;
-     //   GetComponent<BoxCollider>().enabled = true;
+        //   GetComponent<BoxCollider>().enabled = true;
         UnlockUpgradeWhenBuilt();
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally?.Invoke(this, buildingType);
 
         //isBuildingComplete becomes true the moment the building is done; if saved and then loaded this block will not execute again
-        if (!isBuildingComplete) 
+        if (!isBuildingComplete)
         {
-            StartInitialSetup();        
+            StartInitialSetup();
             isBuildingComplete = true;
         }
     }
@@ -126,13 +129,13 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     //called when the building is first instantiated by the player(not when loading data)
     public void StartInitialSetup()
-    {      
+    {
         SetInitialHP();
         PlayerInventory.Instance.MaxPopulation += housingSpace;
         PlayerInventory.Instance.CurrentVillageCharisma += charismaOnBuilt;
         PlayerInventory.Instance.AddBuildingBonus(this, buildingType);
         Instantiate(buildingDoneParticle, transform.position + new Vector3(0, 2f, 0), buildingDoneParticle.transform.rotation);
-        
+
         //if (villagerToSpawn != null)
         //{           
         //    StartCoroutine(SpawnVillagerAfterTime());
@@ -165,7 +168,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         AI_Villager tempAIVillager = tempVillager.GetComponent<AI_Villager>();
         tempAIVillager.SetHomeBuilding(this);
         Unit_Controller.Instance.AddVillagerToList(tempAIVillager);
-      //  assignedVillagersList.Add(tempAIVillager);
+        //  assignedVillagersList.Add(tempAIVillager);
     }
 
     private void UpgradeBuildingLevel()
@@ -175,7 +178,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
             currentBuildingLevel++;
             Chochosan.EventManager.Instance.OnBuildingUpgraded?.Invoke(costRequirements);
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
-           // StartCoroutine(SpawnVillagerAfterTime());
+            // StartCoroutine(SpawnVillagerAfterTime());
         }
     }
 
@@ -208,7 +211,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     }
 
     public void DestroyBuilding()
-    {      
+    {
         ObjectSpawner.Instance.RemoveBuildingFromList(gameObject);
         Destroy(gameObject);
     }
@@ -260,19 +263,28 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         buildingIndex = index;
     }
 
-    //public void SpawnSpecificVillager(Vector3 position, string villagerType)
-    //{
-    //    if (villagerToSpawn != null)
-    //    {
-    //        GameObject tempVillagerGameobject = Instantiate(villagerToSpawn, position, villagerToSpawn.transform.rotation);
-    //        AI_Villager tempVillagerController = tempVillagerGameobject.GetComponent<AI_Villager>();
-    //        tempVillagerController.SwitchVillagerType(villagerType);
-    //        //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
-    //        //   assignedVillagersList.Add(tempVillagerGameobject.GetComponent<AI_Villager>());
-    //        Unit_Controller.Instance.AddVillagerToList(tempVillagerController);
-    //        Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
-    //    }
-    //}
+    public void CheckIfSelectedBySelector()
+    {
+        //if (renderer.isVisible)
+        //{
+        //    Vector3 camPos = mainCamera.WorldToScreenPoint(transform.position);
+        //    camPos.y = Unit_Controller.Instance.InvertMouseY(camPos.y);
+        //    if (Unit_Controller.Instance.selectRect.Contains(camPos))
+        //    {
+        //        Unit_Controller.Instance.AddUnitToSelectedList(this.gameObject);
+        //        selectedIndicator.SetActive(true);
+        //    }
+        //    else
+        //    {
+        //        selectedIndicator.SetActive(false);
+        //    }
+        //}
+    }
+
+    public void ToggleSelectedIndicator(bool value)
+    {
+        selectedIndicator.SetActive(value);
+    }
 
     #region DataSaving
     //used in ObjectSpawner.cs when retrieving the info for every spawned building in the list
@@ -326,7 +338,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         //            break;
         //    }
         //    Debug.Log("SAVED ONE VILLAGER");
-       // }
+        // }
         return bcs;
     }
     #endregion

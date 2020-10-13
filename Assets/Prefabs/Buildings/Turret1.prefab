@@ -53,6 +53,8 @@ MonoBehaviour:
   costRequirements: {fileID: 11400000, guid: ef24c5683e5832d408a750e20184b5d6, type: 2}
   mainBuilding: {fileID: 4615549727649083427}
   buildingInProgress: {fileID: 7267497703070496067}
+  buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
+    type: 3}
   villagerToSpawn: {fileID: 0}
   spawnPoint: {fileID: 0}
   spawnFirstVillageAfterSeconds: 2
@@ -61,6 +63,8 @@ MonoBehaviour:
   buildingMaxHP: 150
   housingSpace: 0
   charismaOnBuilt: 5
+  woodUpkeepAfterBuilding: 0
+  foodGeneration: 0
   buildingProgress: 0
   progressPerBuildIteration: 25
 --- !u!65 &5167992476932640361
