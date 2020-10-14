@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e721612ef7eb8428d92b3a7188ecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHarvestableIndex: 3
   stats: {fileID: 11400000, guid: 24ec51f47bc3d39448680d6433fb77b7, type: 2}
   harvestableType: 3
   customStoppingDistance: 0.75

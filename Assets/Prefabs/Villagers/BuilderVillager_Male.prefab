@@ -750,7 +750,7 @@ MonoBehaviour:
   secondPureEnemySenseRange: 30
   debugState: 0
   villagerType: 4
-  harvestInterval: 1.6
+  harvestInterval: 1.5
   foodConsumption: 5
   defaultedWorldObject: 0
   selectedIndicator: {fileID: 968443032920867616}

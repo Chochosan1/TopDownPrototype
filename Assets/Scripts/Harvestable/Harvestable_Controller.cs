@@ -9,7 +9,7 @@ public enum HarvestableType { Wood, Gold, Iron, Food, BuildingInProgress }
 [RequireComponent(typeof(BoxCollider))] //the collider must be present in order for the object to be detectable by villagers
 public class Harvestable_Controller : MonoBehaviour, IHarvestable
 {
-    private int currentHarvestableIndex; //used to spawn the right object when loading data
+    [SerializeField] private int currentHarvestableIndex; //used to spawn the right object when loading data; should match the prefab set in the list in HarvestableLoader
     [SerializeField] private SO_ResourceStats stats;
     [SerializeField] private HarvestableType harvestableType;
     public float customStoppingDistance;
@@ -20,18 +20,18 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
     {
         switch (harvestableType)
         {
-            case HarvestableType.Wood:
-                currentHarvestableIndex = 0;
-                break;
-            case HarvestableType.Gold:
-                currentHarvestableIndex = 1;
-                break;
-            case HarvestableType.Iron:
-                currentHarvestableIndex = 2;
-                break;
-            case HarvestableType.Food:
-                currentHarvestableIndex = 3;
-                break;
+            //case HarvestableType.Wood:
+            //    currentHarvestableIndex = 0;
+            //    break;
+            //case HarvestableType.Gold:
+            //    currentHarvestableIndex = 1;
+            //    break;
+            //case HarvestableType.Iron:
+            //    currentHarvestableIndex = 2;
+            //    break;
+            //case HarvestableType.Food:
+            //    currentHarvestableIndex = 3;
+            //    break;
             case HarvestableType.BuildingInProgress:
                 buildingController = GetComponentInParent<BuildingController>();
                 break;
@@ -82,7 +82,9 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
         if (currentResourcesToHarvest <= 0)
         {
             HarvestableLoader.RemoveHarvestableFromList(this);
-            Destroy(gameObject);
+            gameObject.GetComponent<Animator>().SetTrigger("isDepleted");
+            Destroy(this);
+            Destroy(gameObject, 2f);
         }
     }
 

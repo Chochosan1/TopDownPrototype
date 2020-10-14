@@ -202,7 +202,8 @@ public class Unit_Controller : MonoBehaviour
     {
         currentlySelectedUnits.Clear();
         currentlySelectedBuilding = null;
-        tempSelectableBuilding?.ToggleSelectedIndicator(false);
+        if(tempSelectableBuilding != null)
+            tempSelectableBuilding?.ToggleSelectedIndicator(false);
         tempSelectableBuilding = null;
         OnUnitDeselected?.Invoke();
     }

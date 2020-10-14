@@ -283,7 +283,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public void ToggleSelectedIndicator(bool value)
     {
-        selectedIndicator.SetActive(value);
+        if(selectedIndicator != null)
+            selectedIndicator.SetActive(value);
     }
 
     #region DataSaving
