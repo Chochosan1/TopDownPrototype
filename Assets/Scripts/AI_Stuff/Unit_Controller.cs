@@ -186,7 +186,8 @@ public class Unit_Controller : MonoBehaviour
                 {
                     foreach (GameObject selectedUnit in currentlySelectedUnits)
                     {
-                        selectedUnit.GetComponent<ISelectable>()?.ForceSetSpecificTarget(hit.collider.gameObject);
+                        if(hit.collider.gameObject != null && selectedUnit != null)
+                            selectedUnit.GetComponent<ISelectable>()?.ForceSetSpecificTarget(hit.collider.gameObject);
                     }
                 }
             }

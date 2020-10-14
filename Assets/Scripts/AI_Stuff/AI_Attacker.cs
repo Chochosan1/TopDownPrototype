@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum AIState { Idle, GoingToDefaultTarget, MovingToTarget, Attack}
+public enum AIState { Idle, GoingToDefaultTarget, MovingToTarget, Attack, MovingToArea}
 
-public class AI_Attacker : AI_Base, IDamageable
+public class AI_Attacker : AI_Base, IDamageable, ISelectable
 {
     public bool debugState;
     [Header("Additional AI options")]
     private IDamageable currentDamageable;
+    [SerializeField] private bool isSelectable = false;
     [SerializeField] private int attackerIndex;
     [SerializeField] private GameObject defaultTargetIfNoOtherAvailable;
+    [SerializeField] private GameObject hitParticle;
+    [SerializeField] private GameObject deathParticle;
+    [SerializeField] private GameObject selectedIndicator;
     [SerializeField] private AI_Stats stats;
     [SerializeField] private float attackInterval = 1.5f;
     [SerializeField] private float walkSpeed = 3.0f;
@@ -23,10 +27,26 @@ public class AI_Attacker : AI_Base, IDamageable
     private AIState aiState;
     private NavMeshAgent agent;
     private Animator anim;
+    private new SkinnedMeshRenderer renderer;
+    private Camera mainCamera;
     private float currentHealth;
-    
+
+    private void OnDisable()
+    {
+        if(isSelectable)
+        {
+            Unit_Controller.Instance.OnTryToSelectUnits -= CheckIfSelectedBySelector;
+        }     
+    }
+
     void Start()
     {
+        if(isSelectable)
+        {
+            Unit_Controller.Instance.OnTryToSelectUnits += CheckIfSelectedBySelector;
+        }
+        renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        mainCamera = Camera.main;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
     //    SetAgentTarget(agent, target.transform.position);
@@ -55,6 +75,18 @@ public class AI_Attacker : AI_Base, IDamageable
                 GoToDefaultTarget();
             }
             ChooseNewTarget(true);
+        }
+        else if(aiState == AIState.MovingToArea)
+        {
+            if (Vector3.Distance(agent.destination, agent.transform.position) <= agent.stoppingDistance)
+            {
+                aiState = AIState.Idle;
+            }
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isWalk", true);
+            anim.SetBool("isRun", false);
+            anim.SetBool("isAttack", false);
+          //  ChooseNewTarget(true);
         }
         else if (aiState == AIState.MovingToTarget)
         {
@@ -89,7 +121,7 @@ public class AI_Attacker : AI_Base, IDamageable
                 {
                     currentTarget = null;
                     currentDamageable = null;
-                    aiState = AIState.GoingToDefaultTarget;
+                    GoToDefaultTarget();
                     Chochosan.ChochosanHelper.ChochosanDebug("NULL CAUGHT || ATTACKER", "red");
                 }
             }
@@ -119,7 +151,7 @@ public class AI_Attacker : AI_Base, IDamageable
 
             if (distance <= secondPureEnemySenseRange && distance > agent.stoppingDistance) //if player is far but scented then go to him
             {
-                GoIntoMovingState();
+                GoIntoMovingToTarget();
             }
             else if (distance <= agent.stoppingDistance) //if player is within stop range and can attack go to attack state
             {
@@ -162,7 +194,7 @@ public class AI_Attacker : AI_Base, IDamageable
 
     private void GoToIdle()
     {
-        if (aiState != AIState.Idle && aiState != AIState.GoingToDefaultTarget)
+        if (aiState != AIState.Idle && aiState != AIState.GoingToDefaultTarget && aiState != AIState.MovingToArea)
         {
             agent.speed = walkSpeed;
             aiState = AIState.Idle;
@@ -176,7 +208,7 @@ public class AI_Attacker : AI_Base, IDamageable
         }
     }
 
-    private void GoIntoMovingState()
+    private void GoIntoMovingToTarget()
     {
         if(aiState != AIState.MovingToTarget)
         {
@@ -187,6 +219,18 @@ public class AI_Attacker : AI_Base, IDamageable
                 agent.stoppingDistance = currentDamageable.GetCustomAgentStoppingDistance();
             else
                 agent.stoppingDistance = defaultAgentStoppingDistance;
+        }
+    }
+
+    private void GoToMovingToArea()
+    {
+        if(aiState != AIState.MovingToArea)
+        {
+            aiState = AIState.MovingToArea;
+            agent.speed = walkSpeed;
+            agent.stoppingDistance = 0;
+            currentTarget = null;
+            currentDamageable = null;
         }
     }
     
@@ -208,17 +252,84 @@ public class AI_Attacker : AI_Base, IDamageable
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
+        //enable particle if not active then disable after some time
+        if(!hitParticle.activeSelf)
+        {
+            hitParticle.SetActive(true);
+            StartCoroutine(DisableHitParticle());
+        }       
         Debug.Log("I TAKE DMG");
         if (currentHealth <= 0)
         {
+            Instantiate(deathParticle, transform.position, deathParticle.transform.rotation);
             AI_Attacker_Loader.RemoveAttackerFromList(this);
             Destroy(this.gameObject);
         }
     }
 
+    private IEnumerator DisableHitParticle()
+    {
+        yield return new WaitForSeconds(0.3f);
+        hitParticle.SetActive(false);
+    }
+
     public float GetCustomAgentStoppingDistance()
     {
         return customAgentStoppingDistance;
+    }
+
+    public void ForceSetAgentArea(Vector3 destination)
+    {
+        GoToMovingToArea();
+        agent.destination = destination;
+    }
+
+    public string GetSelectedUnitInfo()
+    {
+        return unitName;
+    }
+
+    public bool IsOpenUpgradePanel()
+    {
+        return false;
+    }
+
+    public void UpgradeUnit()
+    {
+        Debug.Log("Not upgradeable");
+    }
+
+    public void ForceSetSpecificTarget(GameObject target)
+    {
+        if(target.CompareTag("Enemy"))
+        {
+            currentTarget = target;
+            GoIntoMovingToTarget();
+        }
+    }
+
+    public void CheckIfSelectedBySelector()
+    {
+        if (renderer.isVisible)
+        {
+            Vector3 camPos = mainCamera.WorldToScreenPoint(transform.position);
+            camPos.y = Unit_Controller.Instance.InvertMouseY(camPos.y);
+            if (Unit_Controller.Instance.selectRect.Contains(camPos))
+            {
+                Unit_Controller.Instance.AddUnitToSelectedList(this.gameObject);
+                ToggleSelectedIndicator(true);
+            }
+            else
+            {
+                ToggleSelectedIndicator(false);
+            }
+        }
+    }
+
+    public void ToggleSelectedIndicator(bool value)
+    {
+        selectedIndicator?.SetActive(value);
     }
 
     public AI_Attacker_Serializable GetAttackerData()
