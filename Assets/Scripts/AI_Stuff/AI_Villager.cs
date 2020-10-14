@@ -5,7 +5,7 @@ using UnityEngine.AI;
 /// <summary>
 /// Villager type AI unit that can harvest materials.
 /// </summary>
-public enum AIState_Villager { Idle, MovingToSpecificTarget, Harvesting, MovingToArea}
+public enum AIState_Villager { Idle, MovingToSpecificTarget, Harvesting, MovingToArea }
 public enum Villager_Type { WoodWorker, GoldWorker, IronWorker, FoodWorker, Builder }
 public class AI_Villager : AI_Base, ISelectable
 {
@@ -42,13 +42,13 @@ public class AI_Villager : AI_Base, ISelectable
         mainCamera = Camera.main;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
         //if it is a defaulted world object
-        if(defaultedWorldObject)
+        if (defaultedWorldObject)
         {
             Unit_Controller.Instance.AddVillagerToList(gameObject.GetComponent<AI_Villager>()); //add to the list with spawned objects
 
             //all defaulted objects are parented to an object that gets deleted if there is an existing save
             //however navmesh agents break if they are parented so if they exist (parent object not deleted) it's necessary to remove their parent 
-            gameObject.transform.SetParent(null); 
+            gameObject.transform.SetParent(null);
         }
         thisTransform = GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
@@ -125,15 +125,15 @@ public class AI_Villager : AI_Base, ISelectable
 
             if (distance <= secondPureEnemySenseRange && distance > agent.stoppingDistance && aiState != AIState_Villager.Harvesting) //if player is far but scented then go to him
             {
-                if(aiState != AIState_Villager.MovingToSpecificTarget)
+                if (aiState != AIState_Villager.MovingToSpecificTarget)
                 {
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentHarvestable = currentTarget.GetComponentInChildren<Harvestable_Controller>();
-                    if(currentHarvestable != null)
+                    if (currentHarvestable != null)
                     {
                         agent.stoppingDistance = currentHarvestable.customStoppingDistance;
                     }
-                }             
+                }
             }
             else if (distance <= agent.stoppingDistance) //if player is within stop range and can attack go to attack state
             {
@@ -175,10 +175,10 @@ public class AI_Villager : AI_Base, ISelectable
             }
             else
             {
-                if(currentTarget == null)
+                if (currentTarget == null)
                 {
                     GoIntoIdleState();
-                }             
+                }
             }
         }
         else
@@ -189,7 +189,7 @@ public class AI_Villager : AI_Base, ISelectable
 
         if (debugState)
         {
-          //  Chochosan.ChochosanHelper.ChochosanDebug("Target", currentTarget, "red");
+            //  Chochosan.ChochosanHelper.ChochosanDebug("Target", currentTarget, "red");
             Chochosan.ChochosanHelper.ChochosanDebug("State", aiState, "green");
         }
     }
@@ -228,7 +228,7 @@ public class AI_Villager : AI_Base, ISelectable
                 enemyLayer = LayerMask.GetMask("Food");
                 unitName = "Food gatherer";
                 break;
-            case Villager_Type.Builder:              
+            case Villager_Type.Builder:
                 enemyLayer = LayerMask.GetMask("BuildingInProgress");
                 unitName = "Builder";
                 break;
@@ -266,7 +266,7 @@ public class AI_Villager : AI_Base, ISelectable
             case "Builder":
                 enemyLayer = LayerMask.GetMask("BuildingInProgress");
                 villagerType = Villager_Type.Builder;
-                unitName = "Builder";                          
+                unitName = "Builder";
                 break;
         }
     }
@@ -289,7 +289,7 @@ public class AI_Villager : AI_Base, ISelectable
     //if the clicked object fits certain tags then the object becomes the currentTarget
     public void ForceSetSpecificTarget(GameObject target)
     {
-        switch(target.tag)
+        switch (target.tag)
         {
             case "Wood":
                 if (Progress_Manager.Instance.IsWoodHarvestingUnlocked())
@@ -298,7 +298,8 @@ public class AI_Villager : AI_Base, ISelectable
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
                     currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
-                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
+                    if (currentHarvestable != null)
+                        agent.stoppingDistance = currentHarvestable.customStoppingDistance;
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Woodharvesting locked!", "red");
@@ -310,7 +311,8 @@ public class AI_Villager : AI_Base, ISelectable
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
                     currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
-                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
+                    if (currentHarvestable != null)
+                        agent.stoppingDistance = currentHarvestable.customStoppingDistance;
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Goldharvesting locked!", "red");
@@ -322,7 +324,8 @@ public class AI_Villager : AI_Base, ISelectable
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
                     currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
-                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
+                    if (currentHarvestable != null)
+                        agent.stoppingDistance = currentHarvestable.customStoppingDistance;
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Ironharvesting locked!", "red");
@@ -334,26 +337,22 @@ public class AI_Villager : AI_Base, ISelectable
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
                     currentHarvestable = currentTarget.GetComponent<Harvestable_Controller>();
-                    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
+                    if (currentHarvestable != null)
+                        agent.stoppingDistance = currentHarvestable.customStoppingDistance;
                 }
                 else
                     Chochosan.ChochosanHelper.ChochosanDebug("Foodharvesting locked!", "red");
                 break;
-            //case "BuildingInProgress":
-            //    SwitchVillagerType(Villager_Type.Builder);
-            //    aiState = AIState_Villager.MovingToSpecificTarget;
-            //    currentTarget = target;
-            //    agent.stoppingDistance = target.GetComponent<Harvestable_Controller>().customStoppingDistance;
-            //    break;
             case "SelectableBuilding":
-                if(!target.GetComponent<BuildingController>().GetIsBuildingComplete())
+                if (!target.GetComponent<BuildingController>().GetIsBuildingComplete())
                 {
                     SwitchVillagerType(Villager_Type.Builder);
                     aiState = AIState_Villager.MovingToSpecificTarget;
                     currentTarget = target;
                     currentHarvestable = currentTarget.GetComponentInChildren<Harvestable_Controller>();
-                    agent.stoppingDistance = currentHarvestable.customStoppingDistance;
-                }          
+                    if (currentHarvestable != null)
+                        agent.stoppingDistance = currentHarvestable.customStoppingDistance;
+                }
                 break;
         }
     }
@@ -380,11 +379,11 @@ public class AI_Villager : AI_Base, ISelectable
 
     public void CheckIfSelectedBySelector()
     {
-        if(renderer.isVisible)
+        if (renderer.isVisible)
         {
             Vector3 camPos = mainCamera.WorldToScreenPoint(transform.position);
             camPos.y = Unit_Controller.Instance.InvertMouseY(camPos.y);
-            if(Unit_Controller.Instance.selectRect.Contains(camPos))
+            if (Unit_Controller.Instance.selectRect.Contains(camPos))
             {
                 Unit_Controller.Instance.AddUnitToSelectedList(this.gameObject);
                 ToggleSelectedIndicator(true);
@@ -398,6 +397,6 @@ public class AI_Villager : AI_Base, ISelectable
 
     public void ToggleSelectedIndicator(bool value)
     {
-        selectedIndicator.SetActive(value);
+        selectedIndicator?.SetActive(value);
     }
 }

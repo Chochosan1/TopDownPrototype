@@ -12,6 +12,7 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
     [SerializeField] private int currentHarvestableIndex; //used to spawn the right object when loading data; should match the prefab set in the list in HarvestableLoader
     [SerializeField] private SO_ResourceStats stats;
     [SerializeField] private HarvestableType harvestableType;
+    [SerializeField] private GameObject depletedParticle;
     public float customStoppingDistance;
     private BuildingController buildingController; //building also work like Harvestables but the villagers add progress to them
     public float currentResourcesToHarvest;
@@ -83,6 +84,7 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
         {
             HarvestableLoader.RemoveHarvestableFromList(this);
             gameObject.GetComponent<Animator>().SetTrigger("isDepleted");
+            depletedParticle.SetActive(true);
             Destroy(this);
             Destroy(gameObject, 2f);
         }

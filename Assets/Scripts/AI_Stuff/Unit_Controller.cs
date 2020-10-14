@@ -71,7 +71,7 @@ public class Unit_Controller : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (!objectSpawner.IsCurrentlySpawningBuilding())
-            {                  
+            {
                 startClickRect = Input.mousePosition;
                 //SelectUnit();
             }
@@ -91,7 +91,7 @@ public class Unit_Controller : MonoBehaviour
 
             //hide the rect 
             startClickRect = -Vector3.one;
-            
+
             //so that selectRect works no matter from which to which direction it goes
             if (selectRect.width < 0)
             {
@@ -143,7 +143,7 @@ public class Unit_Controller : MonoBehaviour
             {
                 AddUnitToSelectedList(hit.collider.gameObject);
                 ISelectable tempSelectable = hit.collider.gameObject.GetComponent<ISelectable>();
-                if(tempSelectable != null)
+                if (tempSelectable != null)
                 {
                     tempSelectable.ToggleSelectedIndicator(true);
                     OnUnitSelected?.Invoke(tempSelectable);
@@ -158,7 +158,7 @@ public class Unit_Controller : MonoBehaviour
                 {
                     tempSelectableBuilding.ToggleSelectedIndicator(true);
                     OnUnitSelected?.Invoke(tempSelectableBuilding);
-                }                 
+                }
                 Debug.Log(hit.collider.gameObject);
             }
         }
@@ -174,7 +174,7 @@ public class Unit_Controller : MonoBehaviour
             {
                 if (movableAreaLayer == (movableAreaLayer | (1 << hit.collider.gameObject.layer))) //check if the object is in the specific layer
                 {
-                    foreach(GameObject selectedUnit in currentlySelectedUnits)
+                    foreach (GameObject selectedUnit in currentlySelectedUnits)
                     {
                         //offset each individual unit's position so that they don't fight for exactly the same spot
                         int offset = currentlySelectedUnits.IndexOf(selectedUnit);
@@ -202,8 +202,7 @@ public class Unit_Controller : MonoBehaviour
     {
         currentlySelectedUnits.Clear();
         currentlySelectedBuilding = null;
-        if(tempSelectableBuilding != null)
-            tempSelectableBuilding?.ToggleSelectedIndicator(false);
+        tempSelectableBuilding?.ToggleSelectedIndicator(false);
         tempSelectableBuilding = null;
         OnUnitDeselected?.Invoke();
     }
