@@ -5,7 +5,7 @@ using UnityEngine;
 /// Calculates different stats all the time and unlocks progress.
 /// </summary>
 public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting, FoodHarvesting }
-public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill, Warehouse }
+public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill, Warehouse, Barracks }
 public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;

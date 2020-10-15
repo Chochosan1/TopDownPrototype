@@ -127,6 +127,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         return isBuildingComplete;
     }
 
+    public Buildings GetBuildingType()
+    {
+        return buildingType;
+    }
+
     //called when the building is first instantiated by the player(not when loading data)
     public void StartInitialSetup()
     {
@@ -236,11 +241,10 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         string info = $"{buildingName}\nBuilding level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
         return info;
     }
-
-    public bool IsOpenUpgradePanel()
-    {
-        return isUpgradable;
-    }
+    //public bool IsOpenUpgradePanel()
+    //{
+    //    return isUpgradable;
+    //}
 
     public void UpgradeUnit()
     {

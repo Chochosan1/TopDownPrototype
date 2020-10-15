@@ -25,7 +25,7 @@ public class Unit_Controller : MonoBehaviour
     public Rect selectRect = new Rect();
     private Vector3 startClickRect = -Vector3.one;
 
-    public delegate void OnUnitSelectedDelegate(ISelectable unitSelectable);
+    public delegate void OnUnitSelectedDelegate(ISelectable unitSelectable, BuildingController bc);
     public event OnUnitSelectedDelegate OnUnitSelected;
 
     public delegate void OnUnitDeselectedDelegate();
@@ -146,7 +146,7 @@ public class Unit_Controller : MonoBehaviour
                 if (tempSelectable != null)
                 {
                     tempSelectable.ToggleSelectedIndicator(true);
-                    OnUnitSelected?.Invoke(tempSelectable);
+                    OnUnitSelected?.Invoke(tempSelectable, null);
                 }
                 Debug.Log(hit.collider.gameObject);
             }
@@ -157,7 +157,7 @@ public class Unit_Controller : MonoBehaviour
                 if (tempSelectableBuilding != null)
                 {
                     tempSelectableBuilding.ToggleSelectedIndicator(true);
-                    OnUnitSelected?.Invoke(tempSelectableBuilding);
+                    OnUnitSelected?.Invoke(tempSelectableBuilding, currentlySelectedBuilding.GetComponent<BuildingController>());
                 }
                 Debug.Log(hit.collider.gameObject);
             }

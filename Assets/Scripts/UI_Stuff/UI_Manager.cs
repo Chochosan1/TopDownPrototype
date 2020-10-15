@@ -40,6 +40,12 @@ namespace Chochosan
         [SerializeField] private Button houseButton;
         [SerializeField] private Button turretButton;
 
+        [Header("Building Additional Panels")]
+        [SerializeField] private GameObject barracksPanel;
+        [SerializeField] private GameObject townHallPanel;
+
+        private GameObject currentBuildingAdditionalPanel;
+
         private void Awake()
         {
             if(Instance == null)
@@ -86,20 +92,35 @@ namespace Chochosan
         }
 
         //activate the selection UI
-        private void ActivateUnitSelectionUI(ISelectable unitSelectable)
+        private void ActivateUnitSelectionUI(ISelectable unitSelectable, BuildingController bc)
         {
             selectedUnitInfoPanel.SetActive(true);
             selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
-            if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
+            if(bc != null)
             {
-                selectedBuildingUpgradePanel.SetActive(true);
-                selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners(); //very important to first clear all other listenes
-                selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(unitSelectable.UpgradeUnit);
-            }      
-            else
-            {
-                selectedBuildingUpgradePanel.SetActive(false);
+                switch(bc.GetBuildingType())
+                {
+                    case Buildings.Barracks:
+                        currentBuildingAdditionalPanel = barracksPanel;
+                        break;
+                    case Buildings.TownHall:
+                        currentBuildingAdditionalPanel = townHallPanel;
+                        break;
+                }
+
+                currentBuildingAdditionalPanel?.SetActive(true);
             }
+            
+            //if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
+            //{
+            //    selectedBuildingUpgradePanel.SetActive(true);
+            //    selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners(); //very important to first clear all other listenes
+            //    selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(unitSelectable.UpgradeUnit);
+            //}      
+            //else
+            //{
+            //    selectedBuildingUpgradePanel.SetActive(false);
+            //}
         }
 
         private void RefreshTextInfo(ISelectable selectable)
@@ -112,8 +133,10 @@ namespace Chochosan
         {
             selectedUnitInfoPanel.SetActive(false);
             selectedUnitText.text = "";
-            selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
-            selectedBuildingUpgradePanel.SetActive(false);         
+            currentBuildingAdditionalPanel?.SetActive(false);
+            currentBuildingAdditionalPanel = null;
+            //selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
+            //selectedBuildingUpgradePanel.SetActive(false);         
         }
 
         public void PlayHoverAnimation(Animator anim)

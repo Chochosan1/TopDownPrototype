@@ -344,7 +344,8 @@ public class AI_Villager : AI_Base, ISelectable
                     Chochosan.ChochosanHelper.ChochosanDebug("Foodharvesting locked!", "red");
                 break;
             case "SelectableBuilding":
-                if (!target.GetComponent<BuildingController>().GetIsBuildingComplete())
+                BuildingController bc = target.GetComponent<BuildingController>();
+                if (!bc.GetIsBuildingComplete())
                 {
                     SwitchVillagerType(Villager_Type.Builder);
                     aiState = AIState_Villager.MovingToSpecificTarget;

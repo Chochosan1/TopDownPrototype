@@ -13,7 +13,7 @@ public interface ISelectable
     string GetSelectedUnitInfo();
 
     //describes whether the current selectable object will have an upgrade menu (this is checked in the UI_Manager after the unit selected event)
-    bool IsOpenUpgradePanel();
+  //  bool IsOpenUpgradePanel();
 
     //subscribed to the shown UI button
     void UpgradeUnit();

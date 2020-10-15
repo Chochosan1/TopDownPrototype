@@ -752,7 +752,7 @@ MonoBehaviour:
   villagerType: 4
   harvestInterval: 1.5
   foodConsumption: 5
-  defaultedWorldObject: 0
+  defaultedWorldObject: 1
   selectedIndicator: {fileID: 968443032920867616}
 --- !u!195 &2547033674450600918
 NavMeshAgent:
@@ -4332,6 +4332,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576666201417239996, guid: d431b59514116bc48a423bdd140bdbd1,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576666201417239996, guid: d431b59514116bc48a423bdd140bdbd1,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576666201417239997, guid: d431b59514116bc48a423bdd140bdbd1,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576666201417239997, guid: d431b59514116bc48a423bdd140bdbd1,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.14692764
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576666201417239997, guid: d431b59514116bc48a423bdd140bdbd1,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576666201417239997, guid: d431b59514116bc48a423bdd140bdbd1,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.033018887
       objectReference: {fileID: 0}
     - target: {fileID: 8576666201417239999, guid: d431b59514116bc48a423bdd140bdbd1,
         type: 3}
