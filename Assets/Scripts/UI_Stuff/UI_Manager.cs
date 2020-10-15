@@ -54,7 +54,7 @@ namespace Chochosan
             }
         }
 
-        private void OnEnable()
+        private void Start()
         {
             PlayerInventory.Instance.OnInventoryValueChanged += UpdateTextValue;
             Unit_Controller.Instance.OnUnitSelected += ActivateUnitSelectionUI;
@@ -94,22 +94,22 @@ namespace Chochosan
         //activate the selection UI
         private void ActivateUnitSelectionUI(ISelectable unitSelectable, BuildingController bc)
         {
-            selectedUnitInfoPanel.SetActive(true);
-            selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
-            if(bc != null)
-            {
-                switch(bc.GetBuildingType())
-                {
-                    case Buildings.Barracks:
-                        currentBuildingAdditionalPanel = barracksPanel;
-                        break;
-                    case Buildings.TownHall:
-                        currentBuildingAdditionalPanel = townHallPanel;
-                        break;
-                }
+            //selectedUnitInfoPanel.SetActive(true);
+            //selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
+            //if(bc != null)
+            //{
+            //    switch(bc.GetBuildingType())
+            //    {
+            //        case Buildings.Barracks:
+            //            currentBuildingAdditionalPanel = barracksPanel;
+            //            break;
+            //        case Buildings.TownHall:
+            //            currentBuildingAdditionalPanel = townHallPanel;
+            //            break;
+            //    }
 
-                currentBuildingAdditionalPanel?.SetActive(true);
-            }
+            //    currentBuildingAdditionalPanel?.SetActive(true);
+            //}
             
             //if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
             //{

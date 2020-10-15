@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public enum AIState { Idle, GoingToDefaultTarget, MovingToTarget, Attack, MovingToArea }
-
+public enum AttackerType { Warrior, Wizard }
 public class AI_Attacker : AI_Base, IDamageable, ISelectable
 {
-    public bool debugState;
+    public bool debugState, isDummy;
     [Header("Additional AI options")]
     private IDamageable currentDamageable;
+    [SerializeField] private AttackerType attackerType;
     [SerializeField] private bool isSelectable = false;
     [SerializeField] private int attackerIndex;
     [SerializeField] private GameObject defaultTargetIfNoOtherAvailable;
@@ -23,6 +24,14 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     [Tooltip("This stopping distance will be used by the agent that is attacking THIS target. This is useful when THIS target requires the agent to stop further from it (e.g big buildings)")]
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float defaultAgentStoppingDistance = 1;
+
+    [Header("Wizard")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float shootForce;
+    [SerializeField] private Vector3 offsetVector;
+    [SerializeField] private int projectilePoolSize;
+    private List<GameObject> projectilePool;
+
     private float attackAnimTimestamp;
     private AIState aiState;
     private NavMeshAgent agent;
@@ -45,6 +54,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         if (isSelectable)
         {
             Unit_Controller.Instance.OnTryToSelectUnits += CheckIfSelectedBySelector;
+        }
+        if(attackerType == AttackerType.Wizard)
+        {
+            defaultAgentStoppingDistance *= 12f;
         }
         thisTransform = transform;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -77,12 +90,11 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                     GoToDefaultTarget();
                 }
             }
-
             ChooseNewTarget(true);
         }
         else if (aiState == AIState.MovingToArea)
         {
-            if ((agent.destination - thisTransform.position).magnitude <= agent.stoppingDistance)
+            if ((agent.destination - thisTransform.position).magnitude <= agent.stoppingDistance + 0.01f)
             {
                 aiState = AIState.Idle;
             }
@@ -166,6 +178,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 if (aiState != AIState.Attack)
                 {
                     aiState = AIState.Attack;
+                    currentDamageable = currentTarget.GetComponent<IDamageable>();
                     attackAnimTimestamp = Time.time + attackInterval;
                     LookAtTarget();
                 }
@@ -183,6 +196,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         if (debugState)
         {
             Chochosan.ChochosanHelper.ChochosanDebug(aiState.ToString(), "red");
+        }
+        if(isDummy)
+        {
+            agent.speed = 0;
         }
     }
 
@@ -221,7 +238,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
-            if (currentDamageable != null)
+            if (currentDamageable != null && attackerType != AttackerType.Wizard)
                 agent.stoppingDistance = currentDamageable.GetCustomAgentStoppingDistance();
             else
                 agent.stoppingDistance = defaultAgentStoppingDistance;
@@ -269,7 +286,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             hitParticle.SetActive(true);
             StartCoroutine(DisableHitParticle());
         }
-        Debug.Log("I TAKE DMG");
         if (currentHealth <= 0)
         {
             Instantiate(deathParticle, thisTransform.position, deathParticle.transform.rotation);
@@ -318,6 +334,45 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             GoIntoMovingToTarget();
         }
     }
+
+    #region WIZARD
+    private bool isStillSpawning;
+    private int currentPoolItem;
+
+    private void CastSpell()
+    {
+        if (isStillSpawning) //if the pool is still not full
+        {
+            GameObject projectileCopy = Instantiate(projectilePrefab, transform.position + offsetVector, projectilePrefab.transform.rotation);
+            projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget);
+            AddObjectToPool(projectileCopy);
+        }
+        else //when full start using items from the pool
+        {
+            projectilePool[currentPoolItem].transform.position = transform.position + offsetVector;
+            projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);
+            projectilePool[currentPoolItem].SetActive(true);
+            currentPoolItem++;
+
+            if (currentPoolItem >= projectilePool.Count)
+            {
+                currentPoolItem = 0;
+            }
+        }
+    }
+
+    //add objects to the pool during runtime while instantiating objects, when a certain limit is reached then disable instantiating
+    //and start using the pool
+    private void AddObjectToPool(GameObject objectToAdd)
+    {
+        projectilePool.Add(objectToAdd);
+
+        if (projectilePool.Count >= projectilePoolSize)
+        {
+            isStillSpawning = false;
+        }
+    }
+    #endregion
 
     public void CheckIfSelectedBySelector()
     {

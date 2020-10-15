@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685613519089590965}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.89, y: 0, z: 0}
+  m_LocalPosition: {x: -0.84, y: 0, z: -1.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5574822268736962379}
@@ -852,14 +852,14 @@ MonoBehaviour:
   buildingName: Baracks
   upgradeToUnlock: 0
   buildingType: 9
-  panelWhenSelected: {fileID: 0}
   costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
   mainBuilding: {fileID: 5770081116232226893}
   buildingInProgress: {fileID: 6397668965601667796}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
     type: 3}
-  villagerToSpawn: {fileID: 0}
-  spawnPoint: {fileID: 0}
+  villagerToSpawn: {fileID: 4579080507294930621, guid: cffe28d495279994c8513e2291549717,
+    type: 3}
+  spawnPoint: {fileID: 685613519089590965}
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7
   selectedIndicator: {fileID: 5021871635909208360}

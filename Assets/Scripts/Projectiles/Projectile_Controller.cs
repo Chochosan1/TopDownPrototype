@@ -8,6 +8,12 @@ public class Projectile_Controller : MonoBehaviour
     [SerializeField] private bool is_Homing;
     [SerializeField] private bool is_AoE_Projectile;
     private GameObject target;
+    private Transform thisTransform;
+
+    private void Start()
+    {
+        thisTransform = GetComponent<Transform>();
+    }
 
     private void OnCollisionEnter(Collision collision)
     { 
@@ -26,7 +32,7 @@ public class Projectile_Controller : MonoBehaviour
     {
         if(is_Homing && target != null)
         {
-            transform.position = Vector3.Lerp(transform.position, target.transform.position, stats.travelSpeed * Time.deltaTime);
+            thisTransform.position = Vector3.Lerp(thisTransform.position, target.transform.position, stats.travelSpeed * Time.deltaTime);
         }    
         else
         {

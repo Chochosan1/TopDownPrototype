@@ -7329,8 +7329,9 @@ MonoBehaviour:
   firstPureEnemySenseRange: 5
   secondPureEnemySenseRange: 30
   debugState: 0
+  attackerType: 0
   isSelectable: 1
-  attackerIndex: 0
+  attackerIndex: 1
   defaultTargetIfNoOtherAvailable: {fileID: 0}
   hitParticle: {fileID: 1574302458509611777}
   deathParticle: {fileID: 1280141305896002, guid: e473029e4c70ad543a6879b82a732f4f,
@@ -7863,7 +7864,7 @@ Transform:
   m_GameObject: {fileID: 4767988439707754859}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 1.8939999, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 60, y: 60, z: 1}
   m_Children: []
   m_Father: {fileID: 4579080507295191411}
   m_RootOrder: 8
