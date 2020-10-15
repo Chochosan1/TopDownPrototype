@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum AIState { Idle, GoingToDefaultTarget, MovingToTarget, Attack, MovingToArea}
+public enum AIState { Idle, GoingToDefaultTarget, MovingToTarget, Attack, MovingToArea }
 
 public class AI_Attacker : AI_Base, IDamageable, ISelectable
 {
@@ -29,29 +29,30 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     private Animator anim;
     private new SkinnedMeshRenderer renderer;
     private Camera mainCamera;
+    private Transform thisTransform;
     private float currentHealth;
 
     private void OnDisable()
     {
-        if(isSelectable)
+        if (isSelectable)
         {
             Unit_Controller.Instance.OnTryToSelectUnits -= CheckIfSelectedBySelector;
-        }     
+        }
     }
 
     void Start()
     {
-        if(isSelectable)
+        if (isSelectable)
         {
             Unit_Controller.Instance.OnTryToSelectUnits += CheckIfSelectedBySelector;
         }
+        thisTransform = transform;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
         mainCamera = Camera.main;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-    //    SetAgentTarget(agent, target.transform.position);
         aiState = AIState.GoingToDefaultTarget;
-      //  defaultTargetIfNoOtherAvailable = GameObject.FindGameObjectWithTag("DefaultTargetToProtect");
+        //  defaultTargetIfNoOtherAvailable = GameObject.FindGameObjectWithTag("DefaultTargetToProtect");
         if (!Chochosan.SaveLoadManager.IsSaveExists())
         {
             SetInitialHP();
@@ -61,27 +62,31 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     private void Update()
     {
-        //ChooseNewTarget(true);
-        if(aiState == AIState.Idle)
+        if (aiState == AIState.Idle)
         {
             anim.SetBool("isIdle", true);
             anim.SetBool("isWalk", false);
             anim.SetBool("isRun", false);
             anim.SetBool("isAttack", false);
             currentTarget = null;
-            currentDamageable = null;     
-            if(defaultTargetIfNoOtherAvailable != null && Vector3.Distance(defaultTargetIfNoOtherAvailable.transform.position, transform.position) > defaultAgentStoppingDistance)
+            currentDamageable = null;
+            if (defaultTargetIfNoOtherAvailable != null)
             {
-                GoToDefaultTarget();
+                if ((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude > defaultAgentStoppingDistance)
+                {
+                    GoToDefaultTarget();
+                }
             }
+
             ChooseNewTarget(true);
         }
-        else if(aiState == AIState.MovingToArea)
+        else if (aiState == AIState.MovingToArea)
         {
-            if (Vector3.Distance(agent.destination, agent.transform.position) <= agent.stoppingDistance)
+            if ((agent.destination - thisTransform.position).magnitude <= agent.stoppingDistance)
             {
                 aiState = AIState.Idle;
             }
+
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", true);
             anim.SetBool("isRun", false);
@@ -92,7 +97,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             if (currentTarget == null || currentDamageable == null)
             {
                 aiState = AIState.GoingToDefaultTarget;
-                SetAgentDestination(agent, agent.transform.position);
+                SetAgentDestination(agent, thisTransform.position);
                 return;
             }
             SetAgentDestination(agent, currentTarget.transform.position);
@@ -101,7 +106,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             anim.SetBool("isRun", true);
             anim.SetBool("isAttack", false);
         }
-        else if(aiState == AIState.Attack)
+        else if (aiState == AIState.Attack)
         {
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", false);
@@ -125,14 +130,14 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 }
             }
         }
-        else if(aiState == AIState.GoingToDefaultTarget)
+        else if (aiState == AIState.GoingToDefaultTarget)
         {
-            if(defaultTargetIfNoOtherAvailable == null)
+            if (defaultTargetIfNoOtherAvailable == null)
             {
                 aiState = AIState.Idle;
                 return;
             }
-            if (Vector3.Distance(defaultTargetIfNoOtherAvailable.transform.position, transform.position) <= defaultAgentStoppingDistance)
+            if((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude <= defaultAgentStoppingDistance)
             {
                 aiState = AIState.Idle;
             }
@@ -144,23 +149,24 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             anim.SetBool("isRun", false);
             anim.SetBool("isAttack", false);
         }
-        
 
-        float distance = 10000;
+
+        float headingDistance = 10000;
         if (currentTarget != null)
         {
-            distance = Vector3.Distance(currentTarget.transform.position, transform.position);
+            Vector3 heading = currentTarget.transform.position - thisTransform.position;
+            headingDistance = heading.magnitude;
 
-            if (distance <= secondPureEnemySenseRange && distance > agent.stoppingDistance) //if player is far but scented then go to him
+            if (headingDistance <= secondPureEnemySenseRange && headingDistance > agent.stoppingDistance) //if player is far but scented then go to him
             {
                 GoIntoMovingToTarget();
             }
-            else if (distance <= agent.stoppingDistance) //if player is within stop range and can attack go to attack state
+            else if (headingDistance <= agent.stoppingDistance) //if player is within stop range and can attack go to attack state
             {
                 if (aiState != AIState.Attack)
                 {
                     aiState = AIState.Attack;
-                    attackAnimTimestamp = Time.time + attackInterval;              
+                    attackAnimTimestamp = Time.time + attackInterval;
                     LookAtTarget();
                 }
             }
@@ -174,7 +180,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             GoToIdle();
         }
 
-        if(debugState)
+        if (debugState)
         {
             Chochosan.ChochosanHelper.ChochosanDebug(aiState.ToString(), "red");
         }
@@ -188,7 +194,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             aiState = AIState.GoingToDefaultTarget;
             currentTarget = null;
             currentDamageable = null;
-            SetAgentDestination(agent, agent.transform.position);
+            SetAgentDestination(agent, thisTransform.position);
         }
     }
 
@@ -200,7 +206,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             aiState = AIState.Idle;
             currentTarget = null;
             currentDamageable = null;
-            SetAgentDestination(agent, agent.transform.position);
+            SetAgentDestination(agent, thisTransform.position);
             anim.SetBool("isIdle", true);
             anim.SetBool("isWalk", false);
             anim.SetBool("isRun", false);
@@ -210,7 +216,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     private void GoIntoMovingToTarget()
     {
-        if(aiState != AIState.MovingToTarget)
+        if (aiState != AIState.MovingToTarget)
         {
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
@@ -224,7 +230,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     private void GoToMovingToArea()
     {
-        if(aiState != AIState.MovingToArea)
+        if (aiState != AIState.MovingToArea)
         {
             aiState = AIState.MovingToArea;
             agent.speed = walkSpeed;
@@ -233,7 +239,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             currentDamageable = null;
         }
     }
-    
+
     private void SetInitialHP()
     {
         currentHealth = stats.maxHealth;
@@ -251,22 +257,22 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     public void TakeDamage(float damage, AI_Attacker attacker)
     {
-        if(attacker != null && currentTarget == null)
+        if (attacker != null && currentTarget == null)
         {
             currentTarget = attacker.gameObject;
         }
         currentHealth -= damage;
 
         //enable particle if not active then disable after some time
-        if(!hitParticle.activeSelf)
+        if (!hitParticle.activeSelf)
         {
             hitParticle.SetActive(true);
             StartCoroutine(DisableHitParticle());
-        }       
+        }
         Debug.Log("I TAKE DMG");
         if (currentHealth <= 0)
         {
-            Instantiate(deathParticle, transform.position, deathParticle.transform.rotation);
+            Instantiate(deathParticle, thisTransform.position, deathParticle.transform.rotation);
             AI_Attacker_Loader.RemoveAttackerFromList(this);
             Destroy(this.gameObject);
         }
@@ -306,7 +312,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     public void ForceSetSpecificTarget(GameObject target)
     {
-        if(target.CompareTag("Enemy"))
+        if (target.CompareTag("Enemy"))
         {
             currentTarget = target;
             GoIntoMovingToTarget();
@@ -317,7 +323,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (renderer.isVisible)
         {
-            Vector3 camPos = mainCamera.WorldToScreenPoint(transform.position);
+            Vector3 camPos = mainCamera.WorldToScreenPoint(thisTransform.position);
             camPos.y = Unit_Controller.Instance.InvertMouseY(camPos.y);
             if (Unit_Controller.Instance.selectRect.Contains(camPos))
             {
