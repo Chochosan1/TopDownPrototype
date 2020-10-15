@@ -51,7 +51,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         anim = GetComponent<Animator>();
     //    SetAgentTarget(agent, target.transform.position);
         aiState = AIState.GoingToDefaultTarget;
-        defaultTargetIfNoOtherAvailable = GameObject.FindGameObjectWithTag("DefaultTargetToProtect");
+      //  defaultTargetIfNoOtherAvailable = GameObject.FindGameObjectWithTag("DefaultTargetToProtect");
         if (!Chochosan.SaveLoadManager.IsSaveExists())
         {
             SetInitialHP();
@@ -70,7 +70,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             anim.SetBool("isAttack", false);
             currentTarget = null;
             currentDamageable = null;     
-            if(Vector3.Distance(defaultTargetIfNoOtherAvailable.transform.position, transform.position) > defaultAgentStoppingDistance)
+            if(defaultTargetIfNoOtherAvailable != null && Vector3.Distance(defaultTargetIfNoOtherAvailable.transform.position, transform.position) > defaultAgentStoppingDistance)
             {
                 GoToDefaultTarget();
             }
@@ -86,7 +86,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             anim.SetBool("isWalk", true);
             anim.SetBool("isRun", false);
             anim.SetBool("isAttack", false);
-          //  ChooseNewTarget(true);
         }
         else if (aiState == AIState.MovingToTarget)
         {
@@ -113,7 +112,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 if (currentTarget != null && currentDamageable != null)
                 {
                     LookAtTarget();
-                    currentDamageable.TakeDamage(stats.damage);
+                    currentDamageable.TakeDamage(stats.damage, this);
                     attackAnimTimestamp = Time.time + attackInterval;
                     Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
                 }
@@ -128,8 +127,11 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
         else if(aiState == AIState.GoingToDefaultTarget)
         {
-            //currentTarget = null;
-            //currentDamageable = null;
+            if(defaultTargetIfNoOtherAvailable == null)
+            {
+                aiState = AIState.Idle;
+                return;
+            }
             if (Vector3.Distance(defaultTargetIfNoOtherAvailable.transform.position, transform.position) <= defaultAgentStoppingDistance)
             {
                 aiState = AIState.Idle;
@@ -165,13 +167,11 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             else
             {
                 GoToIdle();
-              //  GoToDefaultTarget();
             }
         }
         else
         {
             GoToIdle();
-          //  GoToDefaultTarget();
         }
 
         if(debugState)
@@ -249,8 +249,12 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         attackerIndex = index;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, AI_Attacker attacker)
     {
+        if(attacker != null && currentTarget == null)
+        {
+            currentTarget = attacker.gameObject;
+        }
         currentHealth -= damage;
 
         //enable particle if not active then disable after some time

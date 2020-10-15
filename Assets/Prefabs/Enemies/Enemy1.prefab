@@ -1471,7 +1471,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1180872070463164473}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1514,7 +1514,7 @@ MonoBehaviour:
   attackInterval: 0.85
   walkSpeed: 3
   runSpeed: 4.5
-  customAgentStoppingDistance: 2
+  customAgentStoppingDistance: 2.5
   defaultAgentStoppingDistance: 1
 --- !u!65 &1180872070463164472
 BoxCollider:

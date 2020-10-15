@@ -16,7 +16,7 @@ public class Projectile_Controller : MonoBehaviour
             IDamageable tempInterface = collision.gameObject.GetComponent<IDamageable>();
             if (tempInterface != null)
             {
-                tempInterface.TakeDamage(stats.damage);
+                tempInterface.TakeDamage(stats.damage, null);
             }
         }
         gameObject.SetActive(false); 

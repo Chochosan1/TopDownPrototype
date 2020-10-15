@@ -197,7 +197,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         this.buildingProgress = buildingProgress;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, AI_Attacker attacker)
     {
         buildingCurrentHP -= damage;
 
