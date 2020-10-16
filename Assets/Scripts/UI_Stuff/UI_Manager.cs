@@ -52,16 +52,14 @@ namespace Chochosan
             {
                 Instance = this;
             }
-        }
 
-        private void Start()
-        {
             PlayerInventory.Instance.OnInventoryValueChanged += UpdateTextValue;
             Unit_Controller.Instance.OnUnitSelected += ActivateUnitSelectionUI;
             Unit_Controller.Instance.OnUnitDeselected += DeactivateAllSelectionUI;
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged += RefreshTextInfo;
             Chochosan.EventManager.Instance.OnBuildingBuiltFinally += UpdateBuildingUI;
         }
+
 
         private void OnDisable()
         {
@@ -94,8 +92,8 @@ namespace Chochosan
         //activate the selection UI
         private void ActivateUnitSelectionUI(ISelectable unitSelectable, BuildingController bc)
         {
-            //selectedUnitInfoPanel.SetActive(true);
-            //selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
+            selectedUnitInfoPanel.SetActive(true);
+            selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
             //if(bc != null)
             //{
             //    switch(bc.GetBuildingType())

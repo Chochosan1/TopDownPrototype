@@ -15,24 +15,39 @@ public class Projectile_Controller : MonoBehaviour
         thisTransform = GetComponent<Transform>();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    { 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemies"))
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemies"))
         {
-            IDamageable tempInterface = collision.gameObject.GetComponent<IDamageable>();
+            Debug.Log("HIT ENEMY");
+            IDamageable tempInterface = other.gameObject.GetComponent<IDamageable>();
             if (tempInterface != null)
             {
                 tempInterface.TakeDamage(stats.damage, null);
             }
-        }
-        gameObject.SetActive(false); 
+            gameObject.SetActive(false);
+        }     
     }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    Debug.Log("DONE");
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Enemies"))
+    //    {
+    //        IDamageable tempInterface = collision.gameObject.GetComponent<IDamageable>();
+    //        if (tempInterface != null)
+    //        {
+    //            tempInterface.TakeDamage(stats.damage, null);
+    //        }
+    //    }
+    //    gameObject.SetActive(false); 
+    //}
 
     private void Update()
     {
         if(is_Homing && target != null)
         {
-            thisTransform.position = Vector3.Lerp(thisTransform.position, target.transform.position, stats.travelSpeed * Time.deltaTime);
+            thisTransform.position = Vector3.Lerp(thisTransform.position, target.transform.position + new Vector3(0f, 1f, 0f), stats.travelSpeed * Time.deltaTime);
         }    
         else
         {

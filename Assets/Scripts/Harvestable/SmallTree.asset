@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SmallTree
   m_EditorClassIdentifier: 
   harvestableName: SmallTree
-  maxResourcesToHarvest: 6
-  resourcePerSingleHarvest: 2
+  maxResourcesToHarvest: 9
+  resourcePerSingleHarvest: 3

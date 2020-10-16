@@ -27,14 +27,15 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     [Header("Wizard")]
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float shootForce;
-    [SerializeField] private Vector3 offsetVector;
+    [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private float forwardOffset;
     [SerializeField] private int projectilePoolSize;
     private List<GameObject> projectilePool;
 
     private float attackAnimTimestamp;
     private AIState aiState;
     private NavMeshAgent agent;
+    private NavMeshObstacle obstacle;
     private Animator anim;
     private new SkinnedMeshRenderer renderer;
     private Camera mainCamera;
@@ -55,10 +56,12 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         {
             Unit_Controller.Instance.OnTryToSelectUnits += CheckIfSelectedBySelector;
         }
-        if(attackerType == AttackerType.Wizard)
+        if (attackerType == AttackerType.Wizard)
         {
             defaultAgentStoppingDistance *= 12f;
         }
+        projectilePool = new List<GameObject>();
+        obstacle = GetComponent<NavMeshObstacle>();
         thisTransform = transform;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
         mainCamera = Camera.main;
@@ -112,6 +115,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 SetAgentDestination(agent, thisTransform.position);
                 return;
             }
+
             SetAgentDestination(agent, currentTarget.transform.position);
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", false);
@@ -129,7 +133,15 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 if (currentTarget != null && currentDamageable != null)
                 {
                     LookAtTarget();
-                    currentDamageable.TakeDamage(stats.damage, this);
+                    if(attackerType == AttackerType.Warrior)
+                    {
+                        currentDamageable.TakeDamage(stats.damage, this);
+                    }
+                    else
+                    {
+                        CastSpell();
+                    }
+                    
                     attackAnimTimestamp = Time.time + attackInterval;
                     Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
                 }
@@ -149,7 +161,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 aiState = AIState.Idle;
                 return;
             }
-            if((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude <= defaultAgentStoppingDistance)
+            if ((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude <= defaultAgentStoppingDistance)
             {
                 aiState = AIState.Idle;
             }
@@ -175,13 +187,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             }
             else if (headingDistance <= agent.stoppingDistance) //if player is within stop range and can attack go to attack state
             {
-                if (aiState != AIState.Attack)
-                {
-                    aiState = AIState.Attack;
-                    currentDamageable = currentTarget.GetComponent<IDamageable>();
-                    attackAnimTimestamp = Time.time + attackInterval;
-                    LookAtTarget();
-                }
+                GoToAttackState();
             }
             else
             {
@@ -195,11 +201,27 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
         if (debugState)
         {
-            Chochosan.ChochosanHelper.ChochosanDebug(aiState.ToString(), "red");
+            // Chochosan.ChochosanHelper.ChochosanDebug(aiState.ToString(), "red");
+            Debug.Log(agent.pathStatus);
         }
-        if(isDummy)
+        if (isDummy)
         {
             agent.speed = 0;
+        }
+    }
+
+    private void GoToAttackState()
+    {
+        if (aiState != AIState.Attack)
+        {
+            aiState = AIState.Attack;
+            if(obstacle != null)
+            {
+                obstacle.enabled = true;
+            }
+            currentDamageable = currentTarget.GetComponent<IDamageable>();
+            attackAnimTimestamp = Time.time + attackInterval;
+            LookAtTarget();
         }
     }
 
@@ -207,6 +229,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.GoingToDefaultTarget)
         {
+            if (obstacle != null)
+            {
+                obstacle.enabled = true;
+            }
             agent.speed = walkSpeed;
             aiState = AIState.GoingToDefaultTarget;
             currentTarget = null;
@@ -219,6 +245,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.Idle && aiState != AIState.GoingToDefaultTarget && aiState != AIState.MovingToArea)
         {
+            if (obstacle != null)
+            {
+                obstacle.enabled = true;
+            }
             agent.speed = walkSpeed;
             aiState = AIState.Idle;
             currentTarget = null;
@@ -235,6 +265,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToTarget)
         {
+            if (obstacle != null)
+            {
+                obstacle.enabled = true;
+            }
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
@@ -249,6 +283,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToArea)
         {
+            if (obstacle != null)
+            {
+                obstacle.enabled = true;
+            }
             aiState = AIState.MovingToArea;
             agent.speed = walkSpeed;
             agent.stoppingDistance = 0;
@@ -336,20 +374,20 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     }
 
     #region WIZARD
-    private bool isStillSpawning;
-    private int currentPoolItem;
+    private bool isStillSpawning = true;
+    private int currentPoolItem = 0;
 
     private void CastSpell()
     {
         if (isStillSpawning) //if the pool is still not full
         {
-            GameObject projectileCopy = Instantiate(projectilePrefab, transform.position + offsetVector, projectilePrefab.transform.rotation);
+            GameObject projectileCopy = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectilePrefab.transform.rotation);
             projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget);
             AddObjectToPool(projectileCopy);
         }
         else //when full start using items from the pool
         {
-            projectilePool[currentPoolItem].transform.position = transform.position + offsetVector;
+            projectilePool[currentPoolItem].transform.position = projectileSpawnPoint.position;
             projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);
             projectilePool[currentPoolItem].SetActive(true);
             currentPoolItem++;

@@ -32,8 +32,7 @@ public class HarvestableLoader : MonoBehaviour
     private void Start()
     {
         if (Chochosan.SaveLoadManager.IsSaveExists())
-        {
-            
+        {          
             foreach (HarvestableControllerSerializable hcs in Chochosan.SaveLoadManager.savedGameData.harvestableList)
             {
                 //load the position

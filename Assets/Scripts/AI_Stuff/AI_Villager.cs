@@ -44,6 +44,7 @@ public class AI_Villager : AI_Base, ISelectable
         //if it is a defaulted world object
         if (defaultedWorldObject)
         {
+            Chochosan.ChochosanHelper.ChochosanDebug("DEFAULTED OBJECT ACTIVE, BEWARE OF DOUBLE SAVING", "red");
             Unit_Controller.Instance.AddVillagerToList(gameObject.GetComponent<AI_Villager>()); //add to the list with spawned objects
 
             //all defaulted objects are parented to an object that gets deleted if there is an existing save

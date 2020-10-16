@@ -752,7 +752,7 @@ MonoBehaviour:
   villagerType: 4
   harvestInterval: 1.5
   foodConsumption: 5
-  defaultedWorldObject: 1
+  defaultedWorldObject: 0
   selectedIndicator: {fileID: 968443032920867616}
 --- !u!195 &2547033674450600918
 NavMeshAgent:

@@ -5094,8 +5094,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e721612ef7eb8428d92b3a7188ecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHarvestableIndex: 0
   stats: {fileID: 0}
   harvestableType: 4
+  depletedParticle: {fileID: 0}
   customStoppingDistance: 5
   currentResourcesToHarvest: 0
 --- !u!208 &2219204845879167095
@@ -5508,10 +5510,10 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7261327278730013670}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 8.025, y: 2.285, z: 3.47}
+  m_Extents: {x: 8.025, y: 2.285, z: 3.38}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -5626,6 +5628,7 @@ GameObject:
   - component: {fileID: 7261327278799370162}
   - component: {fileID: 7261327278796520704}
   - component: {fileID: 7261327278797518728}
+  - component: {fileID: 127071176}
   m_Layer: 0
   m_Name: SM_Bld_House_Foundation_07
   m_TagString: Untagged
@@ -5694,6 +5697,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!208 &127071176
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7261327278799699096}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.715, y: 1.4050001, z: 5.215}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.4050001, z: 2.88}
+  m_TimeToStationary: 0.5
 --- !u!1 &7261327278817652440
 GameObject:
   m_ObjectHideFlags: 0
@@ -6179,6 +6198,7 @@ GameObject:
   - component: {fileID: 7261327279471324276}
   - component: {fileID: 7261327279467836328}
   - component: {fileID: 7261327279468839568}
+  - component: {fileID: 127071175}
   m_Layer: 0
   m_Name: SM_Bld_Rockwall_Stairs_01
   m_TagString: Untagged
@@ -6247,6 +6267,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!208 &127071175
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7261327279471018126}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.89800006, y: 1.371, z: 3.155}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.371, z: -1.23}
+  m_TimeToStationary: 0.5
 --- !u!1 &7261327279604231719
 GameObject:
   m_ObjectHideFlags: 0
@@ -6943,7 +6979,7 @@ MonoBehaviour:
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 3
   selectedIndicator: {fileID: 4950336347139548034}
-  customAgentStoppingDistance: 7.5
+  customAgentStoppingDistance: 6
   buildingMaxHP: 500
   housingSpace: 2
   charismaOnBuilt: 101
@@ -6962,8 +6998,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 16, y: 10, z: 6.5280457}
-  m_Center: {x: 0.35999966, y: 5, z: -0.35202026}
+  m_Size: {x: 16, y: 8.806307, z: 6.5280457}
+  m_Center: {x: 0.35999966, y: 4.4031534, z: -0.35202026}
 --- !u!1001 &726323439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8118,25 +8154,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8783829534619899817, guid: 028fedebc185d2e46b6b61986619bdcd,
         type: 3}
-      propertyPath: m_LocalScale.z
-      value: 8.75214
-      objectReference: {fileID: 0}
-    - target: {fileID: 8783829534619899817, guid: 028fedebc185d2e46b6b61986619bdcd,
-        type: 3}
       propertyPath: m_LocalScale.x
       value: 18.845339
       objectReference: {fileID: 0}
+    - target: {fileID: 8783829534619899817, guid: 028fedebc185d2e46b6b61986619bdcd,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 8.75214
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 028fedebc185d2e46b6b61986619bdcd, type: 3}
---- !u!4 &3632633738182992721 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8783829534619899817, guid: 028fedebc185d2e46b6b61986619bdcd,
-    type: 3}
-  m_PrefabInstance: {fileID: 5444811607431820536}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4950336347139548034 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1098029353495730042, guid: 028fedebc185d2e46b6b61986619bdcd,
+    type: 3}
+  m_PrefabInstance: {fileID: 5444811607431820536}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3632633738182992721 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8783829534619899817, guid: 028fedebc185d2e46b6b61986619bdcd,
     type: 3}
   m_PrefabInstance: {fileID: 5444811607431820536}
   m_PrefabAsset: {fileID: 0}
