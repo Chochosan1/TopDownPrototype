@@ -2297,10 +2297,10 @@ RectTransform:
   m_Father: {fileID: 1859377323}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 975.5, y: -356.3}
-  m_SizeDelta: {x: 284.3, y: 215.2}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -142.15002, y: 107.600006}
+  m_SizeDelta: {x: 284.30005, y: 215.20001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &299194223
 MonoBehaviour:
@@ -8015,7 +8015,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Town
+  m_text: Upgrade
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12869,7 +12869,7 @@ GameObject:
   - component: {fileID: 1465122738}
   - component: {fileID: 1465122737}
   m_Layer: 5
-  m_Name: Button
+  m_Name: TrainWarriorBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12937,7 +12937,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1465122738}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1859377324}
+        m_MethodName: TrainSelectedBuildingUnit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1465122738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13328,7 +13339,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1499707332}
   m_OnClick:
     m_PersistentCalls:
@@ -14647,9 +14658,9 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1108.3, y: -40.19995}
-  m_SizeDelta: {x: 2216.3, y: 80.4}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -40.200012}
+  m_SizeDelta: {x: 0, y: 80.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1643975174
 MonoBehaviour:
@@ -16817,7 +16828,7 @@ GameObject:
   - component: {fileID: 1899505864}
   - component: {fileID: 1899505863}
   m_Layer: 5
-  m_Name: Button
+  m_Name: UpgradeBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16885,7 +16896,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1899505864}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1859377324}
+        m_MethodName: UpgradeSelectedBuilding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1899505864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18880,6 +18902,7 @@ MonoBehaviour:
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
     type: 3}
   villagerToSpawn: {fileID: 0}
+  attackerToSpawn: {fileID: 0}
   spawnPoint: {fileID: 0}
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7

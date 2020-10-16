@@ -23,6 +23,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private GameObject buildingInProgress;
     [SerializeField] private GameObject buildingDoneParticle;
     [SerializeField] private GameObject villagerToSpawn;
+    [SerializeField] private GameObject attackerToSpawn;
     [SerializeField] private GameObject spawnPoint;
     [Tooltip("Villager will spawn after that many seconds.")]
     [SerializeField] private float spawnFirstVillageAfterSeconds = 2f;
@@ -68,9 +69,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [Tooltip("How much progress should be added to the building per single progress iteration (e.g when the builder swings with his hammer although progress adding will not always match with the animation)")]
     [SerializeField] private float progressPerBuildIteration = 25f;
 
-    //[Tooltip("All villagers that have been spawned by this building.")]
-    //[SerializeField] private List<AI_Villager> assignedVillagersList;
-
     private void Start()
     {
         mainCamera = Camera.main;
@@ -83,7 +81,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         {
             isBuildingComplete = false;
             mainBuilding.SetActive(false);
-            //    GetComponent<BoxCollider>().enabled = false;
         }
         else
         {
@@ -96,7 +93,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         mainBuilding.SetActive(true);
         Destroy(buildingInProgress);
         buildingProgress = 100;
-        //   GetComponent<BoxCollider>().enabled = true;
         UnlockUpgradeWhenBuilt();
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally?.Invoke(this, buildingType);
 
@@ -140,11 +136,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         PlayerInventory.Instance.CurrentVillageCharisma += charismaOnBuilt;
         PlayerInventory.Instance.AddBuildingBonus(this, buildingType);
         Instantiate(buildingDoneParticle, transform.position + new Vector3(0, 2f, 0), buildingDoneParticle.transform.rotation);
-
-        //if (villagerToSpawn != null)
-        //{           
-        //    StartCoroutine(SpawnVillagerAfterTime());
-        //}
     }
 
     private void UnlockUpgradeWhenBuilt()
@@ -166,24 +157,29 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         }
     }
 
+    public void SpawnAttackerUnit()
+    {
+        if (attackerToSpawn == null)
+            return;
+        GameObject tempUnit = Instantiate(attackerToSpawn, spawnPoint.transform.position, attackerToSpawn.transform.rotation);
+        AI_Attacker_Loader.AddAttackerToList(tempUnit.GetComponent<AI_Attacker>());
+    }
+
     public IEnumerator SpawnVillagerAfterTime()
     {
         yield return new WaitForSeconds(spawnFirstVillageAfterSeconds);
         GameObject tempVillager = Instantiate(villagerToSpawn, spawnPoint.transform.position, villagerToSpawn.transform.rotation);
         AI_Villager tempAIVillager = tempVillager.GetComponent<AI_Villager>();
-        tempAIVillager.SetHomeBuilding(this);
         Unit_Controller.Instance.AddVillagerToList(tempAIVillager);
-        //  assignedVillagersList.Add(tempAIVillager);
     }
 
-    private void UpgradeBuildingLevel()
+    public void UpgradeBuildingLevel()
     {
         if (maxBuildingLevel > currentBuildingLevel && PlayerInventory.Instance.IsHaveEnoughResources(costRequirements))
         {
             currentBuildingLevel++;
             Chochosan.EventManager.Instance.OnBuildingUpgraded?.Invoke(costRequirements);
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
-            // StartCoroutine(SpawnVillagerAfterTime());
         }
     }
 
@@ -241,10 +237,6 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         string info = $"{buildingName}\nBuilding level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
         return info;
     }
-    //public bool IsOpenUpgradePanel()
-    //{
-    //    return isUpgradable;
-    //}
 
     public void UpgradeUnit()
     {

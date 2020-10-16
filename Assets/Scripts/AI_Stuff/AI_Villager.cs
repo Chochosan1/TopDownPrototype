@@ -364,11 +364,6 @@ public class AI_Villager : AI_Base, ISelectable
         return unitName;
     }
 
-    public void SetHomeBuilding(BuildingController buildingController)
-    {
-        this.buildingController = buildingController;
-    }
-
     public bool IsOpenUpgradePanel()
     {
         return false;

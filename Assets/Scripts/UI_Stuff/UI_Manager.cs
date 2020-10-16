@@ -106,7 +106,6 @@ namespace Chochosan
                         currentBuildingAdditionalPanel = townHallPanel;
                         break;
                 }
-
                 currentBuildingAdditionalPanel?.SetActive(true);
             }
 
@@ -252,6 +251,24 @@ namespace Chochosan
         public void DeleteSave()
         {
             Chochosan.SaveLoadManager.SeriouslyDeleteAllSaveFiles();
+        }
+
+        public void TrainSelectedBuildingUnit()
+        {
+            BuildingController currentlySelectedBuilding = Unit_Controller.Instance.GetCurrentlySelectedBuilding().GetComponent<BuildingController>();
+            if(currentlySelectedBuilding != null)
+            {
+                currentlySelectedBuilding.SpawnAttackerUnit();
+            }
+        }
+
+        public void UpgradeSelectedBuilding()
+        {
+            BuildingController currentlySelectedBuilding = Unit_Controller.Instance.GetCurrentlySelectedBuilding().GetComponent<BuildingController>();
+            if(currentlySelectedBuilding != null)
+            {
+                currentlySelectedBuilding.UpgradeBuildingLevel();
+            }
         }
         #endregion
     }

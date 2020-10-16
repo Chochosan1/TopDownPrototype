@@ -188,7 +188,8 @@ public class Unit_Controller : MonoBehaviour
                         //offset each individual unit's position so that they don't fight for exactly the same spot
                         int offset = currentlySelectedUnits.IndexOf(selectedUnit);
                         Vector3 position = hit.point + new Vector3(offset, 0, offset / 2);
-                        selectedUnit.GetComponent<ISelectable>()?.ForceSetAgentArea(position);
+                        if(selectedUnit != null)
+                            selectedUnit.GetComponent<ISelectable>()?.ForceSetAgentArea(position);
                     }
                 }
                 else
@@ -201,6 +202,11 @@ public class Unit_Controller : MonoBehaviour
                 }
             }
         }
+    }
+
+    public GameObject GetCurrentlySelectedBuilding()
+    {
+        return currentlySelectedBuilding;
     }
 
     private Vector3 ApplyRotationToVector(Vector3 vec, float angle)
