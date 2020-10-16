@@ -35,7 +35,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     private float attackAnimTimestamp;
     private AIState aiState;
     private NavMeshAgent agent;
-    private NavMeshObstacle obstacle;
     private Animator anim;
     private new SkinnedMeshRenderer renderer;
     private Camera mainCamera;
@@ -61,7 +60,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             defaultAgentStoppingDistance *= 12f;
         }
         projectilePool = new List<GameObject>();
-        obstacle = GetComponent<NavMeshObstacle>();
         thisTransform = transform;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
         mainCamera = Camera.main;
@@ -181,7 +179,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             Vector3 heading = currentTarget.transform.position - thisTransform.position;
             headingDistance = heading.magnitude;
 
-            if (headingDistance <= secondPureEnemySenseRange && headingDistance > agent.stoppingDistance) //if player is far but scented then go to him
+            if (/*headingDistance <= secondPureEnemySenseRange &&*/ headingDistance > agent.stoppingDistance) //if player is far but scented then go to him
             {
                 GoIntoMovingToTarget();
             }
@@ -215,10 +213,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         if (aiState != AIState.Attack)
         {
             aiState = AIState.Attack;
-            if(obstacle != null)
-            {
-                obstacle.enabled = true;
-            }
             currentDamageable = currentTarget.GetComponent<IDamageable>();
             attackAnimTimestamp = Time.time + attackInterval;
             LookAtTarget();
@@ -229,10 +223,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.GoingToDefaultTarget)
         {
-            if (obstacle != null)
-            {
-                obstacle.enabled = true;
-            }
             agent.speed = walkSpeed;
             aiState = AIState.GoingToDefaultTarget;
             currentTarget = null;
@@ -245,10 +235,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.Idle && aiState != AIState.GoingToDefaultTarget && aiState != AIState.MovingToArea)
         {
-            if (obstacle != null)
-            {
-                obstacle.enabled = true;
-            }
             agent.speed = walkSpeed;
             aiState = AIState.Idle;
             currentTarget = null;
@@ -265,10 +251,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToTarget)
         {
-            if (obstacle != null)
-            {
-                obstacle.enabled = true;
-            }
+            Debug.Log("FORCED");
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
@@ -283,10 +266,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToArea)
         {
-            if (obstacle != null)
-            {
-                obstacle.enabled = true;
-            }
             aiState = AIState.MovingToArea;
             agent.speed = walkSpeed;
             agent.stoppingDistance = 0;

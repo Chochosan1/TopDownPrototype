@@ -1584,7 +1584,7 @@ MonoBehaviour:
   runSpeed: 4.5
   customAgentStoppingDistance: 2.5
   defaultAgentStoppingDistance: 1
-  projectilePrefab: {fileID: 5194193526441880220, guid: 49d017d876859a142acc81e94d64cc35,
+  projectilePrefab: {fileID: 7068368878755173506, guid: 7ef90bd8df17b9a4a87137b1e648d00e,
     type: 3}
   projectileSpawnPoint: {fileID: 681138917}
   forwardOffset: 2
