@@ -13,12 +13,13 @@ GameObject:
   - component: {fileID: 5100800357062398786}
   - component: {fileID: 2091277950399723427}
   - component: {fileID: 8643052176972902684}
+  - component: {fileID: 3960160862100110444}
   m_Layer: 14
   m_Name: GoldOre
   m_TagString: Gold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5100800357060497826
 Transform:
@@ -27,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5100800357060136322}
-  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 103.15151, y: 0, z: 116.180176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -109,5 +110,25 @@ MonoBehaviour:
   currentHarvestableIndex: 1
   stats: {fileID: 11400000, guid: ce775ed413c05bb43b94937926e89fdd, type: 2}
   harvestableType: 1
+  depletedParticle: {fileID: 0}
   customStoppingDistance: 2
   currentResourcesToHarvest: 0
+--- !u!95 &3960160862100110444
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5100800357060136322}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 40f488c489d75d6468eef8ab551f909c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

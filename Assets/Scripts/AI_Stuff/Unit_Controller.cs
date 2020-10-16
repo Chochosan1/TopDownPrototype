@@ -11,6 +11,7 @@ public class Unit_Controller : MonoBehaviour
     [SerializeField] private LayerMask selectableUnitLayer;
     [SerializeField] private LayerMask selectableBuildingLayer;
     [SerializeField] private LayerMask movableAreaLayer;
+    [SerializeField] private LayerMask UILayer;
     private ObjectSpawner objectSpawner;
     private Camera mainCamera;
     [Tooltip("A villager to spawn after loading a save or by a building.")]
@@ -21,6 +22,7 @@ public class Unit_Controller : MonoBehaviour
     private List<GameObject> currentlySelectedUnits;
     private GameObject currentlySelectedBuilding;
     private ISelectable tempSelectableBuilding;
+    private bool isInteractingWithUI;
     [HideInInspector]
     public Rect selectRect = new Rect();
     private Vector3 startClickRect = -Vector3.one;
@@ -86,8 +88,11 @@ public class Unit_Controller : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            isInteractingWithUI = Chochosan.UI_Manager.IsPointerOverUIElement();
+
             //clear all currently selected units
-            ClearCurrentlySelectedUnits();
+            if (!isInteractingWithUI)
+                ClearCurrentlySelectedUnits();
 
             //hide the rect 
             startClickRect = -Vector3.one;
@@ -103,8 +108,12 @@ public class Unit_Controller : MonoBehaviour
                 selectRect.y += selectRect.height;
                 selectRect.height = -selectRect.height;
             }
-            OnTryToSelectUnits?.Invoke();
-            SelectUnit();
+
+            if (!isInteractingWithUI)
+            {
+                OnTryToSelectUnits?.Invoke();
+                SelectUnit();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -186,7 +195,7 @@ public class Unit_Controller : MonoBehaviour
                 {
                     foreach (GameObject selectedUnit in currentlySelectedUnits)
                     {
-                        if(hit.collider.gameObject != null && selectedUnit != null)
+                        if (hit.collider.gameObject != null && selectedUnit != null)
                             selectedUnit.GetComponent<ISelectable>()?.ForceSetSpecificTarget(hit.collider.gameObject);
                     }
                 }
@@ -199,7 +208,7 @@ public class Unit_Controller : MonoBehaviour
         return Quaternion.Euler(0, 0, angle) * vec;
     }
 
-    public void ClearCurrentlySelectedUnits()
+    private void ClearCurrentlySelectedUnits()
     {
         currentlySelectedUnits.Clear();
         currentlySelectedBuilding = null;

@@ -21,7 +21,7 @@ public class Projectile_Controller : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemies"))
         {
-            Debug.Log("HIT ENEMY");
+          //  Debug.Log("HIT ENEMY");
             IDamageable tempInterface = other.gameObject.GetComponent<IDamageable>();
             if (tempInterface != null)
             {

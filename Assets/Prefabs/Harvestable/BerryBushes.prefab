@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &3987481445370303087
 Transform:
@@ -95,7 +95,7 @@ GameObject:
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1851229037302420281
 Transform:
@@ -171,12 +171,13 @@ GameObject:
   - component: {fileID: 3617485543648311599}
   - component: {fileID: 4486267577640161951}
   - component: {fileID: 4178439692568263827}
+  - component: {fileID: 1418919987}
   m_Layer: 19
   m_Name: BerryBushes
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &3617485543650212815
 Transform:
@@ -185,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3617485543650502639}
-  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.69342, y: -8.384454, z: 7.7431183}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -272,8 +273,28 @@ MonoBehaviour:
   currentHarvestableIndex: 3
   stats: {fileID: 11400000, guid: 24ec51f47bc3d39448680d6433fb77b7, type: 2}
   harvestableType: 3
+  depletedParticle: {fileID: 0}
   customStoppingDistance: 0.75
   currentResourcesToHarvest: 0
+--- !u!95 &1418919987
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3617485543650502639}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 40f488c489d75d6468eef8ab551f909c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4316572756656221444
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,7 +311,7 @@ GameObject:
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1214330194943792268
 Transform:
@@ -369,7 +390,7 @@ GameObject:
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7096824914307028585
 Transform:
@@ -448,7 +469,7 @@ GameObject:
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &3956029683721804420
 Transform:

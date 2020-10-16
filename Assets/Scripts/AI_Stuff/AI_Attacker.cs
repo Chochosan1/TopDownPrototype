@@ -141,7 +141,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                     }
                     
                     attackAnimTimestamp = Time.time + attackInterval;
-                    Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
+                //    Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
                 }
                 else
                 {
@@ -251,7 +251,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToTarget)
         {
-            Debug.Log("FORCED");
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace Chochosan
 {
@@ -71,9 +72,9 @@ namespace Chochosan
         }
 
         //automatically toggles on/off depending on the current state
-        public void ToggleObjectManipulationInfo()
+        public void ToggleObjectVisibility(GameObject GO)
         {
-            objectManipulationInfoPanel.SetActive(!objectManipulationInfoPanel.activeSelf);
+            GO.SetActive(!GO.activeSelf);
         }
 
         //force a state upon the panel
@@ -94,21 +95,21 @@ namespace Chochosan
         {
             selectedUnitInfoPanel.SetActive(true);
             selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
-            //if(bc != null)
-            //{
-            //    switch(bc.GetBuildingType())
-            //    {
-            //        case Buildings.Barracks:
-            //            currentBuildingAdditionalPanel = barracksPanel;
-            //            break;
-            //        case Buildings.TownHall:
-            //            currentBuildingAdditionalPanel = townHallPanel;
-            //            break;
-            //    }
+            if (bc != null)
+            {
+                switch (bc.GetBuildingType())
+                {
+                    case Buildings.Barracks:
+                        currentBuildingAdditionalPanel = barracksPanel;
+                        break;
+                    case Buildings.TownHall:
+                        currentBuildingAdditionalPanel = townHallPanel;
+                        break;
+                }
 
-            //    currentBuildingAdditionalPanel?.SetActive(true);
-            //}
-            
+                currentBuildingAdditionalPanel?.SetActive(true);
+            }
+
             //if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
             //{
             //    selectedBuildingUpgradePanel.SetActive(true);
@@ -219,6 +220,33 @@ namespace Chochosan
         {
             Chochosan.ChochosanHelper.ChochosanDebug("NOT ENOUGH RESOURCES", "red");
         }
+        #region UISelection
+        ///Returns 'true' if we touched or hovering on Unity UI element.
+        public static bool IsPointerOverUIElement()
+        {
+            return IsPointerOverUIElement(GetEventSystemRaycastResults());
+        }
+        ///Returns 'true' if we touched or hovering on Unity UI element.
+        public static bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
+        {
+            for (int index = 0; index < eventSystemRaysastResults.Count; index++)
+            {
+                RaycastResult curRaysastResult = eventSystemRaysastResults[index];
+                if (curRaysastResult.gameObject.layer == LayerMask.NameToLayer("UI"))
+                    return true;
+            }
+            return false;
+        }
+        ///Gets all event systen raycast results of current mouse or touch position.
+        static List<RaycastResult> GetEventSystemRaycastResults()
+        {
+            PointerEventData eventData = new PointerEventData(EventSystem.current);
+            eventData.position = Input.mousePosition;
+            List<RaycastResult> raysastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, raysastResults);
+            return raysastResults;
+        }
+        #endregion
 
         #region ButtonAssignables
         public void DeleteSave()
