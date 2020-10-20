@@ -217,6 +217,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         if (aiState != AIState.Attack)
         {
             aiState = AIState.Attack;
+            SetAgentDestination(agent, thisTransform.position);
             currentDamageable = currentTarget.GetComponent<IDamageable>();
             attackAnimTimestamp = Time.time + attackInterval;
             LookAtTarget();
