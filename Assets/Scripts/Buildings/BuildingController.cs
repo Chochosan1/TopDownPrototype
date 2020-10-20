@@ -171,6 +171,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         yield return new WaitForSeconds(spawnFirstVillageAfterSeconds);
         GameObject tempVillager = Instantiate(villagerToSpawn, spawnPoint.transform.position, villagerToSpawn.transform.rotation);
         AI_Villager tempAIVillager = tempVillager.GetComponent<AI_Villager>();
+        SetInitialHP();
         Unit_Controller.Instance.AddVillagerToList(tempAIVillager);
     }
 

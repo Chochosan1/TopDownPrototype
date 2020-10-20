@@ -10,4 +10,5 @@ public class UnitsSerializable
     public float[] villagerYpositions;
     public float[] villagerZpositions;
     public string[] villagerTypeStrings;
+    public float[] villagerHealthValues;
 }

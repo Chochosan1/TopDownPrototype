@@ -81,7 +81,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
 
         hpBar.maxValue = stats.maxHealth;
-        hpBar.value = currentHealth;
+        UpdateHealthBar(currentHealth);
     }
 
     private void Update()

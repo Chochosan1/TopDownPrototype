@@ -7,17 +7,23 @@ using UnityEngine.AI;
 /// </summary>
 public enum AIState_Villager { Idle, MovingToSpecificTarget, Harvesting, MovingToArea }
 public enum Villager_Type { WoodWorker, GoldWorker, IronWorker, FoodWorker, Builder }
-public class AI_Villager : AI_Base, ISelectable
+public class AI_Villager : AI_Base, ISelectable, IDamageable
 {
     public bool debugState = false;
     private NavMeshAgent agent;
     private Animator anim;
     private AIState_Villager aiState;
+    [SerializeField] private AI_Stats stats;
     [SerializeField] private Villager_Type villagerType;
     [Tooltip("How often should the villager loot resource from the harvestable object. Best way is to match it with the animation.")]
     [SerializeField] private float harvestInterval = 1.5f;
-    [Tooltip("How much food does this unit consume per day?")]
-    [SerializeField] private float foodConsumption;
+    [SerializeField] private float customAgentStoppingDistance = 1.5f;
+    [SerializeField] private GameObject hitParticle, deathParticle;
+    [SerializeField] private Transform individualUnitCanvas;
+    [SerializeField] private UnityEngine.UI.Slider hpBar;
+    [SerializeField] private UnityEngine.UI.Image hpBarImage;
+    [HideInInspector] public float currentHealth;
+    private bool isDead = false;
     private float harvestAnimTimestamp;
     private Harvestable_Controller currentHarvestable;
     private BuildingController buildingController;
@@ -46,7 +52,7 @@ public class AI_Villager : AI_Base, ISelectable
         {
             Chochosan.ChochosanHelper.ChochosanDebug("DEFAULTED OBJECT ACTIVE, BEWARE OF DOUBLE SAVING", "red");
             Unit_Controller.Instance.AddVillagerToList(gameObject.GetComponent<AI_Villager>()); //add to the list with spawned objects
-
+            SetInitialHP();
             //all defaulted objects are parented to an object that gets deleted if there is an existing save
             //however navmesh agents break if they are parented so if they exist (parent object not deleted) it's necessary to remove their parent 
             gameObject.transform.SetParent(null);
@@ -57,11 +63,15 @@ public class AI_Villager : AI_Base, ISelectable
         aiState = AIState_Villager.Idle;
         SwitchVillagerType(villagerType);
         PlayerInventory.Instance.CurrentPopulation++;
-        PlayerInventory.Instance.CurrentFoodConsumption += foodConsumption;
+        PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;
+        hpBar.maxValue = stats.maxHealth;
+        UpdateHealthBar(currentHealth);
     }
 
     void Update()
     {
+        if (individualUnitCanvas != null)
+            individualUnitCanvas.LookAt(thisTransform);
         if (aiState == AIState_Villager.Idle)
         {
             currentTarget = null;
@@ -117,7 +127,6 @@ public class AI_Villager : AI_Base, ISelectable
                 }
             }
         }
-
 
         float distance = 10000;
         if (currentTarget != null)
@@ -396,4 +405,63 @@ public class AI_Villager : AI_Base, ISelectable
     {
         selectedIndicator?.SetActive(value);
     }
+
+    public void TakeDamage(float damage, AI_Attacker attacker)
+    {
+        currentHealth -= damage;
+        UpdateHealthBar(currentHealth);
+
+        //enable particle if not active then disable after some time
+        if (!hitParticle.activeSelf)
+        {
+            hitParticle.SetActive(true);
+            StartCoroutine(DisableHitParticle());
+        }
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+            Instantiate(deathParticle, thisTransform.position, deathParticle.transform.rotation);
+            Unit_Controller.Instance.RemoveVillagerToList(this);
+
+            PlayerInventory.Instance.CurrentPopulation--;
+            PlayerInventory.Instance.CurrentFoodConsumption -= stats.foodPerDayUpkeep;
+
+            Destroy(this.gameObject);
+        }
+    }
+
+    public void SetInitialHP()
+    {
+        currentHealth = stats.maxHealth;
+    }
+
+    private IEnumerator DisableHitParticle()
+    {
+        yield return new WaitForSeconds(0.3f);
+        hitParticle.SetActive(false);
+    }
+
+    private void UpdateHealthBar(float value)
+    {
+        if (hpBar == null)
+            return;
+
+        hpBar.value = value;
+        if (hpBar.value <= hpBar.maxValue * 0.5f)
+        {
+            hpBarImage.color = Color.red;
+        }
+        else
+        {
+            hpBarImage.color = Color.green;
+        }
+    }
+
+
+    public float GetCustomAgentStoppingDistance()
+    {
+        return customAgentStoppingDistance;
+    }
 }
+
+

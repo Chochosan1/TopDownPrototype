@@ -62,8 +62,8 @@ public class Unit_Controller : MonoBehaviour
                 tempVillagerPos.z = Chochosan.SaveLoadManager.savedGameData.unitsSaveData.villagerZpositions[i];
 
                 //this adds the villagers to a local scope list in the controller as well
-                SpawnSpecificUnit(tempVillagerPos, Chochosan.SaveLoadManager.savedGameData.unitsSaveData.villagerTypeStrings[i]);
-                //  Debug.Log("SETTING POSITIONS");
+                GameObject tempVillager = SpawnSpecificUnit(tempVillagerPos, Chochosan.SaveLoadManager.savedGameData.unitsSaveData.villagerTypeStrings[i]);
+                tempVillager.GetComponent<AI_Villager>().currentHealth = Chochosan.SaveLoadManager.savedGameData.unitsSaveData.villagerHealthValues[i];
             }
         }
     }
@@ -235,6 +235,11 @@ public class Unit_Controller : MonoBehaviour
         spawnedVillagersList.Add(villager);
     }
 
+    public void RemoveVillagerToList(AI_Villager villager)
+    {
+        spawnedVillagersList.Remove(villager);
+    }
+
     public UnitsSerializable GetSpawnedUnitsData()
     {
         UnitsSerializable us = new UnitsSerializable();
@@ -247,6 +252,7 @@ public class Unit_Controller : MonoBehaviour
         us.villagerYpositions = new float[spawnedVillagersList.Count];
         us.villagerZpositions = new float[spawnedVillagersList.Count];
         us.villagerTypeStrings = new string[spawnedVillagersList.Count];
+        us.villagerHealthValues = new float[spawnedVillagersList.Count];
 
         //store each villager's X, Y, Z positions in arrays
         for (int i = 0; i < spawnedVillagersList.Count; i++)
@@ -254,6 +260,7 @@ public class Unit_Controller : MonoBehaviour
             us.villagerXpositions[i] = spawnedVillagersList[i].transform.position.x;
             us.villagerYpositions[i] = spawnedVillagersList[i].transform.position.y;
             us.villagerZpositions[i] = spawnedVillagersList[i].transform.position.z;
+            us.villagerHealthValues[i] = spawnedVillagersList[i].currentHealth;
             switch (spawnedVillagersList[i].GetCurrentVillagerType())
             {
                 case Villager_Type.WoodWorker:
@@ -277,16 +284,19 @@ public class Unit_Controller : MonoBehaviour
         return us;
     }
 
-    private void SpawnSpecificUnit(Vector3 position, string villagerType)
+    private GameObject SpawnSpecificUnit(Vector3 position, string villagerType)
     {
         if (genericVillager != null)
         {
             GameObject tempVillagerGameobject = Instantiate(genericVillager, position, genericVillager.transform.rotation);
             AI_Villager tempVillagerController = tempVillagerGameobject.GetComponent<AI_Villager>();
             tempVillagerController.SwitchVillagerType(villagerType);
+            tempVillagerController.SetInitialHP();
             //very important to assign the villager to the building after spawning (useful for loading/saving data later on because the list must not be empty)
             AddVillagerToList(tempVillagerController);
             Debug.Log("LOADED AND ADDED TO LIST ONE VILLAGER");
+            return tempVillagerGameobject;
         }
+        return null;
     }
 }
