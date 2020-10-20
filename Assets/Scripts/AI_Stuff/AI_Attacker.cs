@@ -17,6 +17,8 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     [SerializeField] private GameObject hitParticle;
     [SerializeField] private GameObject deathParticle;
     [SerializeField] private GameObject selectedIndicator;
+    [SerializeField] private Transform individualUnitCanvas;
+    [SerializeField] private UnityEngine.UI.Slider hpBar;
     [SerializeField] private AI_Stats stats;
     [SerializeField] private float attackInterval = 1.5f;
     [SerializeField] private float walkSpeed = 3.0f;
@@ -62,7 +64,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;
             PlayerInventory.Instance.CurrentPopulation++;
         }
-           
+
 
         projectilePool = new List<GameObject>();
         thisTransform = transform;
@@ -76,10 +78,15 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         {
             SetInitialStateNotLoadedFromSave();
         }
+
+        hpBar.maxValue = stats.maxHealth;
+        hpBar.value = currentHealth;
     }
 
     private void Update()
     {
+        if (individualUnitCanvas != null)
+            individualUnitCanvas.LookAt(thisTransform);
         if (aiState == AIState.Idle)
         {
             anim.SetBool("isIdle", true);
@@ -325,7 +332,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 PlayerInventory.Instance.CurrentPopulation--;
                 PlayerInventory.Instance.CurrentFoodConsumption -= stats.foodPerDayUpkeep;
             }
-                
+
             Destroy(this.gameObject);
         }
     }
@@ -387,7 +394,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         {
             projectilePool[currentPoolItem].transform.position = projectileSpawnPoint.position;
             projectilePool[currentPoolItem].SetActive(true);
-            projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);         
+            projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);
             currentPoolItem++;
 
             if (currentPoolItem >= projectilePool.Count)
