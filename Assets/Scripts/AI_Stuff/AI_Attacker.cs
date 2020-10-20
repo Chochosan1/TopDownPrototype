@@ -19,6 +19,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     [SerializeField] private GameObject selectedIndicator;
     [SerializeField] private Transform individualUnitCanvas;
     [SerializeField] private UnityEngine.UI.Slider hpBar;
+    [SerializeField] private UnityEngine.UI.Image hpBarImage;
     [SerializeField] private AI_Stats stats;
     [SerializeField] private float attackInterval = 1.5f;
     [SerializeField] private float walkSpeed = 3.0f;
@@ -313,8 +314,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         if (attacker != null && currentTarget == null)
         {
             currentTarget = attacker.gameObject;
+            currentDamageable = currentTarget.GetComponent<IDamageable>();
         }
         currentHealth -= damage;
+        UpdateHealthBar(currentHealth);
 
         //enable particle if not active then disable after some time
         if (!hitParticle.activeSelf)
@@ -334,6 +337,22 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             }
 
             Destroy(this.gameObject);
+        }
+    }
+
+    private void UpdateHealthBar(float value)
+    {
+        if (hpBar == null)
+            return;
+
+        hpBar.value = value;
+        if(hpBar.value <= hpBar.maxValue * 0.5f)
+        {
+            hpBarImage.color = Color.red;
+        }
+        else
+        {
+            hpBarImage.color = Color.green;
         }
     }
 

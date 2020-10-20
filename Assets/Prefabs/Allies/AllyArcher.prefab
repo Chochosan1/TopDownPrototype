@@ -2325,6 +2325,8 @@ MonoBehaviour:
     type: 3}
   selectedIndicator: {fileID: 8454723075435579168}
   individualUnitCanvas: {fileID: 1486427535}
+  hpBar: {fileID: 48760130}
+  hpBarImage: {fileID: 55456065}
   stats: {fileID: 11400000, guid: 2bf87f2a53d90b54d80cfbe13200eea6, type: 2}
   attackInterval: 0.55
   walkSpeed: 3
