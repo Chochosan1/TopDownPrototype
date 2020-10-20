@@ -108,17 +108,6 @@ namespace Chochosan
                 }
                 currentBuildingAdditionalPanel?.SetActive(true);
             }
-
-            //if(unitSelectable.IsOpenUpgradePanel()) //activate panel for upgrades if true and add click events
-            //{
-            //    selectedBuildingUpgradePanel.SetActive(true);
-            //    selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners(); //very important to first clear all other listenes
-            //    selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(unitSelectable.UpgradeUnit);
-            //}      
-            //else
-            //{
-            //    selectedBuildingUpgradePanel.SetActive(false);
-            //}
         }
 
         private void RefreshTextInfo(ISelectable selectable)
@@ -132,9 +121,7 @@ namespace Chochosan
             selectedUnitInfoPanel.SetActive(false);
             selectedUnitText.text = "";
             currentBuildingAdditionalPanel?.SetActive(false);
-            currentBuildingAdditionalPanel = null;
-            //selectedBuildingUpgradePanel.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
-            //selectedBuildingUpgradePanel.SetActive(false);         
+            currentBuildingAdditionalPanel = null;   
         }
 
         public void PlayHoverAnimation(Animator anim)
@@ -215,9 +202,9 @@ namespace Chochosan
             }
         }
 
-        public void DisplayWarningMessage()
+        public void DisplayWarningMessage(string messageWarning)
         {
-            Chochosan.ChochosanHelper.ChochosanDebug("NOT ENOUGH RESOURCES", "red");
+            Chochosan.ChochosanHelper.ChochosanDebug(messageWarning, "red");
         }
         #region UISelection
         ///Returns 'true' if we touched or hovering on Unity UI element.

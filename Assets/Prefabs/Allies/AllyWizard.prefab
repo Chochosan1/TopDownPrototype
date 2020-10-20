@@ -1583,13 +1583,13 @@ MonoBehaviour:
   walkSpeed: 3
   runSpeed: 4.5
   customAgentStoppingDistance: 2.5
-  defaultAgentStoppingDistance: 1
+  defaultAgentStoppingDistance: 12
   isCountTowardsPopulation: 1
   projectilePrefab: {fileID: 7068368878755173506, guid: 7ef90bd8df17b9a4a87137b1e648d00e,
     type: 3}
   projectileSpawnPoint: {fileID: 681138917}
   forwardOffset: 2
-  projectilePoolSize: 15
+  projectilePoolSize: 10
 --- !u!65 &9012854335513339648
 BoxCollider:
   m_ObjectHideFlags: 0

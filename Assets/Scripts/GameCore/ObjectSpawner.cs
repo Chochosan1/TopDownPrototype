@@ -68,21 +68,7 @@ public class ObjectSpawner : MonoBehaviour
                 tempController.SetBuildingHP(bcs.buildingCurrentHP);
 
                 //finally add the loaded object into the list with all objects (very important in order to allow overriding saves)
-          //      allBuildingsSpawned.Add(tempObject);
                 AddBuildingToList(tempObject);
-
-                ////spawn that many villagers based on the number of villagersAssigned in the save file
-                //for (int i = 0; i < bcs.numberOfVillagersAssigned; i++)
-                //{
-                //    Vector3 tempVillagerPos;
-                //    tempVillagerPos.x = bcs.villagerXpositions[i];
-                //    tempVillagerPos.y = bcs.villagerYpositions[i];
-                //    tempVillagerPos.z = bcs.villagerZpositions[i];
-
-                //    //this adds the villagers to a local scope list in the controller as well
-                //    tempController.SpawnSpecificVillager(tempVillagerPos, bcs.villagerTypeStrings[i]);
-                //  //  Debug.Log("SETTING POSITIONS");
-                //}
             }
         }      
         buildableLayerMask = LayerMask.GetMask("Terrain");

@@ -57,12 +57,12 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         {
             Unit_Controller.Instance.OnTryToSelectUnits += CheckIfSelectedBySelector;
         }
-        if (attackerType == AttackerType.Wizard)
-        {
-            defaultAgentStoppingDistance *= 12f;
-        }
         if (isCountTowardsPopulation)
+        {
+            PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;
             PlayerInventory.Instance.CurrentPopulation++;
+        }
+           
 
         projectilePool = new List<GameObject>();
         thisTransform = transform;
@@ -74,8 +74,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         //  defaultTargetIfNoOtherAvailable = GameObject.FindGameObjectWithTag("DefaultTargetToProtect");
         if (!Chochosan.SaveLoadManager.IsSaveExists())
         {
-            SetInitialHP();
-            AI_Attacker_Loader.AddAttackerToList(this);
+            SetInitialStateNotLoadedFromSave();
         }
     }
 
@@ -278,6 +277,14 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
     }
 
+    //set the initial stats of the unit and add it to the save list, only do that for a not loaded from a save unit
+    //a.k.a for defaulted world units and for runtime spawning of units
+    public void SetInitialStateNotLoadedFromSave()
+    {
+        SetInitialHP();
+        AI_Attacker_Loader.AddAttackerToList(this);
+    }
+
     private void SetInitialHP()
     {
         currentHealth = stats.maxHealth;
@@ -313,7 +320,11 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             Instantiate(deathParticle, thisTransform.position, deathParticle.transform.rotation);
             AI_Attacker_Loader.RemoveAttackerFromList(this);
             if (isCountTowardsPopulation)
+            {
                 PlayerInventory.Instance.CurrentPopulation--;
+                PlayerInventory.Instance.CurrentFoodConsumption -= stats.foodPerDayUpkeep;
+            }
+                
             Destroy(this.gameObject);
         }
     }
@@ -374,8 +385,8 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         else //when full start using items from the pool
         {
             projectilePool[currentPoolItem].transform.position = projectileSpawnPoint.position;
-            projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);
             projectilePool[currentPoolItem].SetActive(true);
+            projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);         
             currentPoolItem++;
 
             if (currentPoolItem >= projectilePool.Count)

@@ -18,7 +18,8 @@ public class AI_Spawner : MonoBehaviour
     {
         if (Time.time >= spawnTimestamp)
         {
-            Instantiate(aiToSpawnPrefab, transform.position, aiToSpawnPrefab.transform.rotation);
+            GameObject tempEnemy = Instantiate(aiToSpawnPrefab, transform.position, aiToSpawnPrefab.transform.rotation);
+            tempEnemy.GetComponent<AI_Attacker>().SetInitialStateNotLoadedFromSave();
             spawnTimestamp = Time.time + spawnCooldown;
         }
     }

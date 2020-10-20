@@ -356,7 +356,7 @@ public class PlayerInventory : MonoBehaviour
         {
             return true;
         }
-        Chochosan.UI_Manager.Instance.DisplayWarningMessage();
+        Chochosan.UI_Manager.Instance.DisplayWarningMessage("NOT ENOUGH RESOURCES");
         return false;
     }
 
