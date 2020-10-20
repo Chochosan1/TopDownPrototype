@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class AI_Attacker_Loader : MonoBehaviour
 {
     //used for spawning
@@ -22,13 +20,17 @@ public class AI_Attacker_Loader : MonoBehaviour
     {
         allSpawnedAttackers = new List<AI_Attacker>();
         allSpawnedAttackersSerializable = new List<AI_Attacker_Serializable>();
+
+        if(Chochosan.SaveLoadManager.IsSaveExists())
+        {
+            Destroy(defaultSceneResourcesPrefab);
+        }
     }
 
     private void Start()
     {
         if (Chochosan.SaveLoadManager.IsSaveExists())
-        {
-            Destroy(defaultSceneResourcesPrefab);
+        {         
             foreach (AI_Attacker_Serializable acs in Chochosan.SaveLoadManager.savedGameData.attackerList)
             {
                 //load the position

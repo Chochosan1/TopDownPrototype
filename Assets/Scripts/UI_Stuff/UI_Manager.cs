@@ -95,7 +95,7 @@ namespace Chochosan
         {
             selectedUnitInfoPanel.SetActive(true);
             selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
-            if (bc != null)
+            if (bc != null && bc.GetIsBuildingComplete())
             {
                 switch (bc.GetBuildingType())
                 {

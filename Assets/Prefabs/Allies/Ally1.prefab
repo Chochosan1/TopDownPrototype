@@ -7329,6 +7329,7 @@ MonoBehaviour:
   firstPureEnemySenseRange: 5
   secondPureEnemySenseRange: 30
   debugState: 0
+  isDummy: 0
   attackerType: 0
   isSelectable: 1
   attackerIndex: 1
@@ -7343,6 +7344,11 @@ MonoBehaviour:
   runSpeed: 4.5
   customAgentStoppingDistance: 2.5
   defaultAgentStoppingDistance: 1
+  isCountTowardsPopulation: 1
+  projectilePrefab: {fileID: 0}
+  projectileSpawnPoint: {fileID: 0}
+  forwardOffset: 0
+  projectilePoolSize: 0
 --- !u!65 &4579080507294930620
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -24,6 +24,8 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     [Tooltip("This stopping distance will be used by the agent that is attacking THIS target. This is useful when THIS target requires the agent to stop further from it (e.g big buildings)")]
     [SerializeField] private float customAgentStoppingDistance;
     [SerializeField] private float defaultAgentStoppingDistance = 1;
+    [SerializeField] private bool isCountTowardsPopulation = false;
+    private bool isDead = false;
 
     [Header("Wizard")]
     [SerializeField] private GameObject projectilePrefab;
@@ -59,6 +61,9 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         {
             defaultAgentStoppingDistance *= 12f;
         }
+        if (isCountTowardsPopulation)
+            PlayerInventory.Instance.CurrentPopulation++;
+
         projectilePool = new List<GameObject>();
         thisTransform = transform;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -131,7 +136,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 if (currentTarget != null && currentDamageable != null)
                 {
                     LookAtTarget();
-                    if(attackerType == AttackerType.Warrior)
+                    if (attackerType == AttackerType.Warrior)
                     {
                         currentDamageable.TakeDamage(stats.damage, this);
                     }
@@ -139,9 +144,9 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                     {
                         CastSpell();
                     }
-                    
+
                     attackAnimTimestamp = Time.time + attackInterval;
-                //    Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
+                    //    Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
                 }
                 else
                 {
@@ -302,10 +307,13 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             hitParticle.SetActive(true);
             StartCoroutine(DisableHitParticle());
         }
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !isDead)
         {
+            isDead = true;
             Instantiate(deathParticle, thisTransform.position, deathParticle.transform.rotation);
             AI_Attacker_Loader.RemoveAttackerFromList(this);
+            if (isCountTowardsPopulation)
+                PlayerInventory.Instance.CurrentPopulation--;
             Destroy(this.gameObject);
         }
     }

@@ -159,7 +159,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public void SpawnAttackerUnit()
     {
-        if (attackerToSpawn == null)
+        if (attackerToSpawn == null || !PlayerInventory.Instance.IsHaveEnoughHousingSpace())
             return;
         GameObject tempUnit = Instantiate(attackerToSpawn, spawnPoint.transform.position, attackerToSpawn.transform.rotation);
         AI_Attacker_Loader.AddAttackerToList(tempUnit.GetComponent<AI_Attacker>());
