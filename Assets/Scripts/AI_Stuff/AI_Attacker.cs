@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public enum AIState { Idle, GoingToDefaultTarget, MovingToTarget, Attack, MovingToArea }
-public enum AttackerType { Warrior, Wizard }
+public enum AttackerType { Melee, Ranged }
 public class AI_Attacker : AI_Base, IDamageable, ISelectable
 {
     public bool debugState, isDummy;
@@ -31,7 +31,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     private bool isDead = false;
     private bool isTargetingBuilding = false;
 
-    [Header("Wizard")]
+    [Header("Ranged")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private float forwardOffset;
@@ -47,6 +47,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     private Camera mainCamera;
     private Transform thisTransform;
     private Transform currentTargetTransform;
+    Vector3 direction;
     private float currentHealth;
 
     private void OnDisable()
@@ -162,7 +163,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 if (currentTarget != null && currentDamageable != null)
                 {
                     LookAtTarget();
-                    if (attackerType == AttackerType.Warrior)
+                    if (attackerType == AttackerType.Melee)
                     {
                         currentDamageable.TakeDamage(stats.damage, this);
                     }
@@ -205,33 +206,33 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
 
 
-        float headingDistance = 10000;
+        
         if (currentTarget != null)
         {
-            if(currentTargetTransform == null)
+            float directionDistance = 10000;
+            if (currentTargetTransform == null)
             {
                 currentTargetTransform = currentTarget.transform;
             }
-            Vector3 heading;
+
             if(isTargetingBuilding)
             { 
                 //if the AI is currently targetting a building then calculate the distance based on the static destination
-                heading = currentDestination - thisTransform.position;
+                direction = currentDestination - thisTransform.position;
             }
             else
             {
                 //if the AI is currently NOT targetting a building then calculate the distance based on the position of the target directly
-                heading = currentTargetTransform.position - thisTransform.position;
+                direction = currentTargetTransform.position - thisTransform.position;
             }
-            // Vector3 heading = currentTarget.transform.position - thisTransform.position;
-            
-            headingDistance = heading.magnitude;
 
-            if (/*headingDistance <= secondPureEnemySenseRange &&*/ headingDistance > agent.stoppingDistance) //if player is far but scented then go to him
+            directionDistance = direction.magnitude;
+
+            if (/*headingDistance <= secondPureEnemySenseRange &&*/ directionDistance > agent.stoppingDistance) //if player is far but scented then go to him
             {
                 GoIntoMovingToTarget();
             }
-            else if (headingDistance <= agent.stoppingDistance) //if player is within stop range and can attack go to attack state
+            else if (directionDistance <= agent.stoppingDistance) //if player is within stop range then go to attack state
             {
                 GoToAttackState();
             }
@@ -315,20 +316,21 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
-            if (currentDamageable != null && attackerType != AttackerType.Wizard)
+            if (currentDamageable != null && attackerType != AttackerType.Ranged)
                 agent.stoppingDistance = currentDamageable.GetCustomAgentStoppingDistance();
             else
                 agent.stoppingDistance = defaultAgentStoppingDistance;
 
+            //if the currentTarget is a building then use "currentDestination" to move to one of its attack points
             if (currentTarget.GetComponent<BuildingController>() != null)
             {
                 currentDestination = currentTarget.GetComponent<BuildingController>().GetRandomAttackSpot();
                 agent.stoppingDistance = defaultAgentStoppingDistance;
                 isTargetingBuilding = true;
             }
-            else
+            else //if the current target is not a building then move directly to the target's transform
             {
-                currentDestination = currentTarget.transform.position;
+               // currentDestination = currentTarget.transform.position;
                 isTargetingBuilding = false;
             }
             currentTargetTransform = currentTarget.transform;
@@ -373,11 +375,13 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     public void TakeDamage(float damage, AI_Attacker attacker)
     {
-        if (attacker != null && currentTarget == null)
+        if (attacker != null && (currentTarget == null || isTargetingBuilding))
         {
             currentTarget = attacker.gameObject;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
+            GoIntoMovingToTarget();
         }
+
         currentHealth -= damage;
         UpdateHealthBar(currentHealth);
 
@@ -459,7 +463,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
     }
 
-    #region WIZARD
+    #region RANGED
     private bool isStillSpawning = true;
     private int currentPoolItem = 0;
 
@@ -468,14 +472,14 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         if (isStillSpawning) //if the pool is still not full
         {
             GameObject projectileCopy = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectilePrefab.transform.rotation);
-            projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget);
+            projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget, this);
             AddObjectToPool(projectileCopy);
         }
         else //when full start using items from the pool
         {
             projectilePool[currentPoolItem].transform.position = projectileSpawnPoint.position;
             projectilePool[currentPoolItem].SetActive(true);
-            projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);
+            projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget, this);
             currentPoolItem++;
 
             if (currentPoolItem >= projectilePool.Count)

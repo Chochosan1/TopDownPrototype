@@ -12,6 +12,7 @@ public class Projectile_Controller : MonoBehaviour
     [SerializeField] private bool is_Homing;
     [SerializeField] private bool is_AoE_Projectile;
     private GameObject target;
+    private AI_Attacker ownerOfProjectile;
     private Transform thisTransform, targetTransform;
     private Vector3 dir;
 
@@ -32,7 +33,7 @@ public class Projectile_Controller : MonoBehaviour
             IDamageable tempInterface = other.gameObject.GetComponent<IDamageable>();
             if (tempInterface != null)
             {
-                tempInterface.TakeDamage(stats.damage, null);
+                tempInterface.TakeDamage(stats.damage, ownerOfProjectile);
             }
             TriggerOnHitFeedback();
         }
@@ -54,8 +55,9 @@ public class Projectile_Controller : MonoBehaviour
         }
     }
 
-    public void SetTarget(GameObject target)
+    public void SetTarget(GameObject target, AI_Attacker owner)
     {
+        ownerOfProjectile = owner;
         isTargetHit = false;
         if (muzzleParticle != null)
         {

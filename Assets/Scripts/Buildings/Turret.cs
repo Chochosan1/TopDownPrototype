@@ -49,7 +49,7 @@ public class Turret : AI_Base, ISpawnedAtWorld
             {
                 GameObject projectileCopy = Instantiate(projectilePrefab, transform.position + offsetVector, projectilePrefab.transform.rotation);
                // projectileCopy.GetComponent<Rigidbody>().AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);
-                projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget);
+                projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);
                 AddObjectToPool(projectileCopy);
             }
             else //when full start using items from the pool
@@ -58,7 +58,7 @@ public class Turret : AI_Base, ISpawnedAtWorld
               //  Rigidbody tempRb = projectilePool[currentPoolItem].GetComponent<Rigidbody>();
              //   tempRb.velocity = new Vector3(0, 0, 0);
                 projectilePool[currentPoolItem].transform.position = transform.position + offsetVector;
-                projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget);
+                projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);
                 projectilePool[currentPoolItem].SetActive(true);
                 //   tempRb.AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);     
                 currentPoolItem++;
