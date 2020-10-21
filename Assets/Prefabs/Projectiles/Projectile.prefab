@@ -47,9 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d950899abd7c6fd46a4e60a85faf2fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  affectableLayers:
+    serializedVersion: 2
+    m_Bits: 1024
   stats: {fileID: 11400000, guid: f1b3eea88dbd4624289ed5d3926886e1, type: 2}
   mainParticle: {fileID: 7200715902665886582}
   hitParticle: {fileID: 2951738629972859912}
+  hitParticleDuration: 0.65
+  muzzleParticle: {fileID: 0}
   is_Homing: 1
   is_AoE_Projectile: 0
 --- !u!54 &7068368878755173508

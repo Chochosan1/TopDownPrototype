@@ -7474,7 +7474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffdc738866aabe1478fcb8f6501f8d3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiToSpawnPrefab: {fileID: 1180872070463164473, guid: 10fd0508d2e6f0e48a2281b5cc05d973,
+  aiToSpawnPrefab: {fileID: 6466422713229716207, guid: 0dc17ce9f4669bb41bda4770260e6321,
     type: 3}
   spawnCooldown: 5
 --- !u!4 &659251315

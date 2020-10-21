@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Projectile_Controller : MonoBehaviour
 {
+    [SerializeField] private LayerMask affectableLayers;
     [SerializeField] private ProjectileStats stats;
     [SerializeField] private GameObject mainParticle;
     [SerializeField] private GameObject hitParticle;
@@ -27,7 +28,7 @@ public class Projectile_Controller : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemies"))
+        if (affectableLayers == (affectableLayers | (1 << other.gameObject.layer)))
         {
             //  Debug.Log("HIT ENEMY");
             IDamageable tempInterface = other.gameObject.GetComponent<IDamageable>();
