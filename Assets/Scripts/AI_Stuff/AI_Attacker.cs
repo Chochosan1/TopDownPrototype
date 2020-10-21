@@ -47,6 +47,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     private Camera mainCamera;
     private Transform thisTransform;
     private Transform currentTargetTransform;
+
     Vector3 direction;
     private float currentHealth;
 
@@ -269,7 +270,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.Attack)
         {
-            Debug.Log("ATTACK");
             aiState = AIState.Attack;
             SetAgentDestination(agent, thisTransform.position);
             currentDamageable = currentTarget.GetComponent<IDamageable>();
@@ -312,7 +312,6 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToTarget)
         {
-            Debug.Log("GOTOTARGET");
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();

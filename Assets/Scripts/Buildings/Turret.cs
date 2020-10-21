@@ -9,6 +9,7 @@ public class Turret : AI_Base, ISpawnedAtWorld
 {
     [SerializeField] private float castCooldown;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private float shootForce;
     [SerializeField] private float enableTurretAfterSeconds;
     [SerializeField] private Vector3 offsetVector;
@@ -20,23 +21,26 @@ public class Turret : AI_Base, ISpawnedAtWorld
     [Tooltip("The size of the object pool. Make sure it is big enough so that it can support even a fast attack rate. The pool will get filled during runtime, when this limit is reached items from the pool will be reused.")]
     private int projectilePoolSize = 15;
     private int currentPoolItem = 0; //used to iterate through the pool of items
-    public List<GameObject> projectilePool;
+    private List<GameObject> projectilePool;
     private bool isStillSpawning = true;
 
     private void Start()
     {
         StartInitialSetup();
-        Debug.Log("HELLO TURRET sTART");
+        isTurretEnabled = true;
+        projectilePool = new List<GameObject>();
     }
 
     void Update()
     {
-        ChooseNewTarget(false);
-
+     
         if (currentTarget != null)
-        {
-        //    SetTargetToNullIfTargetIsDead();        
+        {     
             CastSpell();
+        }
+        else
+        {
+            ChooseNewTarget(false);
         }
     }
 
@@ -44,29 +48,25 @@ public class Turret : AI_Base, ISpawnedAtWorld
     {
         if (currentTarget != null && Time.time >= castTimestamp && isTurretEnabled)
         {
+            Debug.Log("TURRET SHOOT");
             castTimestamp = Time.time + castCooldown;
             if (isStillSpawning) //if the pool is still not full
             {
-                GameObject projectileCopy = Instantiate(projectilePrefab, transform.position + offsetVector, projectilePrefab.transform.rotation);
+                GameObject projectileCopy = Instantiate(projectilePrefab, projectileSpawnPoint.position + offsetVector, projectilePrefab.transform.rotation);
                // projectileCopy.GetComponent<Rigidbody>().AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);
                 projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);
                 AddObjectToPool(projectileCopy);
             }
             else //when full start using items from the pool
             {
-                //RB movement
-              //  Rigidbody tempRb = projectilePool[currentPoolItem].GetComponent<Rigidbody>();
-             //   tempRb.velocity = new Vector3(0, 0, 0);
                 projectilePool[currentPoolItem].transform.position = transform.position + offsetVector;
-                projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);
                 projectilePool[currentPoolItem].SetActive(true);
-                //   tempRb.AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);     
+                projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);            
                 currentPoolItem++;
 
                 if (currentPoolItem >= projectilePool.Count)
                 {
                     currentPoolItem = 0;
-                    //   Debug.Log("MAX OBJECT REACHED, STARTING FROM THE START");
                 }
             }
         }
@@ -98,7 +98,6 @@ public class Turret : AI_Base, ISpawnedAtWorld
 
     public void StartInitialSetup()
     {
-        Debug.Log("START INIT TURRET");
         StartCoroutine(EnableTurretAfter());
     }
 }

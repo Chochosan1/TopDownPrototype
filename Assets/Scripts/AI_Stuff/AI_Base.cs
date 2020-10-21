@@ -5,10 +5,11 @@ using UnityEngine.AI;
 /// <summary>
 /// Provides basic AI functionalities that other objects build upon.
 /// </summary>
-[RequireComponent(typeof(NavMeshAgent))]
+
 public class AI_Base : MonoBehaviour
 {
     protected GameObject currentTarget;
+
     [Header("Base AI")]
     [SerializeField] protected string unitName;
     [Tooltip("The layer which can be detected by the AI unit. All other layers will be ignored.")]
@@ -22,7 +23,6 @@ public class AI_Base : MonoBehaviour
     {
         agent.destination = targetPosition;
     }
-
 
     //choose a random target out of all detected targets in a layer OR if the parameter is false choose the first target always
     protected virtual void ChooseNewTarget(bool chooseRandom)

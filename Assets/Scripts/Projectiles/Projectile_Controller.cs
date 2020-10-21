@@ -30,7 +30,6 @@ public class Projectile_Controller : MonoBehaviour
     {
         if (affectableLayers == (affectableLayers | (1 << other.gameObject.layer)))
         {
-            //  Debug.Log("HIT ENEMY");
             IDamageable tempInterface = other.gameObject.GetComponent<IDamageable>();
             if (tempInterface != null)
             {

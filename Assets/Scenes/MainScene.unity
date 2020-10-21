@@ -13967,7 +13967,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1185640463}
   m_OnClick:
     m_PersistentCalls:
@@ -18557,7 +18557,7 @@ MonoBehaviour:
   - {fileID: 1672993006681282559, guid: af335aa8244b0d84a96695a2af9d3c80, type: 3}
   - {fileID: 1672993006681282559, guid: af335aa8244b0d84a96695a2af9d3c80, type: 3}
   realObjects:
-  - {fileID: 1693210484172212, guid: cdc830d7ef1ba6e499f053056fb7edb2, type: 3}
+  - {fileID: 7175863657080842794, guid: 2d18e67bccc5c46418fe237a1b877974, type: 3}
   - {fileID: 9047440856508592863, guid: 9df808f2d2394e844b53cc7420ab0763, type: 3}
   - {fileID: 2497959184409930337, guid: df14917815e15e343b879165f44c7c87, type: 3}
   - {fileID: 2727419997556996886, guid: 992160f216ba35942a7d1e306ec3a33b, type: 3}
@@ -18712,6 +18712,7 @@ MonoBehaviour:
   - {fileID: 4579080507294930621, guid: cffe28d495279994c8513e2291549717, type: 3}
   - {fileID: 9012854335513339649, guid: c1bc314d8275b9e4785b52b97689e795, type: 3}
   - {fileID: 4961469802884762317, guid: af901fe1917c91949953072ea6ceb275, type: 3}
+  - {fileID: 6466422713229716207, guid: 0dc17ce9f4669bb41bda4770260e6321, type: 3}
   defaultSceneResourcesPrefab: {fileID: 768945682}
 --- !u!114 &1578267257
 MonoBehaviour:
