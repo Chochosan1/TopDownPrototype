@@ -7461,7 +7461,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &659251314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7485,7 +7485,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659251313}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 58.47, y: 2.61, z: 109.06}
+  m_LocalPosition: {x: 126.6, y: 2.61, z: 143.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -16164,7 +16164,7 @@ PrefabInstance:
     - target: {fileID: 1180872070463428599, guid: 10fd0508d2e6f0e48a2281b5cc05d973,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 33.89
+      value: 13.48
       objectReference: {fileID: 0}
     - target: {fileID: 1180872070463428599, guid: 10fd0508d2e6f0e48a2281b5cc05d973,
         type: 3}
@@ -16174,7 +16174,7 @@ PrefabInstance:
     - target: {fileID: 1180872070463428599, guid: 10fd0508d2e6f0e48a2281b5cc05d973,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.66
+      value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 1180872070463428599, guid: 10fd0508d2e6f0e48a2281b5cc05d973,
         type: 3}
@@ -18711,6 +18711,7 @@ MonoBehaviour:
   - {fileID: 1180872070463164473, guid: 10fd0508d2e6f0e48a2281b5cc05d973, type: 3}
   - {fileID: 4579080507294930621, guid: cffe28d495279994c8513e2291549717, type: 3}
   - {fileID: 9012854335513339649, guid: c1bc314d8275b9e4785b52b97689e795, type: 3}
+  - {fileID: 4961469802884762317, guid: af901fe1917c91949953072ea6ceb275, type: 3}
   defaultSceneResourcesPrefab: {fileID: 768945682}
 --- !u!114 &1578267257
 MonoBehaviour:
@@ -24083,6 +24084,7 @@ MonoBehaviour:
   villagerToSpawn: {fileID: 0}
   attackerToSpawn: {fileID: 0}
   spawnPoint: {fileID: 0}
+  attackPoints: []
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7
   selectedIndicator: {fileID: 3505158368681811958}
@@ -25255,7 +25257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &1180872070544228684
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -32377,7 +32379,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.57, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

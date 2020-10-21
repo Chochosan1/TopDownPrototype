@@ -29,6 +29,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     [SerializeField] private float defaultAgentStoppingDistance = 1;
     [SerializeField] private bool isCountTowardsPopulation = false;
     private bool isDead = false;
+    private bool isTargetingBuilding = false;
 
     [Header("Wizard")]
     [SerializeField] private GameObject projectilePrefab;
@@ -40,10 +41,12 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     private float attackAnimTimestamp;
     private AIState aiState;
     private NavMeshAgent agent;
+    private Vector3 currentDestination;
     private Animator anim;
     private new SkinnedMeshRenderer renderer;
     private Camera mainCamera;
     private Transform thisTransform;
+    private Transform currentTargetTransform;
     private float currentHealth;
 
     private void OnDisable()
@@ -90,12 +93,14 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             individualUnitCanvas.LookAt(thisTransform);
         if (aiState == AIState.Idle)
         {
+            isTargetingBuilding = false;
             anim.SetBool("isIdle", true);
             anim.SetBool("isWalk", false);
             anim.SetBool("isRun", false);
             anim.SetBool("isAttack", false);
             currentTarget = null;
             currentDamageable = null;
+            currentTargetTransform = null;
             if (defaultTargetIfNoOtherAvailable != null)
             {
                 if ((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude > defaultAgentStoppingDistance)
@@ -111,7 +116,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             {
                 aiState = AIState.Idle;
             }
-
+            isTargetingBuilding = false;
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", true);
             anim.SetBool("isRun", false);
@@ -126,7 +131,21 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 return;
             }
 
-            SetAgentDestination(agent, currentTarget.transform.position);
+            if(isTargetingBuilding)
+            {
+                SetAgentDestination(agent, currentDestination);
+                Vector3 heading = currentDestination - thisTransform.position;
+                
+                if(heading.magnitude <= agent.stoppingDistance)
+                {
+                    GoToAttackState();
+                }
+            }
+            else
+            {
+                SetAgentDestination(agent, currentTargetTransform.position);
+            } 
+           
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", false);
             anim.SetBool("isRun", true);
@@ -153,12 +172,13 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                     }
 
                     attackAnimTimestamp = Time.time + attackInterval;
-                    //    Chochosan.ChochosanHelper.ChochosanDebug("Attack" + gameObject.name, "green");
                 }
                 else
                 {
                     currentTarget = null;
                     currentDamageable = null;
+                    currentTargetTransform = null;
+                    isTargetingBuilding = false;
                     GoToDefaultTarget();
                     Chochosan.ChochosanHelper.ChochosanDebug("NULL CAUGHT || ATTACKER", "red");
                 }
@@ -188,7 +208,23 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         float headingDistance = 10000;
         if (currentTarget != null)
         {
-            Vector3 heading = currentTarget.transform.position - thisTransform.position;
+            if(currentTargetTransform == null)
+            {
+                currentTargetTransform = currentTarget.transform;
+            }
+            Vector3 heading;
+            if(isTargetingBuilding)
+            { 
+                //if the AI is currently targetting a building then calculate the distance based on the static destination
+                heading = currentDestination - thisTransform.position;
+            }
+            else
+            {
+                //if the AI is currently NOT targetting a building then calculate the distance based on the position of the target directly
+                heading = currentTargetTransform.position - thisTransform.position;
+            }
+            // Vector3 heading = currentTarget.transform.position - thisTransform.position;
+            
             headingDistance = heading.magnitude;
 
             if (/*headingDistance <= secondPureEnemySenseRange &&*/ headingDistance > agent.stoppingDistance) //if player is far but scented then go to him
@@ -211,8 +247,16 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
         if (debugState)
         {
+            if(isTargetingBuilding)
+            {
+                Debug.Log("BUILDING TARGET");
+            }
+            else
+            {
+                Debug.Log("NON BUILDING TARGET");
+            }
             // Chochosan.ChochosanHelper.ChochosanDebug(aiState.ToString(), "red");
-            Debug.Log(agent.pathStatus);
+        //    Debug.Log(agent.pathStatus);
         }
         if (isDummy)
         {
@@ -224,6 +268,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.Attack)
         {
+            Debug.Log("ATTACK");
             aiState = AIState.Attack;
             SetAgentDestination(agent, thisTransform.position);
             currentDamageable = currentTarget.GetComponent<IDamageable>();
@@ -240,6 +285,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             aiState = AIState.GoingToDefaultTarget;
             currentTarget = null;
             currentDamageable = null;
+            currentTargetTransform = null;
             SetAgentDestination(agent, thisTransform.position);
         }
     }
@@ -252,6 +298,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             aiState = AIState.Idle;
             currentTarget = null;
             currentDamageable = null;
+            currentTargetTransform = null;
             SetAgentDestination(agent, thisTransform.position);
             anim.SetBool("isIdle", true);
             anim.SetBool("isWalk", false);
@@ -264,6 +311,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToTarget)
         {
+            Debug.Log("GOTOTARGET");
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
@@ -271,6 +319,19 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                 agent.stoppingDistance = currentDamageable.GetCustomAgentStoppingDistance();
             else
                 agent.stoppingDistance = defaultAgentStoppingDistance;
+
+            if (currentTarget.GetComponent<BuildingController>() != null)
+            {
+                currentDestination = currentTarget.GetComponent<BuildingController>().GetRandomAttackSpot();
+                agent.stoppingDistance = defaultAgentStoppingDistance;
+                isTargetingBuilding = true;
+            }
+            else
+            {
+                currentDestination = currentTarget.transform.position;
+                isTargetingBuilding = false;
+            }
+            currentTargetTransform = currentTarget.transform;
         }
     }
 
@@ -283,6 +344,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             agent.stoppingDistance = 0;
             currentTarget = null;
             currentDamageable = null;
+            currentTargetTransform = null;
         }
     }
 

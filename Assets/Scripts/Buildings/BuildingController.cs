@@ -25,6 +25,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private GameObject villagerToSpawn;
     [SerializeField] private GameObject attackerToSpawn;
     [SerializeField] private GameObject spawnPoint;
+    [SerializeField] private GameObject[] attackPoints;
+    private int[] attackPointsStates;
     [Tooltip("Villager will spawn after that many seconds.")]
     [SerializeField] private float spawnFirstVillageAfterSeconds = 2f;
     [SerializeField] private int maxBuildingLevel = 3;
@@ -73,6 +75,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     {
         mainCamera = Camera.main;
         CheckBuildingStatus();
+        attackPointsStates = new int[attackPoints.Length];
     }
 
     private void CheckBuildingStatus()
@@ -227,6 +230,26 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void ForceSetSpecificTarget(GameObject target)
     {
         Debug.Log("THIS IS NOT AN AGENT X2");
+    }
+
+    public Vector3 GetFirstFreeSpot()
+    {
+        Vector3 des = attackPoints[0].transform.position;
+        for(int i = 0; i < attackPointsStates.Length; i++)
+        {
+            if(attackPointsStates[i] != 1)
+            {
+                attackPointsStates[i] = 1;
+                return attackPoints[i].transform.position;
+            }
+        }
+        return des;
+    }
+
+    public Vector3 GetRandomAttackSpot()
+    {
+        int randomNum = Random.Range(0, attackPoints.Length);
+        return attackPoints[randomNum].transform.position;
     }
 
     public float GetCustomAgentStoppingDistance()

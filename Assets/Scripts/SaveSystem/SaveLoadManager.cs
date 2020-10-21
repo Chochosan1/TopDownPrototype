@@ -40,6 +40,7 @@ namespace Chochosan
             return null;
         }
 
+      
         public static void SeriouslyDeleteAllSaveFiles()
         {
             string path = Application.persistentDataPath;
@@ -57,7 +58,6 @@ namespace Chochosan
             return false;             
         }
 
-
         [System.Serializable]
         public class SaveData
         {
@@ -67,5 +67,17 @@ namespace Chochosan
             public List<AI_Attacker_Serializable> attackerList = AI_Attacker_Loader.GetAttackers();
             public UnitsSerializable unitsSaveData = Unit_Controller.Instance.GetSpawnedUnitsData();
         }
+
+
+        #region InspectorTools
+        [ContextMenu("Chochosan/Delete existing save files")]
+        private void InspectorToolDeleteSaveFiles()
+        {
+            string path = Application.persistentDataPath;
+            DirectoryInfo directory = new DirectoryInfo(path);
+            directory.Delete(true);
+            Directory.CreateDirectory(path);
+        }
+        #endregion
     }
 }
