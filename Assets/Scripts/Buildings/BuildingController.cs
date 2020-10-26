@@ -223,6 +223,10 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void DestroyBuilding()
     {
         ObjectSpawner.Instance.RemoveBuildingFromList(gameObject);
+        if(buildingType == Buildings.TownHall)
+        {
+            Chochosan.UI_Manager.Instance.DisplayWarningMessage("GAME LOST!!!");
+        }
         Destroy(gameObject);
     }
 

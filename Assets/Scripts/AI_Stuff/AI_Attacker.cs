@@ -49,6 +49,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     private Camera mainCamera;
     private Transform thisTransform;
     private Transform currentTargetTransform;
+    private bool canExitAttackState = true;
 
     Vector3 direction;
     private float currentHealth;
@@ -176,6 +177,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                     }
 
                     attackAnimTimestamp = Time.time + attackInterval;
+                    canExitAttackState = true;
                 }
                 else
                 {
@@ -185,6 +187,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                     isTargetingBuilding = false;
                     GoToDefaultTarget();
                     Chochosan.ChochosanHelper.ChochosanDebug("NULL CAUGHT || ATTACKER", "red");
+                    canExitAttackState = true;
                 }
             }
         }
@@ -233,6 +236,8 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
             if (/*headingDistance <= secondPureEnemySenseRange &&*/ directionDistance > agent.stoppingDistance) //if player is far but scented then go to him
             {
+                if (!canExitAttackState)
+                    return;
                 GoIntoMovingToTarget();
             }
             else if (directionDistance <= agent.stoppingDistance) //if player is within stop range then go to attack state
@@ -241,6 +246,8 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             }
             else
             {
+                if (!canExitAttackState)
+                    return;
                 GoToIdle();
             }
         }
@@ -276,6 +283,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             SetAgentDestination(agent, thisTransform.position);
             currentDamageable = currentTarget.GetComponent<IDamageable>();
             attackAnimTimestamp = Time.time + attackInterval;
+            canExitAttackState = false;
             LookAtTarget();
         }
     }
@@ -284,6 +292,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.GoingToDefaultTarget)
         {
+            canExitAttackState = true;
             agent.speed = walkSpeed;
             aiState = AIState.GoingToDefaultTarget;
             currentTarget = null;
@@ -297,6 +306,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.Idle && aiState != AIState.GoingToDefaultTarget && aiState != AIState.MovingToArea)
         {
+            canExitAttackState = true;
             agent.speed = walkSpeed;
             aiState = AIState.Idle;
             currentTarget = null;
@@ -314,6 +324,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToTarget)
         {
+            canExitAttackState = true;
             agent.speed = runSpeed;
             aiState = AIState.MovingToTarget;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
@@ -342,6 +353,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (aiState != AIState.MovingToArea)
         {
+            canExitAttackState = true;
             aiState = AIState.MovingToArea;
             agent.speed = walkSpeed;
             agent.stoppingDistance = 0;
