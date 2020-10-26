@@ -8,6 +8,7 @@ using UnityEngine;
 public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, IDamageable
 {
     private int buildingIndex;
+    private bool isSelected = false;
     [Tooltip("Set to true if the building can be upgraded. Will be used to toggle the upgrade UI.")]
     [SerializeField] private bool isUpgradable = true;
     [SerializeField] private string buildingName;
@@ -207,8 +208,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     {
         buildingCurrentHP -= damage;
 
-        //send a message that a displayable UI value has been changed (in this case the HP of the building)
-        Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
+        if(isSelected)
+        {
+            //send a message that a displayable UI value has been changed (in this case the HP of the building)
+            Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
+        }
 
         if (buildingCurrentHP <= 0)
         {
@@ -259,7 +263,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public string GetSelectedUnitInfo()
     {
-        string info = $"{buildingName}\nBuilding level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
+       // string info = $"{buildingName}\nBuilding level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
+        string info = $"Level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
         return info;
     }
 
@@ -305,7 +310,10 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void ToggleSelectedIndicator(bool value)
     {
         if(selectedIndicator != null)
+        {
             selectedIndicator.SetActive(value);
+            isSelected = value;
+        }         
     }
 
     #region DataSaving

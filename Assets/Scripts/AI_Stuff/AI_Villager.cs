@@ -370,7 +370,8 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
 
     public string GetSelectedUnitInfo()
     {
-        return unitName;
+        string info = $"{unitName}\nHP: {currentHealth}/{stats.maxHealth}\nVillager's type can be changed by sending him to do some other job.";
+        return info;
     }
 
     public bool IsOpenUpgradePanel()
@@ -404,12 +405,18 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
     public void ToggleSelectedIndicator(bool value)
     {
         selectedIndicator?.SetActive(value);
+        isSelected = value;
     }
 
     public void TakeDamage(float damage, AI_Attacker attacker)
     {
         currentHealth -= damage;
         UpdateHealthBar(currentHealth);
+
+        if(isSelected)
+        {
+            Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
+        }
 
         //enable particle if not active then disable after some time
         if (!hitParticle.activeSelf)

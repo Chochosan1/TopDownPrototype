@@ -852,7 +852,7 @@ MonoBehaviour:
   buildingName: Baracks
   upgradeToUnlock: 0
   buildingType: 9
-  costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
+  costRequirements: {fileID: 11400000, guid: 5147b869242d42a409d42fa897892851, type: 2}
   mainBuilding: {fileID: 5770081116232226893}
   buildingInProgress: {fileID: 6397668965601667796}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
@@ -861,6 +861,7 @@ MonoBehaviour:
   attackerToSpawn: {fileID: 4579080507294930621, guid: cffe28d495279994c8513e2291549717,
     type: 3}
   spawnPoint: {fileID: 685613519089590965}
+  attackPoints: []
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7
   selectedIndicator: {fileID: 5021871635909208360}

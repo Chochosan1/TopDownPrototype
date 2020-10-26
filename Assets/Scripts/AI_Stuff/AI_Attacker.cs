@@ -8,6 +8,7 @@ public enum AttackerType { Melee, Ranged }
 public class AI_Attacker : AI_Base, IDamageable, ISelectable
 {
     public bool debugState, isDummy;
+    private bool isSelected;
     public bool isDefaultedWorldObject;
     [Header("Additional AI options")]
     private IDamageable currentDamageable;
@@ -385,6 +386,11 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         currentHealth -= damage;
         UpdateHealthBar(currentHealth);
 
+        if (isSelected)
+        {
+            Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
+        }
+
         //enable particle if not active then disable after some time
         if (!hitParticle.activeSelf)
         {
@@ -523,6 +529,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     public void ToggleSelectedIndicator(bool value)
     {
         selectedIndicator?.SetActive(value);
+        isSelected = value;
     }
 
     public AI_Attacker_Serializable GetAttackerData()

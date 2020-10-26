@@ -21,23 +21,9 @@ public class Harvestable_Controller : MonoBehaviour, IHarvestable
     {
         switch (harvestableType)
         {
-            //case HarvestableType.Wood:
-            //    currentHarvestableIndex = 0;
-            //    break;
-            //case HarvestableType.Gold:
-            //    currentHarvestableIndex = 1;
-            //    break;
-            //case HarvestableType.Iron:
-            //    currentHarvestableIndex = 2;
-            //    break;
-            //case HarvestableType.Food:
-            //    currentHarvestableIndex = 3;
-            //    break;
             case HarvestableType.BuildingInProgress:
                 buildingController = GetComponentInParent<BuildingController>();
                 break;
-
-
         }
         if (!Chochosan.SaveLoadManager.IsSaveExists() && harvestableType != HarvestableType.BuildingInProgress) //dont add buildingInProgress to the harvestable list; this is instead handled by the general building saving
         {

@@ -40,12 +40,25 @@ namespace Chochosan
         [SerializeField] private Button goldMineButton;
         [SerializeField] private Button houseButton;
         [SerializeField] private Button turretButton;
+        [SerializeField] private Button millButton;
+        [SerializeField] private Button barracksButton;
+        [SerializeField] private Button wizardyButton;
+        [SerializeField] private Button warehouseButton;
 
         [Header("Building Additional Panels")]
         [SerializeField] private GameObject barracksPanel;
+        [SerializeField] private GameObject wizardyPanel;
         [SerializeField] private GameObject townHallPanel;
+        [SerializeField] private GameObject housePanel;
+        [SerializeField] private GameObject lumberyardPanel;
+        [SerializeField] private GameObject ironMinePanel;
+        [SerializeField] private GameObject goldMinePanel;
+        [SerializeField] private GameObject towerPanel;
+        [SerializeField] private GameObject millPanel;
+        [SerializeField] private GameObject warehousePanel;
 
-        private GameObject currentBuildingAdditionalPanel;
+        private GameObject currentlySelectedUnitAdditionalPanel;
+        private TextMeshProUGUI currentlySelectedUnitAdditionalPanelInfoText;
 
         private void Awake()
         {
@@ -92,27 +105,75 @@ namespace Chochosan
 
         //activate the selection UI
         private void ActivateUnitSelectionUI(ISelectable unitSelectable, BuildingController bc)
-        {
-            selectedUnitInfoPanel.SetActive(true);
-            selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
-            if (bc != null && bc.GetIsBuildingComplete())
+        {          
+          
+            if (bc != null /*&& bc.GetIsBuildingComplete()*/) //if a building
             {
-                switch (bc.GetBuildingType())
+                switch (bc.GetBuildingType()) 
                 {
                     case Buildings.Barracks:
-                        currentBuildingAdditionalPanel = barracksPanel;
+                        currentlySelectedUnitAdditionalPanel = barracksPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
                         break;
                     case Buildings.TownHall:
-                        currentBuildingAdditionalPanel = townHallPanel;
+                        currentlySelectedUnitAdditionalPanel = townHallPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.House:
+                        currentlySelectedUnitAdditionalPanel = housePanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.Ironmine:
+                        currentlySelectedUnitAdditionalPanel = ironMinePanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.Goldmine:
+                        currentlySelectedUnitAdditionalPanel = goldMinePanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.Mill:
+                        currentlySelectedUnitAdditionalPanel = millPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.Turret:
+                        currentlySelectedUnitAdditionalPanel = towerPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.Warehouse:
+                        currentlySelectedUnitAdditionalPanel = warehousePanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.Woodcamp:
+                        currentlySelectedUnitAdditionalPanel = lumberyardPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
                         break;
                 }
-                currentBuildingAdditionalPanel?.SetActive(true);
+                currentlySelectedUnitAdditionalPanel?.SetActive(true);
+            }
+            else //if not a building
+            {
+                selectedUnitInfoPanel.SetActive(true);
+                selectedUnitText.text = unitSelectable.GetSelectedUnitInfo();
             }
         }
 
         private void RefreshTextInfo(ISelectable selectable)
         {
+            Debug.Log("RFRESH CALLED");
             selectedUnitText.text = selectable.GetSelectedUnitInfo();
+            if(currentlySelectedUnitAdditionalPanelInfoText != null)
+            {
+                currentlySelectedUnitAdditionalPanelInfoText.text = selectable.GetSelectedUnitInfo();
+            }
         }
 
         //clear all active UI
@@ -120,8 +181,8 @@ namespace Chochosan
         {
             selectedUnitInfoPanel.SetActive(false);
             selectedUnitText.text = "";
-            currentBuildingAdditionalPanel?.SetActive(false);
-            currentBuildingAdditionalPanel = null;   
+            currentlySelectedUnitAdditionalPanel?.SetActive(false);
+            currentlySelectedUnitAdditionalPanel = null;   
         }
 
         public void PlayHoverAnimation(Animator anim)
@@ -187,17 +248,23 @@ namespace Chochosan
             {
                 case Buildings.TownHall:
                     townHallButton.interactable = false;
-                    woodCampButton.interactable = true;
-                    houseButton.interactable = true;
+                    woodCampButton.interactable = true;                 
                     break;
-                case Buildings.Woodcamp:                 
+                case Buildings.Woodcamp:
+                    houseButton.interactable = true;
                     ironMineButton.interactable = true;
+                    millButton.interactable = true;
                     break;
                 case Buildings.Ironmine:
                     goldMineButton.interactable = true;
                     break;
                 case Buildings.Goldmine:
                     turretButton.interactable = true;
+                    warehouseButton.interactable = true;
+                    barracksButton.interactable = true;
+                    break;
+                case Buildings.Barracks:
+                    wizardyButton.interactable = true;
                     break;
             }
         }
@@ -251,9 +318,12 @@ namespace Chochosan
 
         public void UpgradeSelectedBuilding()
         {
-            BuildingController currentlySelectedBuilding = Unit_Controller.Instance.GetCurrentlySelectedBuilding().GetComponent<BuildingController>();
+            BuildingController currentlySelectedBuilding = Unit_Controller.Instance.GetCurrentlySelectedBuilding().GetComponent<BuildingController>();       
             if(currentlySelectedBuilding != null)
             {
+                if (!currentlySelectedBuilding.GetIsBuildingComplete())
+                    return;
+
                 currentlySelectedBuilding.UpgradeBuildingLevel();
             }
         }
