@@ -1004,7 +1004,7 @@ MonoBehaviour:
   buildingName: Turret
   upgradeToUnlock: 0
   buildingType: 6
-  costRequirements: {fileID: 11400000, guid: ef24c5683e5832d408a750e20184b5d6, type: 2}
+  costRequirements: {fileID: 11400000, guid: 6a27ac451499e924699948072ce72b66, type: 2}
   mainBuilding: {fileID: 7899752687918093513}
   buildingInProgress: {fileID: 2477053584188932735}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
@@ -1135,4 +1135,3 @@ MonoBehaviour:
   enableTurretAfterSeconds: 1
   offsetVector: {x: 0, y: 0, z: 0}
   projectilePoolSize: 10
-  projectilePool: []

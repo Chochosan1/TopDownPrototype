@@ -528,7 +528,7 @@ MonoBehaviour:
   buildingName: House
   upgradeToUnlock: 0
   buildingType: 5
-  costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
+  costRequirements: {fileID: 11400000, guid: d67de315deb80a54c8154e241dd599d5, type: 2}
   mainBuilding: {fileID: 7861908622223848092}
   buildingInProgress: {fileID: 7332273677430931461}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,

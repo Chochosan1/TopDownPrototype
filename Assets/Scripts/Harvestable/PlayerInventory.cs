@@ -49,15 +49,15 @@ public class PlayerInventory : MonoBehaviour
         }
         else
         {
-            MaxWood = 130;
-            MaxGold = 5;
-            MaxIron = 5;
-            MaxFood = 30;
+            MaxWood = 160;
+            MaxGold = 15;
+            MaxIron = 25;
+            MaxFood = 50;
 
-            CurrentWood = 120;
-            CurrentGold = 2;
-            CurrentIron = 2;
-            CurrentFood = 15;
+            CurrentWood = 150;
+            CurrentGold = 0;
+            CurrentIron = 25;
+            CurrentFood = 40;
             CurrentVillageCharisma = 0;
             CurrentAutoFoodGeneration = 0;
             CurrentDay = 1;

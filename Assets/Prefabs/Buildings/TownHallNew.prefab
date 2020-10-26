@@ -7278,7 +7278,7 @@ MonoBehaviour:
   buildingName: Town Hall
   upgradeToUnlock: 4
   buildingType: 1
-  costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
+  costRequirements: {fileID: 11400000, guid: 136b564f67a659d45a55475eabd627d3, type: 2}
   mainBuilding: {fileID: 7261327278730013670}
   buildingInProgress: {fileID: 5830098020552331376}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
@@ -7304,8 +7304,8 @@ MonoBehaviour:
   customAgentStoppingDistance: 6
   buildingMaxHP: 500
   housingSpace: 2
-  charismaOnBuilt: 101
-  woodUpkeepAfterBuilding: 10
+  charismaOnBuilt: 20
+  woodUpkeepAfterBuilding: 0
   foodGeneration: 0
   buildingProgress: 0
   progressPerBuildIteration: 100

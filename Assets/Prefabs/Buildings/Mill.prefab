@@ -141,7 +141,7 @@ MonoBehaviour:
   buildingName: Mill
   upgradeToUnlock: 0
   buildingType: 7
-  costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
+  costRequirements: {fileID: 11400000, guid: 2081bba32dbc6b84cb7bf1158bc84eb1, type: 2}
   mainBuilding: {fileID: 3290501484438737119}
   buildingInProgress: {fileID: 2697745896779653702}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,

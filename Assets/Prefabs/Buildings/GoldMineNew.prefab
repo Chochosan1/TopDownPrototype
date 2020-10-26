@@ -1340,14 +1340,16 @@ MonoBehaviour:
   buildingName: Gold mine
   upgradeToUnlock: 2
   buildingType: 4
-  costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
+  costRequirements: {fileID: 11400000, guid: f44ca4d756267bc40ac79a75fa05c226, type: 2}
   mainBuilding: {fileID: 1668812414865819771}
   buildingInProgress: {fileID: 2925655287624714986}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
     type: 3}
   villagerToSpawn: {fileID: 0}
+  attackerToSpawn: {fileID: 0}
   spawnPoint: {fileID: 3770130588655619510, guid: 982f2b466c7079a4e9e23ca2eae97218,
     type: 3}
+  attackPoints: []
   spawnFirstVillageAfterSeconds: 0
   maxBuildingLevel: 7
   selectedIndicator: {fileID: 1154649046304624878}
@@ -1563,8 +1565,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e721612ef7eb8428d92b3a7188ecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHarvestableIndex: 0
   stats: {fileID: 0}
   harvestableType: 4
+  depletedParticle: {fileID: 0}
   customStoppingDistance: 5
   currentResourcesToHarvest: 0
 --- !u!208 &536832899325836497

@@ -22555,7 +22555,7 @@ MonoBehaviour:
   buildingName: Quarry
   upgradeToUnlock: 3
   buildingType: 3
-  costRequirements: {fileID: 11400000, guid: dde57b4e3b6a63f4bbfbdfac7bf8d1df, type: 2}
+  costRequirements: {fileID: 11400000, guid: 6805b2d8575b4774d8b30ba42a0bdad9, type: 2}
   mainBuilding: {fileID: 6780489657551058280}
   buildingInProgress: {fileID: 7037983396764710905}
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
