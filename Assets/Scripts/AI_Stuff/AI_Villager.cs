@@ -47,6 +47,7 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
         Unit_Controller.Instance.OnTryToSelectUnits += CheckIfSelectedBySelector;
         mainCamera = Camera.main;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        hpBar.maxValue = stats.maxHealth;
         //if it is a defaulted world object
         if (defaultedWorldObject)
         {
@@ -63,8 +64,7 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
         aiState = AIState_Villager.Idle;
         SwitchVillagerType(villagerType);
         PlayerInventory.Instance.CurrentPopulation++;
-        PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;
-        hpBar.maxValue = stats.maxHealth;
+        PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;    
         UpdateHealthBar(currentHealth);
     }
 
@@ -433,6 +433,7 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
     public void SetInitialHP()
     {
         currentHealth = stats.maxHealth;
+        UpdateHealthBar(currentHealth);
     }
 
     private IEnumerator DisableHitParticle()

@@ -18,8 +18,8 @@ GameObject:
   m_Name: GoldOre
   m_TagString: Gold
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 4294967287
   m_IsActive: 1
 --- !u!4 &5100800357060497826
 Transform:

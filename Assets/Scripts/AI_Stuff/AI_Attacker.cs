@@ -8,6 +8,7 @@ public enum AttackerType { Melee, Ranged }
 public class AI_Attacker : AI_Base, IDamageable, ISelectable
 {
     public bool debugState, isDummy;
+    public bool isDefaultedWorldObject;
     [Header("Additional AI options")]
     private IDamageable currentDamageable;
     [SerializeField] private AttackerType attackerType;
@@ -80,7 +81,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         anim = GetComponent<Animator>();
         aiState = AIState.GoingToDefaultTarget;
         //  defaultTargetIfNoOtherAvailable = GameObject.FindGameObjectWithTag("DefaultTargetToProtect");
-        if (!Chochosan.SaveLoadManager.IsSaveExists())
+        if (isDefaultedWorldObject)
         {
             SetInitialStateNotLoadedFromSave();
         }
