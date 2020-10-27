@@ -216,7 +216,6 @@ public class PlayerInventory : MonoBehaviour
         }
         set
         {
-            Debug.Log("ADDED POP");
             currentPopulation = value;
             OnInventoryValueChanged?.Invoke("currentPopulation", currentPopulation);
         }
@@ -373,7 +372,7 @@ public class PlayerInventory : MonoBehaviour
         CurrentWoodUpkeep += bc.WoodUpkeep;
     }
 
-    public void AddBuildingBonus(BuildingController bc, Buildings buildingType)
+    public void AddBuildingsProgress(BuildingController bc, Buildings buildingType)
     {
         switch (buildingType)
         {
@@ -385,6 +384,9 @@ public class PlayerInventory : MonoBehaviour
                 MaxIron += warehouseBonusIronCapacity;
                 MaxGold += warehouseBonusGoldCapacity;
                 MaxFood += warehouseBonusFoodCapacity;
+                break;
+            case Buildings.TownHall:
+                Progress_Manager.Instance.SetTownHall(bc);
                 break;
         }
     }

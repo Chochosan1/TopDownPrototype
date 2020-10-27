@@ -65,7 +65,8 @@ public class Progress_Manager : MonoBehaviour
         }
         if (Time.time >= gameTickTimestamp)
         {
-            PlayerInventory.Instance.CurrentVillageCharisma += 33f / updateValueReducer;
+            if (townHallController != null)
+                PlayerInventory.Instance.CurrentVillageCharisma += 33f / updateValueReducer;
             PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / updateValueReducer;
             PlayerInventory.Instance.CurrentFood += (PlayerInventory.Instance.CurrentAutoFoodGeneration - PlayerInventory.Instance.CurrentFoodConsumption) / updateValueReducer;
 
@@ -97,6 +98,16 @@ public class Progress_Manager : MonoBehaviour
     {
         get { return dayTimestamp; }
         set { dayTimestamp = value <= dayDurationInSeconds ? value : dayDurationInSeconds; }
+    }
+
+    public BuildingController GetTownHall()
+    {
+        return townHallController;
+    }
+
+    public void SetTownHall(BuildingController bc)
+    {
+        townHallController = bc;
     }
 
     private void DamageARandomBuildingIfNoWoodAvailable()

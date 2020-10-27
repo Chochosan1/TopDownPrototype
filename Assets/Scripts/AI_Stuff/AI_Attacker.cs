@@ -15,6 +15,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     [SerializeField] private AttackerType attackerType;
     [SerializeField] private bool isSelectable = false;
     [SerializeField] private int attackerIndex;
+    [SerializeField] private bool isUsingDefaultTarget = false;
     [SerializeField] private GameObject defaultTargetIfNoOtherAvailable;
     [SerializeField] private GameObject hitParticle;
     [SerializeField] private GameObject deathParticle;
@@ -73,7 +74,10 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;
             PlayerInventory.Instance.CurrentPopulation++;
         }
-
+        if(isUsingDefaultTarget)
+        {
+            defaultTargetIfNoOtherAvailable = GameObject.Find("TownHallNew(Clone)");
+        }
 
         projectilePool = new List<GameObject>();
         thisTransform = transform;
@@ -81,8 +85,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         mainCamera = Camera.main;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        aiState = AIState.GoingToDefaultTarget;
-        //  defaultTargetIfNoOtherAvailable = GameObject.FindGameObjectWithTag("DefaultTargetToProtect");
+        GoToDefaultTargetState();
         if (isDefaultedWorldObject)
         {
             SetInitialStateNotLoadedFromSave();
@@ -110,7 +113,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             {
                 if ((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude > defaultAgentStoppingDistance)
                 {
-                    GoToDefaultTarget();
+                    GoToDefaultTargetState();
                 }
             }
             ChooseNewTarget(true);
@@ -131,8 +134,8 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         {
             if (currentTarget == null || currentDamageable == null)
             {
-                aiState = AIState.GoingToDefaultTarget;
-                SetAgentDestination(agent, thisTransform.position);
+                GoToDefaultTargetState();
+              //  SetAgentDestination(agent, thisTransform.position);
                 return;
             }
 
@@ -185,7 +188,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
                     currentDamageable = null;
                     currentTargetTransform = null;
                     isTargetingBuilding = false;
-                    GoToDefaultTarget();
+                    GoToDefaultTargetState();
                     Chochosan.ChochosanHelper.ChochosanDebug("NULL CAUGHT || ATTACKER", "red");
                     canExitAttackState = true;
                 }
@@ -196,12 +199,13 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             if (defaultTargetIfNoOtherAvailable == null)
             {
                 aiState = AIState.Idle;
+                SetAgentDestination(agent, thisTransform.position);
                 return;
             }
-            if ((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude <= defaultAgentStoppingDistance)
-            {
-                aiState = AIState.Idle;
-            }
+            //if ((defaultTargetIfNoOtherAvailable.transform.position - thisTransform.position).magnitude <= defaultAgentStoppingDistance)
+            //{
+            //  aiState = AIState.Idle;  
+            //}
             SetAgentDestination(agent, defaultTargetIfNoOtherAvailable.transform.position);
             agent.stoppingDistance = defaultAgentStoppingDistance;
             ChooseNewTarget(true);
@@ -238,7 +242,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             {
                 if (!canExitAttackState)
                     return;
-                GoIntoMovingToTarget();
+                GoToMovingToTargetState();
             }
             else if (directionDistance <= agent.stoppingDistance) //if player is within stop range then go to attack state
             {
@@ -248,12 +252,12 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             {
                 if (!canExitAttackState)
                     return;
-                GoToIdle();
+                GoToIdleState();
             }
         }
         else
         {
-            GoToIdle();
+            GoToIdleState();
         }
 
         if (debugState)
@@ -288,7 +292,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
     }
 
-    private void GoToDefaultTarget()
+    private void GoToDefaultTargetState()
     {
         if (aiState != AIState.GoingToDefaultTarget)
         {
@@ -302,7 +306,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
     }
 
-    private void GoToIdle()
+    private void GoToIdleState()
     {
         if (aiState != AIState.Idle && aiState != AIState.GoingToDefaultTarget && aiState != AIState.MovingToArea)
         {
@@ -320,7 +324,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
     }
 
-    private void GoIntoMovingToTarget()
+    private void GoToMovingToTargetState()
     {
         if (aiState != AIState.MovingToTarget)
         {
@@ -349,7 +353,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         }
     }
 
-    private void GoToMovingToArea()
+    private void GoToMovingToAreaState()
     {
         if (aiState != AIState.MovingToArea)
         {
@@ -369,6 +373,11 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         SetInitialHP();
         AI_Attacker_Loader.AddAttackerToList(this);
+    }
+
+    public void SetDefaultTarget(GameObject defaultedTarget)
+    {
+        defaultTargetIfNoOtherAvailable = defaultedTarget;
     }
 
     private void SetInitialHP()
@@ -392,7 +401,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         {
             currentTarget = attacker.gameObject;
             currentDamageable = currentTarget.GetComponent<IDamageable>();
-            GoIntoMovingToTarget();
+            GoToMovingToTargetState();
         }
 
         currentHealth -= damage;
@@ -453,7 +462,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
     public void ForceSetAgentArea(Vector3 destination)
     {
-        GoToMovingToArea();
+        GoToMovingToAreaState();
         agent.destination = destination;
     }
 
@@ -477,7 +486,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         if (target.CompareTag("Enemy"))
         {
             currentTarget = target;
-            GoIntoMovingToTarget();
+            GoToMovingToTargetState();
         }
     }
 

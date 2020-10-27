@@ -138,7 +138,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         SetInitialHP();
         PlayerInventory.Instance.MaxPopulation += housingSpace;
         PlayerInventory.Instance.CurrentVillageCharisma += charismaOnBuilt;
-        PlayerInventory.Instance.AddBuildingBonus(this, buildingType);
+        PlayerInventory.Instance.AddBuildingsProgress(this, buildingType);
         Instantiate(buildingDoneParticle, transform.position + new Vector3(0, 2f, 0), buildingDoneParticle.transform.rotation);
     }
 

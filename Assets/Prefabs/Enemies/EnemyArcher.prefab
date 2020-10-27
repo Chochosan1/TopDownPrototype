@@ -2583,9 +2583,11 @@ MonoBehaviour:
   secondPureEnemySenseRange: 30
   debugState: 0
   isDummy: 0
+  isDefaultedWorldObject: 0
   attackerType: 1
   isSelectable: 0
   attackerIndex: 4
+  isUsingDefaultTarget: 1
   defaultTargetIfNoOtherAvailable: {fileID: 0}
   hitParticle: {fileID: 6558586978579704268}
   deathParticle: {fileID: 1280141305896002, guid: e473029e4c70ad543a6879b82a732f4f,
