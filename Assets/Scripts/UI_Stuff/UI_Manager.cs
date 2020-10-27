@@ -116,6 +116,11 @@ namespace Chochosan
                         currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
                         currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
                         break;
+                    case Buildings.Wizardry:
+                        currentlySelectedUnitAdditionalPanel = wizardyPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
                     case Buildings.TownHall:
                         currentlySelectedUnitAdditionalPanel = townHallPanel;
                         currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
@@ -307,12 +312,12 @@ namespace Chochosan
             Chochosan.SaveLoadManager.SeriouslyDeleteAllSaveFiles();
         }
 
-        public void TrainSelectedBuildingUnit()
+        public void TrainSelectedBuildingUnit(int index)
         {
             BuildingController currentlySelectedBuilding = Unit_Controller.Instance.GetCurrentlySelectedBuilding().GetComponent<BuildingController>();
             if(currentlySelectedBuilding != null)
             {
-                currentlySelectedBuilding.SpawnAttackerUnit();
+                currentlySelectedBuilding.SpawnAttackerUnit(index);
             }
         }
 

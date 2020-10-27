@@ -24,7 +24,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     [SerializeField] private GameObject buildingInProgress;
     [SerializeField] private GameObject buildingDoneParticle;
     [SerializeField] private GameObject villagerToSpawn;
-    [SerializeField] private GameObject attackerToSpawn;
+    [SerializeField] private GameObject[] attackersToSpawn;
     [SerializeField] private GameObject spawnPoint;
     [SerializeField] private GameObject[] attackPoints;
     private int[] attackPointsStates;
@@ -161,11 +161,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         }
     }
 
-    public void SpawnAttackerUnit()
+    public void SpawnAttackerUnit(int attackerIndex)
     {
-        if (attackerToSpawn == null || !PlayerInventory.Instance.IsHaveEnoughHousingSpace())
+        if (attackersToSpawn == null || !PlayerInventory.Instance.IsHaveEnoughHousingSpace())
             return;
-        GameObject tempUnit = Instantiate(attackerToSpawn, spawnPoint.transform.position, attackerToSpawn.transform.rotation);
+        GameObject tempUnit = Instantiate(attackersToSpawn[attackerIndex], spawnPoint.transform.position, attackersToSpawn[attackerIndex].transform.rotation);
         tempUnit.GetComponent<AI_Attacker>().SetInitialStateNotLoadedFromSave();
       //  AI_Attacker_Loader.AddAttackerToList(tempUnit.GetComponent<AI_Attacker>());
     }
@@ -187,6 +187,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
             Chochosan.EventManager.Instance.OnBuildingUpgraded?.Invoke(costRequirements);
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
         }
+    }
+
+    public float GetMaxHP()
+    {
+        return buildingMaxHP;
     }
 
     public void SetInitialHP()

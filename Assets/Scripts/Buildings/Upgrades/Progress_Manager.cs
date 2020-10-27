@@ -5,7 +5,7 @@ using UnityEngine;
 /// Calculates different stats all the time and unlocks progress.
 /// </summary>
 public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting, FoodHarvesting }
-public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill, Warehouse, Barracks }
+public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill, Warehouse, Barracks, Wizardry }
 public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;
@@ -23,6 +23,7 @@ public class Progress_Manager : MonoBehaviour
     private float updateValueReducer;
 
     private BuildingController townHallController;
+    private BuildingController currentBuildingToDamageIfNoWood;
 
     private bool isWorkersCanHarvestWood;
     private bool isWorkersCanHarvestGold;
@@ -55,11 +56,21 @@ public class Progress_Manager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            PlayerInventory.Instance.CurrentWood += 50f;
+            PlayerInventory.Instance.CurrentGold += 50f;
+            PlayerInventory.Instance.CurrentIron += 50f;
+            PlayerInventory.Instance.CurrentFood += 50f;
+        }
         if (Time.time >= gameTickTimestamp)
         {
             PlayerInventory.Instance.CurrentVillageCharisma += 33f / updateValueReducer;
             PlayerInventory.Instance.CurrentWood -= PlayerInventory.Instance.CurrentWoodUpkeep / updateValueReducer;
             PlayerInventory.Instance.CurrentFood += (PlayerInventory.Instance.CurrentAutoFoodGeneration - PlayerInventory.Instance.CurrentFoodConsumption) / updateValueReducer;
+
+            DamageARandomBuildingIfNoWoodAvailable();
+
             dayTimestamp -= gameTickCooldown;
 
             if (dayTimestamp <= 0)
@@ -88,6 +99,24 @@ public class Progress_Manager : MonoBehaviour
         set { dayTimestamp = value <= dayDurationInSeconds ? value : dayDurationInSeconds; }
     }
 
+    private void DamageARandomBuildingIfNoWoodAvailable()
+    {
+        if (PlayerInventory.Instance.CurrentWood <= 0)
+        {
+            if (currentBuildingToDamageIfNoWood == null)
+            {
+                List<GameObject> currentBuildings = ObjectSpawner.Instance.GetAllSpawnedBuildings();
+                currentBuildingToDamageIfNoWood = currentBuildings[Random.Range(0, currentBuildings.Count)].GetComponent<BuildingController>();
+                if (!currentBuildingToDamageIfNoWood.GetIsBuildingComplete())
+                {
+                    currentBuildingToDamageIfNoWood = null;
+                    return;
+                }
+            }
+            Debug.Log(currentBuildingToDamageIfNoWood.name);
+            currentBuildingToDamageIfNoWood.TakeDamage(currentBuildingToDamageIfNoWood.GetMaxHP() * 0.05f, null);
+        }
+    }
 
     public void EnableSpecificHarvesting(UpgradeToUnlock specificHarvesting)
     {

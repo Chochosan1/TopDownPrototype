@@ -858,8 +858,8 @@ MonoBehaviour:
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
     type: 3}
   villagerToSpawn: {fileID: 0}
-  attackerToSpawn: {fileID: 4579080507294930621, guid: cffe28d495279994c8513e2291549717,
-    type: 3}
+  attackersToSpawn:
+  - {fileID: 4579080507294930621, guid: cffe28d495279994c8513e2291549717, type: 3}
   spawnPoint: {fileID: 685613519089590965}
   attackPoints: []
   spawnFirstVillageAfterSeconds: 0

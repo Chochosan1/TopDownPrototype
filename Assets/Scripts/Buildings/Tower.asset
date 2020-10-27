@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1fbefc3deeec0f40b615115fb0166ca, type: 3}
   m_Name: Tower
   m_EditorClassIdentifier: 
-  woodRequired: 12
-  goldRequired: 0
-  ironRequired: 0
+  woodRequired: 75
+  goldRequired: 5
+  ironRequired: 10
   foodRequired: 0

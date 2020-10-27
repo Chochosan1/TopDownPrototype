@@ -198,6 +198,11 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
+    public List<GameObject> GetAllSpawnedBuildings()
+    {
+        return allBuildingsSpawned;
+    }
+
     public void AddBuildingToList(GameObject building)
     {
         if (building == null)

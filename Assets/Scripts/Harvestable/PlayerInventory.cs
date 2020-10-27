@@ -54,7 +54,7 @@ public class PlayerInventory : MonoBehaviour
             MaxIron = 25;
             MaxFood = 50;
 
-            CurrentWood = 150;
+            CurrentWood = 160;
             CurrentGold = 0;
             CurrentIron = 25;
             CurrentFood = 40;
@@ -68,7 +68,7 @@ public class PlayerInventory : MonoBehaviour
         objectSpawner.OnObjectBuildableSpawnedAtWorld += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded += SpendResources;
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally += CalculateUpkeep;
-    //    Chochosan.EventManager.Instance.OnBuildingBuiltFinally += AddBuildingBonus;
+        //    Chochosan.EventManager.Instance.OnBuildingBuiltFinally += AddBuildingBonus;
     }
 
     private void OnDisable()
@@ -76,7 +76,7 @@ public class PlayerInventory : MonoBehaviour
         objectSpawner.OnObjectBuildableSpawnedAtWorld -= SpendResources;
         Chochosan.EventManager.Instance.OnBuildingUpgraded -= SpendResources;
         Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= CalculateUpkeep;
-   //     Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= AddBuildingBonus;
+        //     Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= AddBuildingBonus;
     }
 
     public float CurrentWoodUpkeep

@@ -112,7 +112,14 @@ public class Unit_Controller : MonoBehaviour
             if (!isInteractingWithUI)
             {
                 OnTryToSelectUnits?.Invoke();
-                SelectUnit();
+                if(currentlySelectedUnits.Count == 0)
+                {
+                    SelectUnit();
+                }       
+                else if(currentlySelectedUnits.Count == 1)
+                {
+                    OnUnitSelected?.Invoke(currentlySelectedUnits[0].GetComponent<ISelectable>(), null);
+                }
             }
         }
 

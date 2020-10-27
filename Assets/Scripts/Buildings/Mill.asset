@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   woodRequired: 100
   goldRequired: 0
-  ironRequired: 5
+  ironRequired: 0
   foodRequired: 20
