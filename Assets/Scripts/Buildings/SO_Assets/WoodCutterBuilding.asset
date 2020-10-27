@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1fbefc3deeec0f40b615115fb0166ca, type: 3}
-  m_Name: WoodCutterUpgrade
+  m_Name: WoodCutterBuilding
   m_EditorClassIdentifier: 
-  woodRequired: 0
-  goldRequired: 1
-  ironRequired: 1
+  woodRequired: 12
+  goldRequired: 0
+  ironRequired: 0
+  foodRequired: 0

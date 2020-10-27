@@ -9,11 +9,16 @@ public class AI_Spawner : MonoBehaviour
     [SerializeField] private float spawnCooldown;
     private GameObject currentTarget;
     private float spawnTimestamp;
+    private bool isNeutralized = false;
 
-    // Update is called once per frame
+    private void Start()
+    {
+        Progress_Manager.Instance.CurrentSpawnersToNeutralize++;
+    }
+
     void Update()
     {
-        if (PlayerInventory.Instance.CurrentDay % 2 == 0)
+        if (!isNeutralized && PlayerInventory.Instance.CurrentDay % spawnEnemiesEveryXDays == 0)
         {
             SpawnEnemy();
         }
@@ -32,5 +37,11 @@ public class AI_Spawner : MonoBehaviour
                
             spawnTimestamp = Time.time + spawnCooldown;
         }
+    }
+
+    public void MarkSpawnerAsNeutralized()
+    {
+        isNeutralized = true;
+        Progress_Manager.Instance.CurrentSpawnersToNeutralize--;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 /// Calculates different stats all the time and unlocks progress.
 /// </summary>
 public enum UpgradeToUnlock { None, WoodHarvesting, GoldHarvesting, IronHarvesting, FoodHarvesting }
-public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill, Warehouse, Barracks, Wizardry }
+public enum Buildings { None, TownHall, Woodcamp, Ironmine, Goldmine, House, Turret, Mill, Warehouse, Barracks, Wizardry, Neutralizer }
 public class Progress_Manager : MonoBehaviour
 {
     public static Progress_Manager Instance;
@@ -99,6 +99,20 @@ public class Progress_Manager : MonoBehaviour
         get { return dayTimestamp; }
         set { dayTimestamp = value <= dayDurationInSeconds ? value : dayDurationInSeconds; }
     }
+
+    public int CurrentSpawnersToNeutralize
+    {
+        get
+        {
+            return currentSpawnersToNeutralize;
+        }
+        set
+        {
+            currentSpawnersToNeutralize = value;
+         //   OnInventoryValueChanged?.Invoke("currentDay", currentDay);
+        }
+    }
+    private int currentSpawnersToNeutralize;
 
     public BuildingController GetTownHall()
     {
