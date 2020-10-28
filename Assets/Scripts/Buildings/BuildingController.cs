@@ -147,16 +147,35 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         switch (upgradeToUnlock)
         {
             case UpgradeToUnlock.WoodHarvesting:
-                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.WoodHarvesting);
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.WoodHarvesting, true);
                 break;
             case UpgradeToUnlock.GoldHarvesting:
-                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.GoldHarvesting);
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.GoldHarvesting, true);
                 break;
             case UpgradeToUnlock.IronHarvesting:
-                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.IronHarvesting);
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.IronHarvesting, true);
                 break;
             case UpgradeToUnlock.FoodHarvesting:
-                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.FoodHarvesting);
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.FoodHarvesting, true);
+                break;
+        }
+    }
+
+    private void LockUpgradeWhenDestroyed()
+    {
+        switch (upgradeToUnlock)
+        {
+            case UpgradeToUnlock.WoodHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.WoodHarvesting, false);
+                break;
+            case UpgradeToUnlock.GoldHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.GoldHarvesting, false);
+                break;
+            case UpgradeToUnlock.IronHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.IronHarvesting, false);
+                break;
+            case UpgradeToUnlock.FoodHarvesting:
+                Progress_Manager.Instance.EnableSpecificHarvesting(UpgradeToUnlock.FoodHarvesting, false);
                 break;
         }
     }
@@ -228,6 +247,8 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public void DestroyBuilding()
     {
         ObjectSpawner.Instance.RemoveBuildingFromList(gameObject);
+        LockUpgradeWhenDestroyed();
+        Chochosan.EventManager.Instance.OnBuildingDestroyed?.Invoke(this, buildingType);
         if(buildingType == Buildings.TownHall)
         {
             Chochosan.UI_Manager.Instance.DisplayWarningMessage("GAME LOST!!!");

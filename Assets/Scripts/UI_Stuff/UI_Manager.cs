@@ -56,6 +56,7 @@ namespace Chochosan
         [SerializeField] private GameObject towerPanel;
         [SerializeField] private GameObject millPanel;
         [SerializeField] private GameObject warehousePanel;
+        [SerializeField] private GameObject neutralizerPanel;
 
         private GameObject currentlySelectedUnitAdditionalPanel;
         private TextMeshProUGUI currentlySelectedUnitAdditionalPanelInfoText;
@@ -71,7 +72,8 @@ namespace Chochosan
             Unit_Controller.Instance.OnUnitSelected += ActivateUnitSelectionUI;
             Unit_Controller.Instance.OnUnitDeselected += DeactivateAllSelectionUI;
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged += RefreshTextInfo;
-            Chochosan.EventManager.Instance.OnBuildingBuiltFinally += UpdateBuildingUI;
+            Chochosan.EventManager.Instance.OnBuildingBuiltFinally += UnlockBuildingUI;
+            Chochosan.EventManager.Instance.OnBuildingDestroyed += LockBuildingUI;
         }
 
 
@@ -81,7 +83,8 @@ namespace Chochosan
             Unit_Controller.Instance.OnUnitSelected -= ActivateUnitSelectionUI;
             Unit_Controller.Instance.OnUnitDeselected -= DeactivateAllSelectionUI;
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged -= RefreshTextInfo;
-            Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= UpdateBuildingUI;
+            Chochosan.EventManager.Instance.OnBuildingBuiltFinally -= UnlockBuildingUI;
+            Chochosan.EventManager.Instance.OnBuildingDestroyed -= LockBuildingUI;
         }
 
         //automatically toggles on/off depending on the current state
@@ -158,6 +161,11 @@ namespace Chochosan
                         break;
                     case Buildings.Woodcamp:
                         currentlySelectedUnitAdditionalPanel = lumberyardPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.Neutralizer:
+                        currentlySelectedUnitAdditionalPanel = neutralizerPanel;
                         currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
                         currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
                         break;
@@ -247,7 +255,7 @@ namespace Chochosan
             }        
         }
 
-        private void UpdateBuildingUI(BuildingController bc, Buildings buildingType)
+        private void UnlockBuildingUI(BuildingController bc, Buildings buildingType)
         {
             switch (buildingType)
             {
@@ -270,6 +278,29 @@ namespace Chochosan
                     break;
                 case Buildings.Barracks:
                     wizardyButton.interactable = true;
+                    break;
+            }
+        }
+
+        private void LockBuildingUI(BuildingController bc, Buildings buildingType)
+        {
+            switch (buildingType)
+            {
+                case Buildings.Woodcamp:
+                    houseButton.interactable = false;
+                    ironMineButton.interactable = false;
+                    millButton.interactable = false;
+                    break;
+                case Buildings.Ironmine:
+                    goldMineButton.interactable = false;
+                    break;
+                case Buildings.Goldmine:
+                    turretButton.interactable = false;
+                    warehouseButton.interactable = false;
+                    barracksButton.interactable = false;
+                    break;
+                case Buildings.Barracks:
+                    wizardyButton.interactable = false;
                     break;
             }
         }

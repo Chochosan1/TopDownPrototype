@@ -143,21 +143,21 @@ public class Progress_Manager : MonoBehaviour
         }
     }
 
-    public void EnableSpecificHarvesting(UpgradeToUnlock specificHarvesting)
+    public void EnableSpecificHarvesting(UpgradeToUnlock specificHarvesting, bool isUnlock)
     {
         switch (specificHarvesting)
         {
             case UpgradeToUnlock.WoodHarvesting:
-                isWorkersCanHarvestWood = true;
+                isWorkersCanHarvestWood = isUnlock;
                 break;
             case UpgradeToUnlock.GoldHarvesting:
-                isWorkersCanHarvestGold = true;
+                isWorkersCanHarvestGold = isUnlock;
                 break;
             case UpgradeToUnlock.IronHarvesting:
-                isWorkersCanHarvestIron = true;
+                isWorkersCanHarvestIron = isUnlock;
                 break;
             case UpgradeToUnlock.FoodHarvesting:
-                isWorkersCanHarvestFood = true;
+                isWorkersCanHarvestFood = isUnlock;
                 break;
         }
     }

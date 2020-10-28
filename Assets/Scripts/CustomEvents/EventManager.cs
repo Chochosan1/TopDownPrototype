@@ -30,5 +30,9 @@ namespace Chochosan
         //event subscribed to in UI_Manager or PlayerInventory to calculate upkeep or update UI
         public delegate void OnBuildingBuiltDelegate(BuildingController bc, Buildings buildingType);
         public OnBuildingBuiltDelegate OnBuildingBuiltFinally;
+
+        //event subscribed to in UI_Manager or PlayerInventory to calculate upkeep or update UI
+        public delegate void OnBuildingDestroyedDelegate(BuildingController bc, Buildings buildingType);
+        public OnBuildingDestroyedDelegate OnBuildingDestroyed;
     }
 }
