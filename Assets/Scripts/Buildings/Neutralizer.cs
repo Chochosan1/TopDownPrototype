@@ -12,7 +12,17 @@ public class Neutralizer : MonoBehaviour
 
         foreach(Collider col in hitColliders)
         {
-            col.GetComponent<AI_Spawner>().MarkSpawnerAsNeutralized();
+            col.GetComponent<AI_Spawner>().MarkSpawnerAsNeutralized(true);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange, detectionLayer);
+
+        foreach (Collider col in hitColliders)
+        {
+            col.GetComponent<AI_Spawner>().MarkSpawnerAsNeutralized(false);
         }
     }
 }

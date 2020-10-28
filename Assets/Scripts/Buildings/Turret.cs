@@ -7,14 +7,20 @@ using UnityEngine.AI;
 /// </summary>
 public class Turret : AI_Base, ISpawnedAtWorld
 {
-    [SerializeField] private float castCooldown;
+    [Header("Prefabs")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
+
+    [Header("Properties")]
+    [SerializeField] private float castCooldown;
+    [Tooltip("How fast the projectile will move.")]
     [SerializeField] private float shootForce;
     [SerializeField] private float enableTurretAfterSeconds;
     [SerializeField] private Vector3 offsetVector;
     private float castTimestamp;
     private bool isTurretEnabled = false;
+    private float distanceToTarget;
+    private Transform thisTransform;
 
     //pooling
     [SerializeField]
@@ -27,33 +33,35 @@ public class Turret : AI_Base, ISpawnedAtWorld
     private void Start()
     {
         StartInitialSetup();
+        thisTransform = transform;
         isTurretEnabled = true;
         projectilePool = new List<GameObject>();
     }
 
     void Update()
     {
-     
         if (currentTarget != null)
-        {     
+        {       
             CastSpell();
-        }
+
+            //if out of range
+            if ((currentTarget.transform.position - thisTransform.position).magnitude > secondPureEnemySenseRange)
+            {
+                currentTarget = null;
+            }
+        }           
         else
-        {
             ChooseNewTarget(false);
-        }
     }
 
     private void CastSpell()
     {
         if (currentTarget != null && Time.time >= castTimestamp && isTurretEnabled)
         {
-            Debug.Log("TURRET SHOOT");
             castTimestamp = Time.time + castCooldown;
             if (isStillSpawning) //if the pool is still not full
             {
                 GameObject projectileCopy = Instantiate(projectilePrefab, projectileSpawnPoint.position + offsetVector, projectilePrefab.transform.rotation);
-               // projectileCopy.GetComponent<Rigidbody>().AddForce((currentTarget.transform.position - transform.position) * shootForce, ForceMode.Impulse);
                 projectileCopy.GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);
                 AddObjectToPool(projectileCopy);
             }
@@ -61,7 +69,7 @@ public class Turret : AI_Base, ISpawnedAtWorld
             {
                 projectilePool[currentPoolItem].transform.position = transform.position + offsetVector;
                 projectilePool[currentPoolItem].SetActive(true);
-                projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);            
+                projectilePool[currentPoolItem].GetComponent<Projectile_Controller>().SetTarget(currentTarget, null);
                 currentPoolItem++;
 
                 if (currentPoolItem >= projectilePool.Count)

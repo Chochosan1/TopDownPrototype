@@ -966,8 +966,8 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
-  firstPureEnemySenseRange: 5
-  secondPureEnemySenseRange: 20
+  firstPureEnemySenseRange: 10
+  secondPureEnemySenseRange: 25
   castCooldown: 1
   projectilePrefab: {fileID: 3142173893139789911, guid: b6e9d7df7b310f24299373ec60c9a5ad,
     type: 3}

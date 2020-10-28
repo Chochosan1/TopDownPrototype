@@ -345,7 +345,7 @@ namespace Chochosan
 
         public void TrainSelectedBuildingUnit(int index)
         {
-            BuildingController currentlySelectedBuilding = Unit_Controller.Instance.GetCurrentlySelectedBuilding().GetComponent<BuildingController>();
+            BuildingController currentlySelectedBuilding = Unit_Controller.Instance.GetCurrentlySelectedBuilding()?.GetComponent<BuildingController>();
             if(currentlySelectedBuilding != null)
             {
                 currentlySelectedBuilding.SpawnAttackerUnit(index);

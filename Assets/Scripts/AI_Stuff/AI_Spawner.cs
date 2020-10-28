@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class AI_Spawner : MonoBehaviour
 {
-    [SerializeField] private int spawnEnemiesEveryXDays = 2;
+    //debug
+    public bool isSpawning = true;
+
+    [Header("Prefabs")]
     [SerializeField] private GameObject aiToSpawnPrefab;
+    [Tooltip("This particle will be active only if the spawner has not been neutralized.")]
+    [SerializeField] private GameObject isActiveParticle;
+    [Tooltip("This particle will activate as a feedback for when the spawner gets neutralized.")]
+    [SerializeField] private GameObject neutralizedFeedbackParticle;
+
+    [Header("Properties")]
     [SerializeField] private float spawnCooldown;
+    [Tooltip("The spawner will spawn enemies only every X days.")]
+    [SerializeField] private int spawnEnemiesEveryXDays = 2;
+
     private GameObject currentTarget;
     private float spawnTimestamp;
     private bool isNeutralized = false;
@@ -16,8 +28,10 @@ public class AI_Spawner : MonoBehaviour
         Progress_Manager.Instance.CurrentSpawnersToNeutralize++;
     }
 
-    void Update()
+    private void Update()
     {
+        if (!isSpawning)
+            return;
         if (!isNeutralized && PlayerInventory.Instance.CurrentDay % spawnEnemiesEveryXDays == 0)
         {
             SpawnEnemy();
@@ -39,9 +53,11 @@ public class AI_Spawner : MonoBehaviour
         }
     }
 
-    public void MarkSpawnerAsNeutralized()
+    public void MarkSpawnerAsNeutralized(bool value)
     {
-        isNeutralized = true;
+        isNeutralized = value;
+        isActiveParticle.SetActive(!value);
+        neutralizedFeedbackParticle.SetActive(true);
         Progress_Manager.Instance.CurrentSpawnersToNeutralize--;
     }
 }
