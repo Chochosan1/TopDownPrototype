@@ -64,7 +64,7 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
         aiState = AIState_Villager.Idle;
         SwitchVillagerType(villagerType);
         PlayerInventory.Instance.CurrentPopulation++;
-        PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;    
+        PlayerInventory.Instance.CurrentFoodConsumption += stats.foodPerDayUpkeep;
         UpdateHealthBar(currentHealth);
     }
 
@@ -413,7 +413,7 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
         currentHealth -= damage;
         UpdateHealthBar(currentHealth);
 
-        if(isSelected)
+        if (isSelected)
         {
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
         }
@@ -435,6 +435,12 @@ public class AI_Villager : AI_Base, ISelectable, IDamageable
 
             Destroy(this.gameObject);
         }
+    }
+
+    public void Heal(float amount)
+    {
+        currentHealth = currentHealth + amount > stats.maxHealth ? stats.maxHealth : currentHealth + amount;
+        UpdateHealthBar(currentHealth);
     }
 
     public void SetInitialHP()

@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 1710027621976086215}
   - component: {fileID: 1710027621972691711}
   - component: {fileID: 1710027621974083317}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_RoomTall_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 2933217673761938572}
   - component: {fileID: 2933217673759081240}
   - component: {fileID: 2933217673760204180}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_FoundationRock_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 3285553131558475763}
   - component: {fileID: 3410687349765569513}
   - component: {fileID: 3410124272069178141}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CircleNegative
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5147,7 +5147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3285559410424304519}
   - component: {fileID: 130224644752053710}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FireBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5203,7 +5203,7 @@ GameObject:
   - component: {fileID: 3280636858798635191}
   - component: {fileID: 3411344969228405309}
   - component: {fileID: 3409768317984362297}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9979,7 +9979,7 @@ GameObject:
   - component: {fileID: 3280406851217526685}
   - component: {fileID: 3411177419518723271}
   - component: {fileID: 3410530917003312995}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CirclePositive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14755,7 +14755,7 @@ GameObject:
   - component: {fileID: 3285416081430366239}
   - component: {fileID: 3410781106636110265}
   - component: {fileID: 3410589654560317527}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SemiCircles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19531,7 +19531,7 @@ GameObject:
   - component: {fileID: 3280786724946907085}
   - component: {fileID: 3398021901300697541}
   - component: {fileID: 3409727255832584233}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Beam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24430,7 +24430,7 @@ GameObject:
   - component: {fileID: 3860344939896069671}
   - component: {fileID: 3860344939893207457}
   - component: {fileID: 3860344939893793437}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_Room_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24632,7 +24632,7 @@ GameObject:
   - component: {fileID: 5237828485286640270}
   - component: {fileID: 5237828485285363594}
   - component: {fileID: 5237828485284456006}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_Door_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24834,7 +24834,7 @@ GameObject:
   - component: {fileID: 6576038642856477212}
   - component: {fileID: 6573162272112991582}
   - component: {fileID: 6564497866184437466}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RedMushroom (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24913,7 +24913,7 @@ GameObject:
   - component: {fileID: 6576038643099735748}
   - component: {fileID: 6573162272373016966}
   - component: {fileID: 6564497866092182018}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RedMushroom (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24992,7 +24992,7 @@ GameObject:
   - component: {fileID: 6576038641774344176}
   - component: {fileID: 6573162273195108530}
   - component: {fileID: 6564497865102318390}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RedMushroom (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25071,7 +25071,7 @@ GameObject:
   - component: {fileID: 6576038642106578598}
   - component: {fileID: 6573162273533700580}
   - component: {fileID: 6564497864897682016}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RedMushroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25150,7 +25150,7 @@ GameObject:
   - component: {fileID: 6576038642142764071}
   - component: {fileID: 6573162273564640101}
   - component: {fileID: 6564497864865689825}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RedMushroom (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25233,7 +25233,7 @@ GameObject:
   - component: {fileID: 7405014760270700023}
   - component: {fileID: 3192963165094230987}
   - component: {fileID: 5046316584701589569}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Chair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25364,7 +25364,7 @@ GameObject:
   - component: {fileID: 6579003272800782393}
   - component: {fileID: 6579003272800782395}
   - component: {fileID: 6579003272800782392}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_Window_04 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25446,7 +25446,7 @@ GameObject:
   - component: {fileID: 6605633023258819641}
   - component: {fileID: 6604655674166181447}
   - component: {fileID: 6604961913076629563}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_Extension_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25567,7 +25567,7 @@ GameObject:
   - component: {fileID: 7141828760592343556}
   - component: {fileID: 7141828760595309228}
   - component: {fileID: 7141828760594172020}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TowerPart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25647,7 +25647,7 @@ GameObject:
   - component: {fileID: 7498075126600897272}
   - component: {fileID: 7527726694256499182}
   - component: {fileID: 7517256386975936922}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HouseWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25792,7 +25792,7 @@ GameObject:
   - component: {fileID: 9117092949572945976}
   - component: {fileID: 9117092949576289574}
   - component: {fileID: 9117092949574825962}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_Window_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25871,7 +25871,7 @@ GameObject:
   - component: {fileID: 9221293485584587934}
   - component: {fileID: 9221293485583308278}
   - component: {fileID: 9221293485582247990}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Bld_House_Extension_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

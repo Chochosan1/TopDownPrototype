@@ -24,6 +24,13 @@ public class AI_Base : MonoBehaviour
         agent.destination = targetPosition;
     }
 
+    protected virtual Collider[] GetAllInRange(Vector3 offset)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position + offset, firstPureEnemySenseRange, enemyLayer);
+
+        return hitColliders;
+    }
+
     //choose a random target out of all detected targets in a layer OR if the parameter is false choose the first target always
     protected virtual void ChooseNewTarget(bool chooseRandom)
     {

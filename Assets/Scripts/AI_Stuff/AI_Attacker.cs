@@ -426,6 +426,14 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             isDead = true;
             Instantiate(deathParticle, thisTransform.position, deathParticle.transform.rotation);
             AI_Attacker_Loader.RemoveAttackerFromList(this);
+            if(attackerType == AttackerType.Ranged)
+            {
+                foreach (GameObject obj in projectilePool)
+                {
+                    Destroy(obj);
+                }
+            }
+          
             if (isCountTowardsPopulation)
             {
                 PlayerInventory.Instance.CurrentPopulation--;
@@ -434,6 +442,12 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
 
             Destroy(this.gameObject);
         }
+    }
+
+    public void Heal(float amount)
+    {
+        currentHealth = currentHealth + amount > stats.maxHealth ? stats.maxHealth : currentHealth + amount;
+        UpdateHealthBar(currentHealth);
     }
 
     private void UpdateHealthBar(float value)

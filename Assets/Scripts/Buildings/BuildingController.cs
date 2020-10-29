@@ -186,7 +186,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
             return;
         GameObject tempUnit = Instantiate(attackersToSpawn[attackerIndex], spawnPoint.transform.position, attackersToSpawn[attackerIndex].transform.rotation);
         tempUnit.GetComponent<AI_Attacker>().SetInitialStateNotLoadedFromSave();
-      //  AI_Attacker_Loader.AddAttackerToList(tempUnit.GetComponent<AI_Attacker>());
+        //  AI_Attacker_Loader.AddAttackerToList(tempUnit.GetComponent<AI_Attacker>());
     }
 
     public IEnumerator SpawnVillagerAfterTime()
@@ -232,7 +232,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     {
         buildingCurrentHP -= damage;
 
-        if(isSelected)
+        if (isSelected)
         {
             //send a message that a displayable UI value has been changed (in this case the HP of the building)
             Chochosan.EventManager.Instance.OnDisplayedUIValueChanged?.Invoke(this);
@@ -244,12 +244,17 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
         }
     }
 
+    public void Heal(float amount)
+    {
+        buildingCurrentHP = buildingCurrentHP + amount > buildingMaxHP ? buildingMaxHP : buildingCurrentHP + amount;
+    }
+
     public void DestroyBuilding()
     {
         ObjectSpawner.Instance.RemoveBuildingFromList(gameObject);
         LockUpgradeWhenDestroyed();
         Chochosan.EventManager.Instance.OnBuildingDestroyed?.Invoke(this, buildingType);
-        if(buildingType == Buildings.TownHall)
+        if (buildingType == Buildings.TownHall)
         {
             Chochosan.UI_Manager.Instance.DisplayWarningMessage("GAME LOST!!!");
         }
@@ -269,9 +274,9 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
     public Vector3 GetFirstFreeSpot()
     {
         Vector3 des = attackPoints[0].transform.position;
-        for(int i = 0; i < attackPointsStates.Length; i++)
+        for (int i = 0; i < attackPointsStates.Length; i++)
         {
-            if(attackPointsStates[i] != 1)
+            if (attackPointsStates[i] != 1)
             {
                 attackPointsStates[i] = 1;
                 return attackPoints[i].transform.position;
@@ -293,7 +298,7 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public string GetSelectedUnitInfo()
     {
-       // string info = $"{buildingName}\nBuilding level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
+        // string info = $"{buildingName}\nBuilding level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
         string info = $"Level: {currentBuildingLevel}\nHP: {buildingCurrentHP}/{buildingMaxHP}";
         return info;
     }
@@ -339,11 +344,11 @@ public class BuildingController : MonoBehaviour, ISpawnedAtWorld, ISelectable, I
 
     public void ToggleSelectedIndicator(bool value)
     {
-        if(selectedIndicator != null)
+        if (selectedIndicator != null)
         {
             selectedIndicator.SetActive(value);
             isSelected = value;
-        }         
+        }
     }
 
     #region DataSaving

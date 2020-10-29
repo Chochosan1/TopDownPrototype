@@ -2316,9 +2316,11 @@ MonoBehaviour:
   secondPureEnemySenseRange: 30
   debugState: 0
   isDummy: 0
+  isDefaultedWorldObject: 0
   attackerType: 1
   isSelectable: 1
   attackerIndex: 3
+  isUsingDefaultTarget: 0
   defaultTargetIfNoOtherAvailable: {fileID: 0}
   hitParticle: {fileID: 5071967245960989166}
   deathParticle: {fileID: 1280141305896002, guid: e473029e4c70ad543a6879b82a732f4f,
@@ -9346,7 +9348,6 @@ GameObject:
   - component: {fileID: 8454723075435579356}
   - component: {fileID: 8454723075435579357}
   - component: {fileID: 8454723075435579358}
-  - component: {fileID: 8454723075435579359}
   m_Layer: 16
   m_Name: SelectedIndicator
   m_TagString: Untagged
@@ -9415,19 +9416,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &8454723075435579359
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8454723075435579168}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &5083079576853256623
 PrefabInstance:
   m_ObjectHideFlags: 0
