@@ -7,13 +7,13 @@ public class AI_Attacker_Loader : MonoBehaviour
     //used for spawning
     [SerializeField] private GameObject[] aiAttackerPrefabs;
 
-    //all default scene harvestables; they must be destroyed if a save file exists in order to avoid duplicates
+    //all default scene attackers; they must be destroyed if a save file exists in order to avoid duplicates
     [SerializeField] private GameObject defaultSceneResourcesPrefab;
 
-    //all harvestables; non-serializable list
+    //all attackers; non-serializable list
     public static List<AI_Attacker> allSpawnedAttackers;
 
-    //copy of all important harvestable stats; serializable list
+    //copy of all important attacker stats; serializable list
     public static List<AI_Attacker_Serializable> allSpawnedAttackersSerializable;
 
     private void Awake()
@@ -46,6 +46,7 @@ public class AI_Attacker_Loader : MonoBehaviour
                 AI_Attacker tempController = tempAttacker.GetComponent<AI_Attacker>();
                 tempController.SetAttackerHP(acs.currentHP);
                 tempController.SetAttackerIndex(acs.attackerIndex);
+                tempController.SetIsUsingDefaultTarget(acs.isUsingDefaultTarget);
 
                 //add the object to the list to allow further saving overriding
                 AddAttackerToList(tempController);
@@ -70,9 +71,9 @@ public class AI_Attacker_Loader : MonoBehaviour
         allSpawnedAttackersSerializable.Add(aiAttackerSerializable);
     }
 
-    //All harvestables in the world are in a list that is not serializable. Looping through that list a serializable copy of the 
-    //harvestable controller is created and put in a serializable list. That list is then sent to the SaveLoadManager and extracted
-    //later in order to load the harvestables save.
+    //All attackers in the world are in a list that is not serializable. Looping through that list a serializable copy of the 
+    //attacker controller is created and put in a serializable list. That list is then sent to the SaveLoadManager and extracted
+    //later in order to load the attackers save.
     public static List<AI_Attacker_Serializable> GetAttackers()
     {
         allSpawnedAttackersSerializable = new List<AI_Attacker_Serializable>();

@@ -8,4 +8,5 @@ public struct AI_Attacker_Serializable
     public float x, y, z;
     public int attackerIndex;
     public float currentHP;
+    public bool isUsingDefaultTarget;
 }

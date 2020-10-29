@@ -214,9 +214,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
             anim.SetBool("isRun", false);
             anim.SetBool("isAttack", false);
         }
-
-
-        
+     
         if (currentTarget != null)
         {
             float directionDistance = 10000;
@@ -378,6 +376,11 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     public void SetDefaultTarget(GameObject defaultedTarget)
     {
         defaultTargetIfNoOtherAvailable = defaultedTarget;
+    }
+
+    public void SetIsUsingDefaultTarget(bool value)
+    {
+        isUsingDefaultTarget = value;
     }
 
     private void SetInitialHP()
@@ -561,6 +564,7 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
         acs.z = transform.position.z;
         acs.currentHP = currentHealth;
         acs.attackerIndex = attackerIndex;
+        acs.isUsingDefaultTarget = isUsingDefaultTarget;
         return acs;
     }
 }
