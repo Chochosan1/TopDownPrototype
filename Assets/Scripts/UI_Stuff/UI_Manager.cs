@@ -57,6 +57,7 @@ namespace Chochosan
         [SerializeField] private GameObject millPanel;
         [SerializeField] private GameObject warehousePanel;
         [SerializeField] private GameObject neutralizerPanel;
+        [SerializeField] private GameObject healingFountainPanel;
 
         private GameObject currentlySelectedUnitAdditionalPanel;
         private TextMeshProUGUI currentlySelectedUnitAdditionalPanelInfoText;
@@ -166,6 +167,11 @@ namespace Chochosan
                         break;
                     case Buildings.Neutralizer:
                         currentlySelectedUnitAdditionalPanel = neutralizerPanel;
+                        currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
+                        currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
+                        break;
+                    case Buildings.HealingFountain:
+                        currentlySelectedUnitAdditionalPanel = healingFountainPanel;
                         currentlySelectedUnitAdditionalPanelInfoText = currentlySelectedUnitAdditionalPanel.GetComponentInChildren<TextMeshProUGUI>();
                         currentlySelectedUnitAdditionalPanelInfoText.text = unitSelectable.GetSelectedUnitInfo();
                         break;

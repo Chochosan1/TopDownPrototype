@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class HealingFountain : AI_Base
 {
+    [Header("References")]
+    [SerializeField] private BoxCollider tempSelectionCollider;
+
     [Header("Properties")]
     [SerializeField] private float healCooldown = 10f;
     [SerializeField] private float flatHealAmount = 10f;
     [SerializeField] private Vector3 healingPositionOffset;
     private float healTimestamp;
     private Collider[] objectsToHeal;
+
+    private void Start()
+    {
+        tempSelectionCollider.enabled = false;
+    }
 
     private void Update()
     {

@@ -7,9 +7,13 @@ using UnityEngine;
 public class Unit_Controller : MonoBehaviour
 {
     public static Unit_Controller Instance;
+    [SerializeField] private GameObject commandIconPrefab;
     [SerializeField] private Texture2D selectRectTexture2D = null;
+    [SerializeField] private Texture2D cursorDefault, cursorUnit, cursorBuilding, cursorEnemy, cursorHarvestables;
     [SerializeField] private LayerMask selectableUnitLayer;
     [SerializeField] private LayerMask selectableBuildingLayer;
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask harvestablesLayer;
     [SerializeField] private LayerMask movableAreaLayer;
     [SerializeField] private LayerMask UILayer;
     private ObjectSpawner objectSpawner;
@@ -47,10 +51,10 @@ public class Unit_Controller : MonoBehaviour
 
     void Start()
     {
+        Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
         currentlySelectedUnits = new List<GameObject>();
         objectSpawner = GetComponent<ObjectSpawner>();
         mainCamera = Camera.main;
-
         if (Chochosan.SaveLoadManager.IsSaveExists())
         {
             //spawn that many villagers based on the number of villagersAssigned in the save file
@@ -70,6 +74,29 @@ public class Unit_Controller : MonoBehaviour
 
     private void Update()
     {
+        RaycastHit hit;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 100, selectableUnitLayer))
+        {
+            Cursor.SetCursor(cursorUnit, Vector2.zero, CursorMode.Auto);
+        }
+        else if (Physics.Raycast(ray, out hit, 100, selectableBuildingLayer))
+        {
+            Cursor.SetCursor(cursorBuilding, Vector2.zero, CursorMode.Auto);
+        }
+        else if (Physics.Raycast(ray, out hit, 100, enemyLayer))
+        {
+            Cursor.SetCursor(cursorEnemy, Vector2.zero, CursorMode.Auto);
+        }
+        else if (Physics.Raycast(ray, out hit, 100, harvestablesLayer))
+        {
+            Cursor.SetCursor(cursorHarvestables, Vector2.zero, CursorMode.Auto);
+        }
+        else
+        {
+            Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (!objectSpawner.IsCurrentlySpawningBuilding())
@@ -190,6 +217,7 @@ public class Unit_Controller : MonoBehaviour
             {
                 if (movableAreaLayer == (movableAreaLayer | (1 << hit.collider.gameObject.layer))) //check if the object is in the specific layer
                 {
+                    ShowCommandIcon(hit.point);
                     foreach (GameObject selectedUnit in currentlySelectedUnits)
                     {
                         //offset each individual unit's position so that they don't fight for exactly the same spot
@@ -210,6 +238,16 @@ public class Unit_Controller : MonoBehaviour
             }
         }
     }
+
+    private void ShowCommandIcon(Vector3 position)
+    {
+        commandIconPrefab.transform.position = position;
+     
+        //disable and then reenable to reset the state of the animation
+        commandIconPrefab.SetActive(false);
+        commandIconPrefab.SetActive(true);
+    }
+
 
     public GameObject GetCurrentlySelectedBuilding()
     {
