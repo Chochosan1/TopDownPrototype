@@ -74,6 +74,7 @@ public class Unit_Controller : MonoBehaviour
 
     private void Update()
     {
+        //change cursor based on what the player is hovering
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 100, selectableUnitLayer))

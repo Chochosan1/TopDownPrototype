@@ -17228,12 +17228,6 @@ PrefabInstance:
       propertyPath: defaultedWorldObject
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2547033674450600915, guid: 5a35919e2f2767e449b572b346b02c15,
-        type: 3}
-      propertyPath: stats
-      value: 
-      objectReference: {fileID: 11400000, guid: 2bf87f2a53d90b54d80cfbe13200eea6,
-        type: 2}
     - target: {fileID: 6645400905824940389, guid: 5a35919e2f2767e449b572b346b02c15,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -41046,12 +41040,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commandIconPrefab: {fileID: 408690704}
   selectRectTexture2D: {fileID: 2800000, guid: 2674943e0ff792d4d84be548cfebb1b8, type: 3}
+  cursorDefault: {fileID: 2800000, guid: a5f9cc9a5efbe894eb85de4851711ba8, type: 3}
+  cursorUnit: {fileID: 2800000, guid: 0f45821c9378469498c0044ff9068ea2, type: 3}
+  cursorBuilding: {fileID: 2800000, guid: 0f45821c9378469498c0044ff9068ea2, type: 3}
+  cursorEnemy: {fileID: 2800000, guid: 24d21e256b498a944a00e2527ed7618c, type: 3}
+  cursorHarvestables: {fileID: 2800000, guid: d0d03afcba5eebe41a438f083cc0466e, type: 3}
   selectableUnitLayer:
     serializedVersion: 2
     m_Bits: 65536
   selectableBuildingLayer:
     serializedVersion: 2
     m_Bits: 131072
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  harvestablesLayer:
+    serializedVersion: 2
+    m_Bits: 581632
   movableAreaLayer:
     serializedVersion: 2
     m_Bits: 256
