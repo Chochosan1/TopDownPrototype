@@ -56,12 +56,21 @@ public class Progress_Manager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Chochosan.SaveLoadManager.SaveGameState();
+        }
         if (Input.GetKeyDown(KeyCode.O))
         {
             PlayerInventory.Instance.CurrentWood += 50f;
             PlayerInventory.Instance.CurrentGold += 50f;
             PlayerInventory.Instance.CurrentIron += 50f;
             PlayerInventory.Instance.CurrentFood += 50f;
+        }
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            PlayerInventory.Instance.CurrentVillageCharisma += 100f;
         }
         if (Time.time >= gameTickTimestamp)
         {

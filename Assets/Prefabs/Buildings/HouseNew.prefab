@@ -534,7 +534,7 @@ MonoBehaviour:
   buildingDoneParticle: {fileID: 1462327970484030, guid: f01c1eba69de19e44b04d8d651aaac37,
     type: 3}
   villagerToSpawn: {fileID: 0}
-  attackerToSpawn: {fileID: 0}
+  attackersToSpawn: []
   spawnPoint: {fileID: 0}
   attackPoints:
   - {fileID: 5758637884737851627}
@@ -553,11 +553,11 @@ MonoBehaviour:
   customAgentStoppingDistance: 4
   buildingMaxHP: 50
   housingSpace: 2
-  charismaOnBuilt: 101
-  woodUpkeepAfterBuilding: 0
+  charismaOnBuilt: 20
+  woodUpkeepAfterBuilding: 2
   foodGeneration: 0
   buildingProgress: 0
-  progressPerBuildIteration: 100
+  progressPerBuildIteration: 20
 --- !u!65 &2668783107929764976
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -29,6 +29,8 @@ namespace Chochosan
         [SerializeField] private Vector2 panLimit;
         [SerializeField] private float minY, maxY;
 
+        private static bool cameraZoomingAllowed = true;
+
         private void Start()
         {
             thisTransform = gameObject.GetComponent<Transform>();
@@ -57,7 +59,7 @@ namespace Chochosan
                 pos.x -= panSpeed;
             }
 
-            if (Input.GetAxis("Mouse ScrollWheel") != 0)
+            if (Input.GetAxis("Mouse ScrollWheel") != 0 && cameraZoomingAllowed)
             {
                 float scroll = Input.GetAxis("Mouse ScrollWheel");
                 pos.y -= scroll * scrollSpeed; //subtract from Y so that the scrolling is not reversed
@@ -68,6 +70,11 @@ namespace Chochosan
             //  pos.z = Mathf.Clamp(pos.z, -panLimit.y, panLimit.y);
 
             thisTransform.position = Vector3.Lerp(thisTransform.position, pos, smoothSpeed * Time.deltaTime);
+        }
+
+        public static void ToggleCameraZooming()
+        {
+            cameraZoomingAllowed = !cameraZoomingAllowed;
         }
     }
 }

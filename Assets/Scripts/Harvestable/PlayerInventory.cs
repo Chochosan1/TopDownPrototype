@@ -335,6 +335,7 @@ public class PlayerInventory : MonoBehaviour
         {
             currentDay = value;
             OnInventoryValueChanged?.Invoke("currentDay", currentDay);
+            Chochosan.EventManager.Instance.OnNewDay?.Invoke();
         }
     }
     private int currentDay;

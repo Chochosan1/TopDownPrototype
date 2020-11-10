@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Handles the logic for the unit spawners.
+/// </summary>
 public class AI_Spawner : MonoBehaviour
 {
     //debug
@@ -15,13 +17,27 @@ public class AI_Spawner : MonoBehaviour
     [SerializeField] private GameObject neutralizedFeedbackParticle;
 
     [Header("Properties")]
-    [SerializeField] private float spawnCooldown;
+    [SerializeField] private float spawnCooldownMin;
+    [SerializeField] private float spawnCooldownMax;
     [Tooltip("The spawner will spawn enemies only every X days.")]
     [SerializeField] private int spawnEnemiesEveryXDays = 2;
+    [SerializeField] private int maxEnemiesToSpawnInADay = 10;
+    private int enemiesCurrentlySpawned = 0;
+    private float currentSpawnCooldown;
 
     private GameObject currentTarget;
     private float spawnTimestamp;
     private bool isNeutralized = false;
+
+    private void Awake()
+    {
+        Chochosan.EventManager.Instance.OnNewDay += ResetEnemiesCurrentlySpawned;
+    }
+
+    private void OnDestroy()
+    {
+        Chochosan.EventManager.Instance.OnNewDay -= ResetEnemiesCurrentlySpawned;
+    }
 
     private void Start()
     {
@@ -42,16 +58,22 @@ public class AI_Spawner : MonoBehaviour
     {
         if (Time.time >= spawnTimestamp && Progress_Manager.Instance.GetTownHall() != null)
         {
+            if (enemiesCurrentlySpawned >= maxEnemiesToSpawnInADay)
+                return;
+
+            enemiesCurrentlySpawned++;
             GameObject tempEnemy = Instantiate(aiToSpawnPrefab, transform.position, aiToSpawnPrefab.transform.rotation);
             AI_Attacker tempController = tempEnemy.GetComponent<AI_Attacker>();
             tempController.SetInitialStateNotLoadedFromSave();
             currentTarget = Progress_Manager.Instance.GetTownHall().gameObject;
             if (currentTarget != null)
                 tempController.SetDefaultTarget(currentTarget);
-               
-            spawnTimestamp = Time.time + spawnCooldown;
+
+            currentSpawnCooldown = Random.Range(spawnCooldownMin, spawnCooldownMax);
+            spawnTimestamp = Time.time + currentSpawnCooldown;
         }
     }
+
 
     public void MarkSpawnerAsNeutralized(bool value)
     {
@@ -59,5 +81,10 @@ public class AI_Spawner : MonoBehaviour
         isActiveParticle.SetActive(!value);
         neutralizedFeedbackParticle.SetActive(true);
         Progress_Manager.Instance.CurrentSpawnersToNeutralize--;
+    }
+
+    private void ResetEnemiesCurrentlySpawned()
+    {
+        enemiesCurrentlySpawned = 0;
     }
 }

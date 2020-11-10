@@ -80,10 +80,10 @@ public class ObjectSpawner : MonoBehaviour
     {
         MoveCurrentObjectWithMouse();
 
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            Chochosan.SaveLoadManager.SaveGameState();
-        }
+        //if(Input.GetKeyDown(KeyCode.I))
+        //{
+        //    Chochosan.SaveLoadManager.SaveGameState();
+        //}
     }
 
     //try to spawn a preview object

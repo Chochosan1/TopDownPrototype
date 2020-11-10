@@ -56,6 +56,7 @@ namespace Chochosan
         private void HandleAllowBuildingRotation(InputAction.CallbackContext obj)
         {
             ObjectSpawner.Instance.ToggleObjectRotation();
+            RTS_CameraController.ToggleCameraZooming();
         }
 
         private void HandleBuildingRotation(InputAction.CallbackContext obj)

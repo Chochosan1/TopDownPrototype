@@ -12,6 +12,8 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     public bool isDefaultedWorldObject;
     [Header("Additional AI options")]
     private IDamageable currentDamageable;
+    private float hungerTickCooldown = 1f;
+    private float hungerTimestamp;
     [SerializeField] private AttackerType attackerType;
     [SerializeField] private bool isSelectable = false;
     [SerializeField] private int attackerIndex;
@@ -99,6 +101,12 @@ public class AI_Attacker : AI_Base, IDamageable, ISelectable
     {
         if (individualUnitCanvas != null)
             individualUnitCanvas.LookAt(thisTransform);
+
+        if(isCountTowardsPopulation && PlayerInventory.Instance.CurrentFood <= 0 && Time.time >= hungerTimestamp)
+        {
+            TakeDamage(stats.maxHealth * 0.02f, null);
+            hungerTimestamp = Time.time + hungerTickCooldown;
+        }
         if (aiState == AIState.Idle)
         {
             isTargetingBuilding = false;
